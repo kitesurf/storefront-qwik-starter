@@ -1,9 +1,11 @@
 import { $, component$, useContext, useVisibleTask$ } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
 import { APP_STATE, CUSTOMER_NOT_DEFINED_ID } from '~/constants';
-import { logoutMutation } from '~/providers/account/account';
-import { getActiveCustomerQuery } from '~/providers/customer/customer';
+import { logoutMutation } from '~/providers/shop/account/account';
+import { getActiveCustomerQuery } from '~/providers/shop/customer/customer';
+import { GitHubLink } from '../GitHubLink/GitHubLink';
 import LogoutIcon from '../icons/LogoutIcon';
+import MenuIcon from '../icons/MenuIcon';
 import ShoppingBagIcon from '../icons/ShoppingBagIcon';
 import UserIcon from '../icons/UserIcon';
 import SearchBar from '../search-bar/SearchBar';
@@ -61,7 +63,7 @@ export default component$(() => {
 									</a>
 								</p>
 							</div>
-							<div class="flex">
+							<div class="flex mr-[60px] 2xl:mr-0">
 								<Link
 									href={appState.customer.id !== CUSTOMER_NOT_DEFINED_ID ? '/account' : '/sign-in'}
 									class="flex items-center space-x-1 pb-1 pr-2"
@@ -86,12 +88,18 @@ export default component$(() => {
 					</div>
 				</div>
 				<div class="max-w-6xl mx-auto p-4 flex items-center space-x-4">
+					<button
+						class="block sm:hidden text-white"
+						onClick$={() => (appState.showMenu = !appState.showMenu)}
+					>
+						<MenuIcon />
+					</button>
 					<h1 class="text-white w-10">
 						<Link href="/">
 							<img src={`/cube-logo-small.webp`} width={40} height={31} alt="Vendure logo" />
 						</Link>
 					</h1>
-					<div class="flex space-x-4 sm:block">
+					<div class="hidden space-x-4 sm:block">
 						{collections.map((collection) => (
 							<Link
 								class="text-sm md:text-base text-gray-200 hover:text-white"
@@ -102,7 +110,7 @@ export default component$(() => {
 							</Link>
 						))}
 					</div>
-					<div class="flex-1 hidden sm:block md:pr-8">
+					<div class="flex-1 block md:pr-8">
 						<SearchBar />
 					</div>
 					<div class="">
@@ -123,6 +131,7 @@ export default component$(() => {
 						</button>
 					</div>
 				</div>
+				<GitHubLink />
 			</header>
 		</div>
 	);

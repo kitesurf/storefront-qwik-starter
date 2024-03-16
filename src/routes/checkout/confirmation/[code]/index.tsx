@@ -5,7 +5,7 @@ import CartTotals from '~/components/cart-totals/CartTotals';
 import CheckCircleIcon from '~/components/icons/CheckCircleIcon';
 import ChevronRightIcon from '~/components/icons/ChevronRightIcon';
 import { Order } from '~/generated/graphql';
-import { getOrderByCodeQuery } from '~/providers/orders/order';
+import { getOrderByCodeQuery } from '~/providers/shop/orders/order';
 
 type Step = 'SHIPPING' | 'PAYMENT' | 'CONFIRMATION';
 
@@ -28,8 +28,8 @@ export default component$<{ onForward$: PropFunction<() => void> }>(() => {
 	return (
 		<div>
 			{store.order?.id && (
-				<div class="bg-gray-50">
-					<div class="lg:max-w-3xl mx-auto max-w-2xl pt-8 pb-24 px-4 sm:px-6 lg:px-8">
+				<div class="bg-gray-50 pb-48">
+					<div class="lg:max-w-3xl mx-auto max-w-2xl pt-8 px-4 sm:px-6 lg:px-8">
 						<h2 class="sr-only">{$localize`Checkout`}</h2>
 						<nav class="hidden sm:block pb-8 mb-8 border-b">
 							<ol class="flex space-x-4 justify-center">

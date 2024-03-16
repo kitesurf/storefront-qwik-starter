@@ -1,16 +1,9 @@
-import {
-	QwikChangeEvent,
-	component$,
-	useComputed$,
-	useContext,
-	useSignal,
-	useTask$,
-} from '@builder.io/qwik';
+import { component$, useComputed$, useContext, useSignal, useTask$ } from '@builder.io/qwik';
 import { Link, useLocation, useNavigate } from '@builder.io/qwik-city';
 import { Image } from 'qwik-image';
 import { APP_STATE } from '~/constants';
 import { Order } from '~/generated/graphql';
-import { adjustOrderLineMutation, removeOrderLineMutation } from '~/providers/orders/order';
+import { adjustOrderLineMutation, removeOrderLineMutation } from '~/providers/shop/orders/order';
 import { isCheckoutPage } from '~/utils';
 import Price from '../products/Price';
 
@@ -87,8 +80,8 @@ export default component$<{
 												id={`quantity-${line.id}`}
 												name={`quantity-${line.id}`}
 												value={line.quantity}
-												onChange$={async (e: QwikChangeEvent<HTMLSelectElement>) => {
-													currentOrderLineSignal.value = { id: line.id, value: +e.target?.value };
+												onChange$={(_, el) => {
+													currentOrderLineSignal.value = { id: line.id, value: +el.value };
 												}}
 												class="max-w-full rounded-md border border-gray-300 py-1.5 text-base leading-5 font-medium text-gray-700 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
 											>

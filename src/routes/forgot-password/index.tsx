@@ -1,6 +1,6 @@
 import { $, component$, useSignal } from '@builder.io/qwik';
 import XCircleIcon from '~/components/icons/XCircleIcon';
-import { requestPasswordResetMutation } from '~/providers/account/account';
+import { requestPasswordResetMutation } from '~/providers/shop/account/account';
 
 export default component$(() => {
 	const email = useSignal('');
@@ -30,10 +30,10 @@ export default component$(() => {
 									type="email"
 									value={email.value}
 									required
-									onInput$={(ev) => (email.value = (ev.target as HTMLInputElement).value)}
-									onKeyUp$={(ev) => {
+									onInput$={(_, el) => (email.value = el.value)}
+									onKeyUp$={(ev, el) => {
 										error.value = '';
-										if (ev.key === 'Enter' && !!(ev.target as HTMLInputElement).value) {
+										if (ev.key === 'Enter' && !!el.value) {
 											reset();
 										}
 									}}

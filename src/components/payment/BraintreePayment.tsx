@@ -6,7 +6,7 @@ import {
 	addPaymentToOrderMutation,
 	generateBraintreeClientTokenQuery,
 	transitionOrderToStateMutation,
-} from '~/providers/checkout/checkout';
+} from '~/providers/shop/checkout/checkout';
 import CreditCardIcon from '../icons/CreditCardIcon';
 import XCircleIcon from '../icons/XCircleIcon';
 const client = {
@@ -22,7 +22,8 @@ export default component$(() => {
 	const navigate = useNavigate();
 
 	useVisibleTask$(async () => {
-		store.clientToken = await generateBraintreeClientTokenQuery(appState.activeOrder.id, true);
+		store.clientToken =
+			(await generateBraintreeClientTokenQuery(appState.activeOrder.id, true)) || '';
 		client.dropin = await braintree.create({
 			authorization: store.clientToken,
 			// This assumes a div in your view with the corresponding ID
