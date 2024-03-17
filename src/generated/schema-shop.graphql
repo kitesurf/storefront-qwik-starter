@@ -1,7 +1,7 @@
 union ActiveOrderResult = NoActiveOrderError | Order
 
 union AddPaymentToOrderResult =
-	  IneligiblePaymentMethodError
+	| IneligiblePaymentMethodError
 	| NoActiveOrderError
 	| Order
 	| OrderPaymentStateError
@@ -50,7 +50,7 @@ type AlreadyLoggedInError implements ErrorResult {
 }
 
 union ApplyCouponCodeResult =
-	  CouponCodeExpiredError
+	| CouponCodeExpiredError
 	| CouponCodeInvalidError
 	| CouponCodeLimitError
 	| Order
@@ -1190,7 +1190,7 @@ interface CustomField {
 }
 
 union CustomFieldConfig =
-	  BooleanCustomFieldConfig
+	| BooleanCustomFieldConfig
 	| DateTimeCustomFieldConfig
 	| FloatCustomFieldConfig
 	| IntCustomFieldConfig
@@ -2760,7 +2760,7 @@ type NativeAuthStrategyError implements ErrorResult {
 }
 
 union NativeAuthenticationResult =
-	  CurrentUser
+	| CurrentUser
 	| InvalidCredentialsError
 	| NativeAuthStrategyError
 	| NotVerifiedError
@@ -4197,7 +4197,7 @@ type RegionTranslation {
 }
 
 union RegisterCustomerAccountResult =
-	  MissingPasswordError
+	| MissingPasswordError
 	| NativeAuthStrategyError
 	| PasswordValidationError
 	| Success
@@ -4230,13 +4230,13 @@ union RemoveOrderItemsResult = Order | OrderModificationError
 union RequestPasswordResetResult = NativeAuthStrategyError | Success
 
 union RequestUpdateCustomerEmailAddressResult =
-	  EmailAddressConflictError
+	| EmailAddressConflictError
 	| InvalidCredentialsError
 	| NativeAuthStrategyError
 	| Success
 
 union ResetPasswordResult =
-	  CurrentUser
+	| CurrentUser
 	| NativeAuthStrategyError
 	| NotVerifiedError
 	| PasswordResetTokenExpiredError
@@ -4342,14 +4342,14 @@ type Seller implements Node {
 }
 
 union SetCustomerForOrderResult =
-	  AlreadyLoggedInError
+	| AlreadyLoggedInError
 	| EmailAddressConflictError
 	| GuestCheckoutError
 	| NoActiveOrderError
 	| Order
 
 union SetOrderShippingMethodResult =
-	  IneligibleShippingMethodError
+	| IneligibleShippingMethodError
 	| NoActiveOrderError
 	| Order
 	| OrderModificationError
@@ -4555,7 +4555,7 @@ input UpdateAddressInput {
 }
 
 union UpdateCustomerEmailAddressResult =
-	  IdentifierChangeTokenExpiredError
+	| IdentifierChangeTokenExpiredError
 	| IdentifierChangeTokenInvalidError
 	| NativeAuthStrategyError
 	| Success
@@ -4569,7 +4569,7 @@ input UpdateCustomerInput {
 }
 
 union UpdateCustomerPasswordResult =
-	  InvalidCredentialsError
+	| InvalidCredentialsError
 	| NativeAuthStrategyError
 	| PasswordValidationError
 	| Success
@@ -4579,7 +4579,7 @@ input UpdateOrderInput {
 }
 
 union UpdateOrderItemsResult =
-	  InsufficientStockError
+	| InsufficientStockError
 	| NegativeQuantityError
 	| Order
 	| OrderLimitError
@@ -4621,7 +4621,7 @@ type VerificationTokenInvalidError implements ErrorResult {
 }
 
 union VerifyCustomerAccountResult =
-	  CurrentUser
+	| CurrentUser
 	| MissingPasswordError
 	| NativeAuthStrategyError
 	| PasswordAlreadySetError

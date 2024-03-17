@@ -1,5 +1,5 @@
 union AddFulfillmentToOrderResult =
-	  CreateFulfillmentError
+	| CreateFulfillmentError
 	| EmptyOrderLineSelectionError
 	| Fulfillment
 	| FulfillmentStateTransitionError
@@ -159,7 +159,7 @@ type AlreadyRefundedError implements ErrorResult {
 }
 
 union ApplyCouponCodeResult =
-	  CouponCodeExpiredError
+	| CouponCodeExpiredError
 	| CouponCodeInvalidError
 	| CouponCodeLimitError
 	| Order
@@ -363,7 +363,7 @@ input CancelOrderInput {
 }
 
 union CancelOrderResult =
-	  CancelActiveOrderError
+	| CancelActiveOrderError
 	| EmptyOrderLineSelectionError
 	| MultipleOrderError
 	| Order
@@ -1822,7 +1822,7 @@ interface CustomField {
 }
 
 union CustomFieldConfig =
-	  BooleanCustomFieldConfig
+	| BooleanCustomFieldConfig
 	| DateTimeCustomFieldConfig
 	| FloatCustomFieldConfig
 	| IntCustomFieldConfig
@@ -3609,7 +3609,7 @@ input ModifyOrderOptions {
 }
 
 union ModifyOrderResult =
-	  CouponCodeExpiredError
+	| CouponCodeExpiredError
 	| CouponCodeInvalidError
 	| CouponCodeLimitError
 	| InsufficientStockError
@@ -6071,7 +6071,7 @@ input RefundOrderInput {
 }
 
 union RefundOrderResult =
-	  AlreadyRefundedError
+	| AlreadyRefundedError
 	| MultipleOrderError
 	| NothingToRefundError
 	| OrderStateTransitionError
@@ -6412,7 +6412,7 @@ type ServerConfig {
 union SetCustomerForDraftOrderResult = EmailAddressConflictError | Order
 
 union SetOrderShippingMethodResult =
-	  IneligibleShippingMethodError
+	| IneligibleShippingMethodError
 	| NoActiveOrderError
 	| Order
 	| OrderModificationError
@@ -6427,7 +6427,7 @@ type SettlePaymentError implements ErrorResult {
 }
 
 union SettlePaymentResult =
-	  OrderStateTransitionError
+	| OrderStateTransitionError
 	| Payment
 	| PaymentStateTransitionError
 	| SettlePaymentError
@@ -7119,7 +7119,7 @@ input UpdateOrderInput {
 }
 
 union UpdateOrderItemsResult =
-	  InsufficientStockError
+	| InsufficientStockError
 	| NegativeQuantityError
 	| Order
 	| OrderLimitError

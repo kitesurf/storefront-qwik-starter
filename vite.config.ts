@@ -2,6 +2,7 @@ import { qwikCity } from '@builder.io/qwik-city/vite';
 import { qwikInsights } from '@builder.io/qwik-labs/vite';
 import { qwikVite } from '@builder.io/qwik/optimizer';
 import { defineConfig, loadEnv } from 'vite';
+import { builderDevTools } from '@builder.io/dev-tools/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(async (config) => {
@@ -18,6 +19,7 @@ export default defineConfig(async (config) => {
 			qwikCity(),
 			qwikVite(),
 			tsconfigPaths(),
+			builderDevTools(),
 		],
 		preview: {
 			headers: {
