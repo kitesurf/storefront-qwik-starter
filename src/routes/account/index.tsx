@@ -1,6 +1,6 @@
 import { $, component$, useContext, useSignal, useVisibleTask$ } from '@builder.io/qwik';
 import { isBrowser } from '@builder.io/qwik/build';
-import { Image } from 'qwik-image';
+import { Image } from '@unpic/qwik';
 import { Button } from '~/components/buttons/Button';
 import { HighlightedButton } from '~/components/buttons/HighlightedButton';
 import { ErrorMessage } from '~/components/error-message/ErrorMessage';

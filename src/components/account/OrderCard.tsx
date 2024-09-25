@@ -1,6 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import { useNavigate } from '@builder.io/qwik-city';
-import { Image } from 'qwik-image';
+import { Image } from '@unpic/qwik';
 import { HighlightedButton } from '~/components/buttons/HighlightedButton';
 import { Order } from '~/generated/graphql';
 import { formatPrice } from '~/utils';

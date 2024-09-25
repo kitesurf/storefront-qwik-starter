@@ -1,6 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
-import { Image } from 'qwik-image';
+import { Image } from '@unpic/qwik';
 import Price from './Price';
 
 export default component$(

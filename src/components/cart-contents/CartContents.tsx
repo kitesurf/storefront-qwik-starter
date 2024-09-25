@@ -1,6 +1,6 @@
 import { component$, useComputed$, useContext, useSignal, useTask$ } from '@builder.io/qwik';
 import { Link, useLocation, useNavigate } from '@builder.io/qwik-city';
-import { Image } from 'qwik-image';
+import { Image } from '@unpic/qwik';
 import { APP_STATE } from '~/constants';
 import { Order } from '~/generated/graphql';
 import { adjustOrderLineMutation, removeOrderLineMutation } from '~/providers/shop/orders/order';
