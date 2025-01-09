@@ -76,19 +76,18 @@ export default component$(() => {
 						}
 					></Breadcrumbs>
 					<div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start mt-4 md:mt-12">
-						<div class="w-full max-w-2xl mx-auto sm:block lg:max-w-none">
+						// Main product image
+<div class="w-full max-w-2xl mx-auto sm:block lg:max-w-none">
     <span class="rounded-md overflow-hidden">
         <div class="h-20 w-20 md:h-[400px] md:w-[400px]">
             <Image
                 layout="fixed"
                 class="object-center object-cover rounded-lg mx-auto"
-                width={80}
-                height={80}
-                src={currentImageSig.value.preview + '?w=80&h=80&format=webp'}
-                srcSet={`${currentImageSig.value.preview}?w=80&h=80&format=webp 80w, 
-                         ${currentImageSig.value.preview}?w=400&h=400&format=webp 400w`}
-                sizes="(max-width: 768px) 80px, 400px"
+                width={400}
+                height={400}
+                src={currentImageSig.value.preview + '?w=400&h=400&format=webp'}
                 alt={currentImageSig.value.name}
+                style={{ width: '100%', height: '100%' }}
             />
         </div>
         {productSignal.value.assets.length > 1 && (
@@ -104,8 +103,6 @@ export default component$(() => {
                         width={80}
                         height={80}
                         src={asset.preview + '?w=80&h=80&format=webp'}
-                        srcSet={`${asset.preview}?w=80&h=80&format=webp 80w`}
-                        sizes="80px"
                         alt={asset.name}
                         onClick$={() => {
                             currentImageSig.value = asset;
