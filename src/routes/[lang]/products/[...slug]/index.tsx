@@ -80,25 +80,27 @@ export default component$(() => {
 						
 <div class="w-full max-w-2xl mx-auto sm:block lg:max-w-none">
     <span class="rounded-md overflow-hidden block">
-        <div class="relative aspect-square w-80 md:w-[400px]">
-            <Image
-                layout="fixed"
-                class="absolute inset-0 w-full h-full object-contain rounded-lg mx-auto"
-                width={400}
-                height={400}
-                src={currentImageSig.value.preview + '?w=400&h=400&format=webp'}
-                alt={currentImageSig.value.name}
-            />
+        <div class="flex justify-center items-center">
+            <div class="w-80 h-80 md:w-[400px] md:h-[400px] relative">
+                <Image
+                    layout="fixed"
+                    class="w-full h-full object-contain rounded-lg"
+                    width={400}
+                    height={400}
+                    src={currentImageSig.value.preview + '?w=400&h=400&format=webp'}
+                    alt={currentImageSig.value.name}
+                />
+            </div>
         </div>
         {productSignal.value.assets.length > 1 && (
-            <div class="w-80 md:w-[400px] my-2 flex flex-wrap gap-3 justify-center">
+            <div class="w-80 md:w-[400px] my-2 flex flex-wrap gap-3 justify-center mx-auto">
                 {productSignal.value.assets.map((asset, key) => (
-                    <div class="relative aspect-square w-20 h-20">
+                    <div class="w-20 h-20 relative">
                         <Image
                             key={key}
                             layout="fixed"
                             class={{
-                                'absolute inset-0 w-full h-full object-contain rounded-lg': true,
+                                'w-full h-full object-contain rounded-lg': true,
                                 'border-b-8 border-primary-600': currentImageSig.value.id === asset.id,
                             }}
                             width={80}
