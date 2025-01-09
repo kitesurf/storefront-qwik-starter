@@ -78,18 +78,18 @@ export default component$(() => {
 					<div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start mt-4 md:mt-12">
 						<div class="w-full max-w-2xl mx-auto sm:block lg:max-w-none">
 							<span class="rounded-md overflow-hidden">
-								<div class="h-[400px] w-full md:w-[400px]">
+								<div class="h-20 w-20 md:h-[400px] md:w-[400px]">
 									<Image
 										layout="fixed"
-										class="object-center object-cover rounded-lg mx-auto"
-										width="400"
-										height="400"
+										class="object-center object-cover rounded-sm mx-auto"
+										  width={400}
+                                                                                  height={400}
 										src={currentImageSig.value.preview + '?w=400&h=400&format=webp'}
 										alt={currentImageSig.value.name}
 									/>
 								</div>
 								{productSignal.value.assets.length > 1 && (
-									<div class="w-full md:w-[400px] my-2 flex flex-wrap gap-3 justify-center">
+									<div class="w-20 md:w-[400px] my-2 flex flex-wrap gap-3 justify-center">
 										{productSignal.value.assets.map((asset, key) => (
 											<Image
 												key={key}
@@ -98,8 +98,8 @@ export default component$(() => {
 													'object-center object-cover rounded-lg': true,
 													'border-b-8 border-primary-600': currentImageSig.value.id === asset.id,
 												}}
-												width="80"
-												height="80"
+												width={80}
+												height={80}
 												src={asset.preview + '?w=400&h=400&format=webp'}
 												alt={asset.name}
 												onClick$={() => {
