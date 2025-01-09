@@ -83,11 +83,11 @@ export default component$(() => {
         <div class="flex justify-center items-center">
             <div class="w-80 h-80 md:w-[400px] md:h-[400px] relative">
                 <Image
-                    layout="fixed"
+                    layout="constrained"
                     class="w-full h-full object-contain rounded-lg"
                     width={400}
                     height={400}
-                    src={currentImageSig.value.preview + '?w=400&h=400&format=webp'}
+                    src={currentImageSig.value.preview}
                     alt={currentImageSig.value.name}
                 />
             </div>
@@ -98,14 +98,14 @@ export default component$(() => {
                     <div class="w-20 h-20 relative">
                         <Image
                             key={key}
-                            layout="fixed"
+                            layout="constrained"
                             class={{
                                 'w-full h-full object-contain rounded-lg': true,
                                 'border-b-8 border-primary-600': currentImageSig.value.id === asset.id,
                             }}
                             width={80}
                             height={80}
-                            src={asset.preview + '?w=80&h=80&format=webp'}
+                            src={asset.preview}
                             alt={asset.name}
                             onClick$={() => {
                                 currentImageSig.value = asset;
