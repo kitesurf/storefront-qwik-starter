@@ -83,7 +83,7 @@ export default component$(() => {
 										layout="fixed"
 										class="object-center object-cover rounded-sm mx-auto"
 										  width={400}
-    height={400}
+    						  height={400}
 										src={currentImageSig.value.preview + '?w=400&h=400&format=webp'}
 										alt={currentImageSig.value.name}
 									/>
