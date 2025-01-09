@@ -89,6 +89,9 @@ export default component$(() => {
                     height={400}
                     src={currentImageSig.value.preview}
                     alt={currentImageSig.value.name}
+                    loading="eager"
+                    decoding="sync"
+                    fetchPriority="high"
                 />
             </div>
         </div>
@@ -107,6 +110,8 @@ export default component$(() => {
                             height={80}
                             src={asset.preview}
                             alt={asset.name}
+                            loading="lazy"
+                            decoding="async"
                             onClick$={() => {
                                 currentImageSig.value = asset;
                             }}
@@ -117,6 +122,7 @@ export default component$(() => {
         )}
     </span>
 </div>
+
 						<div class="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
 							<div class="">
 								<h3 class="sr-only">Description</h3>
