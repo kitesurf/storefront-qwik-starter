@@ -3,7 +3,7 @@ import { Image } from '@unpic/qwik';
 import CollectionCard from '~/components/collection-card/CollectionCard';
 import { LocalizedLink } from '~/components/LocalizedLink';
 import { APP_STATE } from '~/constants';
-import desktopImg from '../../../public/herodesktopqwik.png';
+import desktopImg from '../../../public/rm.webp';
 
 export const translations = {
 	achievements: {
@@ -71,10 +71,12 @@ export default component$(() => {
 				<Image
 					src={desktopImg}
 					alt="Kitesurfing hero image"
-					width="1920"
-					height="1080"
+					width={1920}
+					height={1080}
+					loading="eager"
+					fetchpriority="high"
+					decoding="sync"
 					class="w-full h-full object-cover"
-					layout="responsive"
 				/>
 				<div class="absolute inset-0  flex items-center">
 					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
