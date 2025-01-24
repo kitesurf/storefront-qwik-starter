@@ -453,7 +453,7 @@ export default component$(() => {
 										{$localize`Standard shipping: 3 - 5 working days. Express shipping: 1 - 3 working days.`}
 									</p>
 									<p>
-										{$localize`Shipping costs depend on delivery address and will be calculated during checkout.`}
+										{$localize`Shipping cost depend on delivery address and will be calculated during checkout.`}
 									</p>
 									<p>
 										{$localize`Returns are subject to terms. Please see the`}{' '}
