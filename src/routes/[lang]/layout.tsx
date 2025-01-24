@@ -10,6 +10,7 @@ import {
 import { RequestHandler, routeLoader$, useLocation, useNavigate } from '@builder.io/qwik-city';
 import { ImageTransformerProps, useImageProvider } from 'qwik-image';
 import Cart from '~/components/cart/Cart';
+import CookieConsent from '~/components/cookie-consent/CookieConsent';
 import Footer from '~/components/footer/footer';
 import Header from '~/components/header/header';
 import Menu from '~/components/menu/Menu';
@@ -176,7 +177,7 @@ export default component$(() => {
 				<Slot />
 			</main>
 			<Footer />
-			{/* <CookieConsent /> */}
+			<CookieConsent />
 		</div>
 	);
 });
