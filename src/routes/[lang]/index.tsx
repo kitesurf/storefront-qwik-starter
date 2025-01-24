@@ -76,7 +76,7 @@ export default component$(() => {
 					class="w-full h-full object-cover"
 					layout="responsive"
 				/>
-				<div class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex items-center">
+				<div class="absolute inset-0  flex items-center">
 					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
 						<div class="max-w-xl" data-aos="fade-right">
 							<h1 class="text-6xl font-bold text-white mb-6">{$localize`Ride the Wind`}</h1>
@@ -403,9 +403,9 @@ export default component$(() => {
 								placeholder={$localize`Enter your email`}
 								class="flex-1 px-6 py-3 rounded-full text-gray-900 focus:ring-2 focus:ring-lime-300 outline-none text-lg"
 							/>
-							<button class="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-full transition-colors duration-300 font-semibold text-lg">
+							{/* <button class="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-full transition-colors duration-300 font-semibold text-lg">
 								{$localize`Subscribe`}
-							</button>
+							</button> */}
 						</div>
 						<p class="text-white/80 text-sm">We respect your privacy. Unsubscribe at any time.</p>
 					</div>
