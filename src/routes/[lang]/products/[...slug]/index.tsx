@@ -9,10 +9,9 @@ import Price from '~/components/products/Price';
 import StockLevelLabel from '~/components/stock-level-label/StockLevelLabel';
 import TopReviews from '~/components/top-reviews/TopReviews';
 import { APP_STATE } from '~/constants';
-import { Order, OrderLine, Product } from '~/generated/graphql';
+import { Order, OrderLine, Product, ProductVariant } from '~/generated/graphql';
 import { addItemToOrderMutation } from '~/providers/shop/orders/order';
 import { getProductBySlug } from '~/providers/shop/products/products';
-import { Variant } from '~/types';
 import { cleanUpParams, generateDocumentHead, isEnvVariableEnabled } from '~/utils';
 
 export const useProductLoader = routeLoader$(async ({ params, request }) => {
@@ -45,15 +44,30 @@ export default component$(() => {
 
 	const calculateQuantities = $((product: Product) => {
 		const result: Record<string, number> = {};
-		(product.variants || []).forEach((variant: Variant) => {
+
+		(product.variants || []).forEach((variant: ProductVariant) => {
 			const orderLine = (appState.activeOrder?.lines || []).find(
 				(l: OrderLine) =>
 					l.productVariant.id === variant.id && l.productVariant.product.id === product.id
 			);
+
 			result[variant.id] = orderLine?.quantity || 0;
 		});
+
 		return result;
 	});
+
+	// const calculateQuantities = $((product: Product) => {
+	// 	const result: Record<string, number> = {};
+	// 	(product.variants || []).forEach((variant: Variant) => {
+	// 		const orderLine = (appState.activeOrder?.lines || []).find(
+	// 			(l: OrderLine) =>
+	// 				l.productVariant.id === variant.id && l.productVariant.product.id === product.id
+	// 		);
+	// 		result[variant.id] = orderLine?.quantity || 0;
+	// 	});
+	// 	return result;
+	// });
 
 	useTask$(async (tracker) => {
 		tracker.track(() => appState.activeOrder);

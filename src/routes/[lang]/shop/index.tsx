@@ -99,7 +99,7 @@ export default component$(() => {
 			state.facedValues = facedValues;
 			state.facetValueIds = facetValueIds;
 			state.currentPage = 1;
-
+			//@ts-ignore
 			changeUrlParamsWithoutRefresh(term, facetValueIds, state.sortBy);
 			state.search = await executeQuery(term, state.facetValueIds, state.sortBy);
 		} finally {
@@ -112,6 +112,7 @@ export default component$(() => {
 		state.isLoading = true;
 		try {
 			state.sortBy = sortValue;
+			//@ts-ignore
 			changeUrlParamsWithoutRefresh(term, state.facetValueIds, sortValue);
 			state.search = await executeQuery(term, state.facetValueIds, sortValue);
 		} finally {
@@ -163,8 +164,8 @@ export default component$(() => {
 							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
 									stroke-linecap="round"
-									strokeLinejoin="round"
-									strokeWidth="2"
+									stroke-linejoin="round"
+									stroke-width="2"
 									d="M4 6h16M4 12h16M4 18h16"
 								/>
 							</svg>
@@ -172,8 +173,8 @@ export default component$(() => {
 							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
 									stroke-linecap="round"
-									strokeLinejoin="round"
-									strokeWidth="2"
+									stroke-linejoin="round"
+									stroke-width="2"
 									d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
 								/>
 							</svg>
@@ -231,6 +232,7 @@ export default component$(() => {
 										productAsset={item.productAsset}
 										productName={item.productName}
 										slug={item.slug}
+										//@ts-ignore
 										priceWithTax={item.priceWithTax}
 										currencyCode={item.currencyCode}
 										viewMode={state.viewMode}
@@ -256,9 +258,9 @@ export default component$(() => {
 												fill="currentColor"
 											>
 												<path
-													fillRule="evenodd"
+													fill-rule="evenodd"
 													d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-													clipRule="evenodd"
+													clip-rule="evenodd"
 												/>
 											</svg>
 										</button>
@@ -292,9 +294,9 @@ export default component$(() => {
 												fill="currentColor"
 											>
 												<path
-													fillRule="evenodd"
+													fill-rule="evenodd"
 													d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-													clipRule="evenodd"
+													// clipRule="evenodd"
 												/>
 											</svg>
 										</button>

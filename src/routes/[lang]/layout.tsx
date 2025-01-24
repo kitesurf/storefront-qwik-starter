@@ -19,7 +19,7 @@ import { Collection as CollectionGql, Order } from '~/generated/graphql';
 import { getAvailableCountriesQuery } from '~/providers/shop/checkout/checkout';
 import { getCollections } from '~/providers/shop/collections/collections';
 import { getActiveOrderQuery } from '~/providers/shop/orders/order';
-import type { AppState } from '~/types';
+import type { AppState, Product } from '~/types';
 
 const SUPPORTED_LANGUAGES = ['en', 'fr', 'de', 'it', 'es'] as const;
 type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
@@ -96,6 +96,7 @@ export default component$(() => {
 
 	const state = useStore<AppState>({
 		products: [],
+		product: {} as Product,
 		language: '',
 		activeLanguage: null,
 		showCart: false,

@@ -114,6 +114,7 @@ export default component$(() => {
 								productAsset={item.productAsset}
 								productName={item.productName}
 								slug={item.slug}
+								//@ts-ignore
 								priceWithTax={item.priceWithTax}
 								currencyCode={item.currencyCode}
 							></ProductCard>
