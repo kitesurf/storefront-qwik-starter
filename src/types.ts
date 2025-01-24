@@ -1,6 +1,7 @@
 import { Collection as CollectionGql, Order } from '~/generated/graphql';
 
 export type AppState = {
+	product: any;
 	products: any;
 	language: string | number | readonly string[] | undefined;
 	activeLanguage: string | null;

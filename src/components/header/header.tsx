@@ -1,41 +1,44 @@
 import { $, component$, useContext, useVisibleTask$ } from '@builder.io/qwik';
+import { isBrowser } from '@builder.io/qwik/build';
+import { Image } from 'qwik-image';
 import { LocalizedLink } from '~/components/locallizedclientlink/LocalizedLink';
 import { APP_STATE, CUSTOMER_NOT_DEFINED_ID } from '~/constants';
 import { getActiveCustomerQuery } from '~/providers/shop/customer/customer';
+import { createRequestOptions } from '~/utils/api';
+import logo from '../../../public/logo.png';
 import MenuIcon from '../icons/MenuIcon';
 import ShoppingBagIcon from '../icons/ShoppingBagIcon';
 import SearchBar from '../search-bar/SearchBar';
-import { isBrowser } from '@builder.io/qwik/build';
-import { createRequestOptions } from '~/utils/api';
-import { Image } from 'qwik-image';
-const languages = [
+
+interface Language {
+	code: string;
+	name: string;
+	flag: string;
+}
+
+const languages: Language[] = [
 	{ code: 'en', name: 'English', flag: '🇬🇧' },
 	{ code: 'fr', name: 'Français', flag: '🇫🇷' },
 	{ code: 'de', name: 'Deutsch', flag: '🇩🇪' },
 	{ code: 'it', name: 'Italiano', flag: '🇮🇹' },
 	{ code: 'es', name: 'Español', flag: '🇪🇸' },
-] as const;
+];
 
-type LanguageCode = (typeof languages)[number]['code'];
-
-const detectBrowserLanguage = (): LanguageCode => {
+const detectBrowserLanguage = (): string => {
 	if (!isBrowser) return 'en';
-
 	const browserLangs = navigator.languages || [navigator.language];
 	const simpleLangs = browserLangs.map((lang) => lang.split('-')[0]);
-
 	const matchedLang = simpleLangs.find((lang) =>
 		languages.some((supportedLang) => supportedLang.code === lang)
 	);
-
-	return (matchedLang as LanguageCode) || 'en';
+	return matchedLang || 'en';
 };
 
 export default component$(() => {
 	const appState = useContext(APP_STATE);
-	const currentLang = (appState.language || 'en') as LanguageCode;
+	const currentLang = appState.language || 'en';
 
-	const collections = appState.collections.filter(
+	const rootCollections = appState.collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
 	);
 
@@ -44,8 +47,20 @@ export default component$(() => {
 			? appState.activeOrder?.totalQuantity || 0
 			: 0;
 
-	useVisibleTask$(async () => {
-		// Fetch customer data if needed
+	const switchLanguage = $((newLang: string) => {
+		if (newLang === currentLang) return;
+		const currentPath = window.location.pathname.replace(/^\/[a-z]{2}/, '');
+		const newUrl = `/${newLang}${currentPath || '/'}`;
+		appState.language = newLang;
+		localStorage.setItem('lang', newLang);
+		createRequestOptions(newLang);
+		window.history.pushState({}, '', newUrl);
+		window.location.reload();
+	});
+
+	useVisibleTask$(async ({ track }) => {
+		track(() => appState.language);
+
 		if (appState.customer.id === CUSTOMER_NOT_DEFINED_ID) {
 			const activeCustomer = await getActiveCustomerQuery();
 			if (activeCustomer) {
@@ -60,130 +75,162 @@ export default component$(() => {
 			}
 		}
 
-		const urlLang = window.location.pathname.split('/')[1];
-		const storedLang = localStorage.getItem('lang') as LanguageCode;
+		if (isBrowser) {
+			const urlLang = window.location.pathname.split('/')[1];
+			const storedLang = localStorage.getItem('lang');
+			let selectedLang = urlLang;
 
-		let selectedLang: LanguageCode;
+			if (!languages.some((l) => l.code === selectedLang)) {
+				selectedLang = storedLang || detectBrowserLanguage();
+			}
 
-		if (urlLang && languages.some((l) => l.code === urlLang)) {
-			selectedLang = urlLang as LanguageCode;
-		} else if (storedLang && languages.some((l) => l.code === storedLang)) {
-			selectedLang = storedLang;
-		} else {
-			selectedLang = detectBrowserLanguage();
+			if (selectedLang !== currentLang) {
+				appState.language = selectedLang;
+				localStorage.setItem('lang', selectedLang);
+				createRequestOptions(selectedLang);
+			}
 		}
-
-		appState.language = selectedLang;
-		localStorage.setItem('lang', selectedLang);
-
-		// Redirect if URL doesn't match selected language
-		if (urlLang !== selectedLang) {
-			const currentPath = window.location.pathname.replace(/^\/[a-z]{2}/, '');
-			window.location.href = `/${selectedLang}${currentPath || '/'}`;
-		}
-
-		// Initialize API options with current language
-		createRequestOptions(selectedLang);
-	});
-
-	const switchLanguage = $((lang: LanguageCode) => {
-		if (lang === currentLang) return;
-
-		// Update app state and localStorage
-		appState.language = lang;
-		localStorage.setItem('lang', lang);
-
-		// Force refresh requester options with new language
-		createRequestOptions(lang);
-
-		// Redirect to new language path
-		const currentPath = window.location.pathname.replace(/^\/[a-z]{2}/, '');
-		window.location.href = `/${lang}${currentPath || '/'}`;
 	});
 
 	return (
-		<div class="bg-gradient-to-r from-blue-700 to-indigo-900 shadow-xl sticky top-0 z-10">
-			<header class="max-w-6xl mx-auto">
-				<div class="p-4 flex items-center space-x-4">
-					<button
-						class="block sm:hidden text-white hover:text-gray-200 transition-colors"
-						onClick$={() => (appState.showMenu = !appState.showMenu)}
-					>
-						<MenuIcon />
-					</button>
+		<div class="w-full">
+			{/* Top Navigation Bar with highest z-index */}
+			<div class="hidden md:block bg-white border-b relative">
+				<div class="max-w-7xl mx-auto flex justify-end items-center space-x-4 p-1">
+					<a href="#" class="text-gray-600 hover:text-gray-900 text-sm">
+						Help & FAQs
+					</a>
 
-					<h1 class="text-white w-10">
-						<LocalizedLink href="/" class="hover:opacity-90 transition-opacity">
-							<Image
-								// eslint-disable-next-line qwik/jsx-img
-								src="/cube-logo-small.webp"
-								width={40}
-								height={31}
-								alt="Vendure logo"
-								class="w-10 h-auto"
-								layout="fixed"
-							/>
-						</LocalizedLink>
-					</h1>
-
-					<nav class="hidden sm:flex space-x-6">
-						{collections.map((collection) => (
-							<LocalizedLink
-								class="text-sm md:text-base text-gray-200 hover:text-white transition-colors"
-								href={`/collections/${collection.slug}`}
-								key={collection.id}
-							>
-								{collection.name}
-							</LocalizedLink>
-						))}
-					</nav>
-
-					<div class="flex-1 block md:pr-8">
-						<SearchBar />
-					</div>
-
-					<div class="flex items-center space-x-4">
-						<div class="relative group">
-							<div class="flex items-center gap-2 bg-white/10 text-white px-3 py-2 rounded-lg cursor-pointer hover:bg-white/20 transition-all">
-								<span class="text-xl">
-									{languages.find((l) => l.code === currentLang)?.flag || languages[0].flag}
-								</span>
-								<span class="text-sm font-medium">{currentLang.toUpperCase()}</span>
-							</div>
-
-							<div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-								<div class="py-1">
-									{languages.map((lang) => (
-										<button
-											key={lang.code}
-											onClick$={() => switchLanguage(lang.code)}
-											class={`w-full text-left px-4 py-2 text-sm flex items-center gap-3 hover:bg-gray-100 transition-colors
-                        ${currentLang === lang.code ? 'bg-gray-50 text-blue-600' : 'text-gray-700'}`}
-										>
-											<span class="text-xl">{lang.flag}</span>
-											<span>{lang.name}</span>
-										</button>
-									))}
-								</div>
-							</div>
+					<div class="relative group  z-50">
+						<div class="flex items-center gap-2 px-3 py-1.5 cursor-pointer hover:bg-gray-100 rounded transition-colors">
+							<span class="text-base">
+								{languages.find((l) => l.code === currentLang)?.flag || '🇬🇧'}
+							</span>
+							<span class="text-gray-700 text-sm">
+								{languages.find((l) => l.code === currentLang)?.name}
+							</span>
 						</div>
 
+						{/* Dropdown inherits z-index from parent */}
+						<div class="absolute right-0 mt-1 w-44 bg-white border rounded-md shadow-lg hidden group-hover:block">
+							{languages.map((lang) => (
+								<button
+									key={lang.code}
+									onClick$={() => switchLanguage(lang.code)}
+									class={`w-full px-4 py-2.5 text-left flex items-center gap-3 hover:bg-gray-100 transition-colors
+                    ${currentLang === lang.code ? 'bg-gray-50 font-medium' : ''}`}
+								>
+									<span class="text-lg">{lang.flag}</span>
+									<span class="text-sm">{lang.name}</span>
+								</button>
+							))}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{/* Main Header */}
+			<div class="bg-[#2d2d2d] sticky top-0">
+				<header class="max-w-7xl mx-auto">
+					<div class="px-4 lg:px-6 py-3 md:py-4 flex items-center gap-4 md:gap-6">
+						{/* Hamburger Menu Button */}
+						<button
+							class="md:hidden text-white hover:text-gray-200 p-1"
+							onClick$={() => (appState.showMenu = !appState.showMenu)}
+							aria-label="Toggle menu"
+						>
+							<MenuIcon />
+						</button>
+
+						{/* Logo */}
+						<LocalizedLink href="/" class="hover:opacity-90 transition-opacity" aria-label="Home">
+							<Image src={logo} width={100} height={31} alt="Logo" class=" h-auto" layout="fixed" />
+						</LocalizedLink>
+
+						{/* Desktop Navigation */}
+						<nav class="hidden md:flex gap-8">
+							{rootCollections.map((collection) => (
+								<LocalizedLink
+									class="text-white font-bold hover:text-gray-200 transition-colors text-sm lg:text-base"
+									href={`/collections/${collection.slug}`}
+									key={collection.id}
+								>
+									{collection.name}
+								</LocalizedLink>
+							))}
+						</nav>
+
+						{/* Search Bar */}
+						<div class="flex-1 max-w-3xl">
+							<SearchBar />
+						</div>
+
+						{/* Cart Button */}
 						<button
 							name="Cart"
 							aria-label={`${totalQuantity} items in cart`}
-							class="relative bg-white/10 rounded-lg p-2 text-white hover:bg-white/20 transition-all"
+							class="relative hover:text-gray-200 text-white p-1"
 							onClick$={() => (appState.showCart = !appState.showCart)}
 						>
 							<ShoppingBagIcon />
 							{totalQuantity > 0 && (
-								<div class="absolute -top-2 -right-2 bg-rose-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+								<div class="absolute -top-2 -right-2 bg-rose-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
 									{totalQuantity}
 								</div>
 							)}
 						</button>
 					</div>
-				</div>
-			</header>
+				</header>
+
+				{/* Mobile Menu */}
+				{appState.showMenu && (
+					<div class="md:hidden bg-[#2d2d2d] border-t border-gray-700 absolute w-full left-0">
+						<div class="px-4 py-4 space-y-4">
+							{/* Mobile Language Selector */}
+							<div class="flex flex-col gap-2.5">
+								<label class="text-white text-sm font-medium">Select Language</label>
+								<select
+									value={currentLang}
+									onChange$={(e) => {
+										const target = e.target as HTMLSelectElement;
+										if (target) {
+											switchLanguage(target.value);
+										}
+									}}
+									class="bg-gray-800 text-white px-4 py-2.5 rounded border border-gray-600 text-sm focus:outline-none focus:border-gray-400"
+								>
+									{languages.map((lang) => (
+										<option key={lang.code} value={lang.code}>
+											{`${lang.flag} ${lang.name}`}
+										</option>
+									))}
+								</select>
+							</div>
+
+							{/* Mobile Navigation Links */}
+							<div class="space-y-2">
+								{rootCollections.map((collection) => (
+									<LocalizedLink
+										class="block text-white hover:text-gray-200 py-2 text-sm font-medium"
+										href={`/collections/${collection.slug}`}
+										key={collection.id}
+									>
+										{collection.name}
+									</LocalizedLink>
+								))}
+							</div>
+
+							<div class="pt-2 border-t border-gray-700">
+								<a href="#" class="block text-white hover:text-gray-200 py-2 text-sm">
+									Help & FAQs
+								</a>
+							</div>
+						</div>
+					</div>
+				)}
+			</div>
+
+			{/* Promo Banner */}
 		</div>
 	);
 });

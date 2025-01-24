@@ -1,6 +1,7 @@
 import { component$, useContext } from '@builder.io/qwik';
 import { APP_STATE } from '~/constants';
 import CloseIcon from '../icons/CloseIcon';
+import { LocalizedLink } from '../locallizedclientlink/LocalizedLink';
 
 export default component$(() => {
 	const appState = useContext(APP_STATE);
@@ -33,13 +34,13 @@ export default component$(() => {
 										</div>
 										<div class="flex flex-col pt-6">
 											{collections.map((collection) => (
-												<a
+												<LocalizedLink
 													class="text-lg font-medium text-gray-90 hover:text-gray-500 pt-4"
 													href={`/collections/${collection.slug}`}
 													key={collection.id}
 												>
 													{collection.name}
-												</a>
+												</LocalizedLink>
 											))}
 										</div>
 									</div>
