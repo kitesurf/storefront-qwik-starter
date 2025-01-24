@@ -14,14 +14,14 @@ export const translations = {
 	},
 };
 
-const popularCategories = [
-	{ icon: '🏄‍♂️', name: 'Kite Surfing', count: '120+ Products' },
-	{ icon: '🌊', name: 'Windfoiling', count: '85+ Products' },
-	{ icon: '🎯', name: 'Beginners', count: '50+ Products' },
-	{ icon: '🏆', name: 'Pro Gear', count: '200+ Products' },
-	{ icon: '🎪', name: 'Accessories', count: '150+ Products' },
-	{ icon: '👕', name: 'Apparel', count: '100+ Products' },
-];
+// const popularCategories = [
+// 	{ icon: '🏄‍♂️', name: 'Kite Surfing', count: '120+ Products' },
+// 	{ icon: '🌊', name: 'Windfoiling', count: '85+ Products' },
+// 	{ icon: '🎯', name: 'Beginners', count: '50+ Products' },
+// 	{ icon: '🏆', name: 'Pro Gear', count: '200+ Products' },
+// 	{ icon: '🎪', name: 'Accessories', count: '150+ Products' },
+// 	{ icon: '👕', name: 'Apparel', count: '100+ Products' },
+// ];
 
 const features = [
 	{ icon: '🚚', title: 'Free Shipping', description: 'On orders over €500' },
@@ -37,26 +37,26 @@ const trustBadges = [
 	{ icon: '🌍', title: 'Global Shipping', text: 'Worldwide delivery' },
 ];
 
-const upcomingEvents = [
-	{
-		title: 'Beginner Workshop',
-		date: 'Next Saturday',
-		location: 'Main Beach',
-		spots: '5 spots left',
-	},
-	{
-		title: 'Pro Competition',
-		date: 'July 15-16',
-		location: 'Wind Bay',
-		spots: 'Registration open',
-	},
-	{
-		title: 'Equipment Demo Day',
-		date: 'Monthly',
-		location: 'Various Locations',
-		spots: 'Free entry',
-	},
-];
+// const upcomingEvents = [
+// 	{
+// 		title: 'Beginner Workshop',
+// 		date: 'Next Saturday',
+// 		location: 'Main Beach',
+// 		spots: '5 spots left',
+// 	},
+// 	{
+// 		title: 'Pro Competition',
+// 		date: 'July 15-16',
+// 		location: 'Wind Bay',
+// 		spots: 'Registration open',
+// 	},
+// 	{
+// 		title: 'Equipment Demo Day',
+// 		date: 'Monthly',
+// 		location: 'Various Locations',
+// 		spots: 'Free entry',
+// 	},
+// ];
 
 export default component$(() => {
 	const collections = useContext(APP_STATE).collections;

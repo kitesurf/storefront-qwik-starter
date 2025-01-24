@@ -24,8 +24,8 @@ export const getOrderByCodeQuery = async (code: string) => {
 
 export const addItemToOrderMutation = async (
 	productVariantId: string,
-	quantity: number,
-	language: string | number | readonly string[] | undefined
+	quantity: number
+	// language: string | number | readonly string[] | undefined
 ) => {
 	return shopSdk
 		.addItemToOrder({ productVariantId, quantity })
