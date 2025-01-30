@@ -72,16 +72,19 @@
 		"@stripe/stripe-js": "^3.0.0",
 		"@unpic/qwik": "^0.0.46",
 		"braintree-web-drop-in": "^1.42.0",
+		"deepl-localize": "^3.0.1",
 		"graphql": "^16.8.1",
 		"graphql-tag": "^2.12.6",
 		"lucide-react": "^0.460.0",
 		"qwik-image": "^0.0.15",
 		"react-world-flags": "^1.6.0",
+		"yarn": "^1.22.22",
 		"zod": "^3.22.4"
 	},
 	"overrides": {
 		"@angular/compiler-cli": {
 			"typescript": "5.3.3"
 		}
-	}
+	},
+	"packageManager": "yarn@4.6.0"
 }
