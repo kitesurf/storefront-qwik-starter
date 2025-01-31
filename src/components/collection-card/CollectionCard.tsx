@@ -30,7 +30,7 @@ export default component$<CollectionCardProps>(({ collection }) => {
 						{collection.name}
 					</h3>
 					<div class="mt-1 flex items-center justify-between">
-						<p class="text-sm font-medium text-neutral-500">View Collection</p>
+						<p class="text-sm font-medium text-neutral-500">{$localize`browse`}</p>
 						<svg
 							class="h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-1"
 							viewBox="0 0 24 24"

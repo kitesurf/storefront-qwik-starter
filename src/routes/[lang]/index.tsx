@@ -24,17 +24,17 @@ export const translations = {
 // ];
 
 const features = [
-	{ icon: '🚚', title: 'Free Shipping', description: 'On orders over €500' },
-	{ icon: '🔄', title: '30-Day Returns', description: 'No questions asked' },
-	{ icon: '🛡️', title: '2-Year Warranty', description: 'On all equipment' },
-	{ icon: '💬', title: 'Expert Support', description: '24/7 chat available' },
+	{ icon: '🚚', title: $localize`Free Shipping`, description: $localize`On orders over €500` },
+	{ icon: '🔄', title: $localize`30-Day Returns`, description: $localize`No questions asked` },
+	{ icon: '🛡️', title: $localize`2-Year Warranty`, description: $localize`On all equipment` },
+	{ icon: '💬', title: $localize`Expert Support`, description: $localize`24/7 chat available` },
 ];
 
 const trustBadges = [
-	{ icon: '🔒', title: 'Secure Payment', text: 'SSL encrypted checkout' },
-	{ icon: '⚡', title: 'Fast Delivery', text: '2-4 business days' },
-	{ icon: '✨', title: 'Quality Assured', text: 'All products certified' },
-	{ icon: '🌍', title: 'Global Shipping', text: 'Worldwide delivery' },
+	{ icon: '🔒', title: $localize`Secure Payment`, text: $localize`SSL encrypted checkout` },
+	{ icon: '⚡', title: $localize`Fast Delivery`, text: $localize`2-4 business days` },
+	{ icon: '✨', title: $localize`Quality Assured`, text: $localize`All products certified` },
+	{ icon: '🌍', title: $localize`Global Shipping`, text: $localize`Worldwide delivery` },
 ];
 
 // const upcomingEvents = [
@@ -125,7 +125,7 @@ export default component$(() => {
 						{$localize`Shop by Category`}
 					</h2>
 					<p class="text-gray-600 text-center max-w-2xl mx-auto">
-						Discover our curated collection of premium water sports equipment
+						{$localize`Discover our curated collection of premium water sports equipment`}
 					</p>
 				</div>
 				<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 px-4 xl:px-0">
@@ -159,7 +159,7 @@ export default component$(() => {
 				<div class="max-w-7xl mx-auto px-4">
 					<h2 class="text-3xl font-bold text-center mb-4">{$localize`Featured Equipment`}</h2>
 					<p class="text-gray-600 text-center max-w-2xl mx-auto mb-12">
-						Handpicked selection of our best-selling premium gear
+						{$localize`Handpicked selection of our best-selling premium gear`}
 					</p>
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 						{products.slice(0, 3).map(
@@ -245,7 +245,7 @@ export default component$(() => {
 							href="/shop"
 							class="bg-white text-blue-600 border-2 border-blue-600 px-8 py-3 rounded-full hover:bg-blue-50 transition-colors"
 						>
-							View All Products
+							{$localize`View All Products`}
 						</LocalizedLink>
 					</div>
 				</div>
@@ -272,32 +272,32 @@ export default component$(() => {
 				<div class="max-w-7xl mx-auto px-4">
 					<div class="grid md:grid-cols-2 gap-12 items-center">
 						<div class="space-y-6" data-aos="fade-right">
-							<h2 class="text-3xl font-bold">Master Your Technique</h2>
+							<h2 class="text-3xl font-bold">{$localize`Master Your Technique`}</h2>
 							<p class="text-gray-600">
-								Watch our expert tutorials and learn from professional riders
+								{$localize`Watch our expert tutorials and learn from professional riders`}
 							</p>
 							<ul class="space-y-4">
 								<li class="flex items-center gap-3">
 									<span class="w-6 h-6 rounded-full bg-lime-500 flex items-center justify-center text-white">
 										✓
 									</span>
-									<span>Professional tutorials</span>
+									<span>{$localize`Professional tutorials`}</span>
 								</li>
 								<li class="flex items-center gap-3">
 									<span class="w-6 h-6 rounded-full bg-lime-500 flex items-center justify-center text-white">
 										✓
 									</span>
-									<span>Equipment guides</span>
+									<span>{$localize`Equipment guides`}</span>
 								</li>
 								<li class="flex items-center gap-3">
 									<span class="w-6 h-6 rounded-full bg-lime-500 flex items-center justify-center text-white">
 										✓
 									</span>
-									<span>Safety tips</span>
+									<span>{$localize`Safety tips`}</span>
 								</li>
 							</ul>
 							<button class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-								Watch Tutorials
+								{$localize`Watch Tutorials`}
 							</button>
 						</div>
 						<div
@@ -306,7 +306,7 @@ export default component$(() => {
 						>
 							<Image
 								src={desktopImg}
-								alt="Tutorial video"
+								alt={$localize`Tutorial video`}
 								width="1920"
 								height="1080"
 								class="w-full h-full object-cover"
@@ -321,7 +321,7 @@ export default component$(() => {
 				<div class="max-w-7xl mx-auto px-4">
 					<h2 class="text-3xl font-bold text-center mb-4">{$localize`What Our Riders Say`}</h2>
 					<p class="text-gray-600 text-center max-w-2xl mx-auto mb-12">
-						Hear from our community of passionate riders
+						{$localize`Hear from our community of passionate riders`}
 					</p>
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 						{[
@@ -373,19 +373,19 @@ export default component$(() => {
 			{/* Call to Action */}
 			<section class="py-16 bg-blue-600">
 				<div class="max-w-7xl mx-auto px-4 text-center">
-					<h2 class="text-3xl font-bold text-white mb-4">Ready to Start Your Journey?</h2>
+					<h2 class="text-3xl font-bold text-white mb-4">{$localize`Ready to Start Your Journey?`}</h2>
 					<p class="text-white/90 mb-8 text-lg">
-						Get expert guidance and premium equipment for your water sports adventure
+						{$localize`Get expert guidance and premium equipment for your water sports adventure`}
 					</p>
 					<div class="flex justify-center gap-4">
 						<LocalizedLink
 							href="/shop"
 							class="bg-white text-blue-600 px-8 py-3 rounded-full hover:bg-blue-50 transition-colors"
 						>
-							Shop Equipment
+							{$localize`Shop Equipment`}
 						</LocalizedLink>
 						<button class="border-2 border-white text-white px-8 py-3 rounded-full hover:bg-white/10 transition-colors">
-							Contact Us
+							{$localize`Contact Us`}
 						</button>
 					</div>
 				</div>
@@ -409,7 +409,7 @@ export default component$(() => {
 								{$localize`Subscribe`}
 							</button> */}
 						</div>
-						<p class="text-white/80 text-sm">We respect your privacy. Unsubscribe at any time.</p>
+						<p class="text-white/80 text-sm">{$localize`We respect your privacy. Unsubscribe at any time.`}</p>
 					</div>
 				</div>
 			</section>

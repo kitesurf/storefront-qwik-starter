@@ -91,7 +91,7 @@ export default component$(() => {
 						</p>
 						<div class="mt-4 sm:flex sm:max-w-md">
 							<label id="email-subscription" class="sr-only">
-								Email address
+								{$localize`Email address`}
 							</label>
 							<input
 								type="email"

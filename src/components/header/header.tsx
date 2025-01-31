@@ -98,7 +98,7 @@ export default component$(() => {
 			<div class="hidden md:block bg-white border-b relative">
 				<div class="max-w-7xl mx-auto flex justify-end items-center space-x-4 p-1">
 					<a href="#" class="text-gray-600 hover:text-gray-900 text-sm">
-						Help & FAQs
+						{$localize`Help & FAQs`}
 					</a>
 
 					<div class="relative group  z-50">
@@ -222,7 +222,7 @@ export default component$(() => {
 
 							<div class="pt-2 border-t border-gray-700">
 								<a href="#" class="block text-white hover:text-gray-200 py-2 text-sm">
-									Help & FAQs
+									{$localize`Help & FAQs`}
 								</a>
 							</div>
 						</div>

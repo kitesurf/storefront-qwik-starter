@@ -2890,12 +2890,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unpic/qwik@npm:^0.0.46":
-  version: 0.0.46
-  resolution: "@unpic/qwik@npm:0.0.46"
+"@unpic/qwik@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@unpic/qwik@npm:1.0.0"
   peerDependencies:
     "@builder.io/qwik": "*"
-  checksum: 10c0/89c2fab4544b530c680c5347186089c399ffe1059ea3b386be3977f1336cd071b984e5933c896622a60bea2ed4da16b949b87f23c16d25c7eac3461881c0e437
+  checksum: 10c0/6af8832c664d382830f9af164be8cc2581a20d98f860b86cffb24d92cd62481c07168fa09eb0f75555ee36570072d17e1b0e620e196be42b60f65630eaed1cc8
   languageName: node
   linkType: hard
 
@@ -8931,7 +8931,7 @@ __metadata:
     "@types/node": "npm:20.11.17"
     "@typescript-eslint/eslint-plugin": "npm:7.0.1"
     "@typescript-eslint/parser": "npm:7.0.1"
-    "@unpic/qwik": "npm:^0.0.46"
+    "@unpic/qwik": "npm:^1.0.0"
     autoprefixer: "npm:10.4.17"
     braintree-web-drop-in: "npm:^1.42.0"
     concurrently: "npm:8.2.2"
