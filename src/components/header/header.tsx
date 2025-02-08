@@ -188,7 +188,7 @@ export default component$(() => {
 						<div class="px-4 py-4 space-y-4">
 							{/* Mobile Language Selector */}
 							<div class="flex flex-col gap-2.5">
-								<label class="text-white text-sm font-medium">Select Language</label>
+								<label class="text-white text-sm font-medium">{$localize`Select Language`}</label>
 								<select
 									value={currentLang}
 									onChange$={(e) => {
@@ -222,7 +222,7 @@ export default component$(() => {
 
 							<div class="pt-2 border-t border-gray-700">
 								<a href="#" class="block text-white hover:text-gray-200 py-2 text-sm">
-									{$localize`Help & FAQs`}
+									{$localize`Help - FAQs`}
 								</a>
 							</div>
 						</div>

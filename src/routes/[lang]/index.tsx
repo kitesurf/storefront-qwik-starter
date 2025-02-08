@@ -14,49 +14,12 @@ export const translations = {
 	},
 };
 
-// const popularCategories = [
-// 	{ icon: '🏄‍♂️', name: 'Kite Surfing', count: '120+ Products' },
-// 	{ icon: '🌊', name: 'Windfoiling', count: '85+ Products' },
-// 	{ icon: '🎯', name: 'Beginners', count: '50+ Products' },
-// 	{ icon: '🏆', name: 'Pro Gear', count: '200+ Products' },
-// 	{ icon: '🎪', name: 'Accessories', count: '150+ Products' },
-// 	{ icon: '👕', name: 'Apparel', count: '100+ Products' },
-// ];
-
-const features = [
-	{ icon: '🚚', title: $localize`Free Shipping`, description: $localize`On orders over €500` },
-	{ icon: '🔄', title: $localize`30-Day Returns`, description: $localize`No questions asked` },
-	{ icon: '🛡️', title: $localize`2-Year Warranty`, description: $localize`On all equipment` },
-	{ icon: '💬', title: $localize`Expert Support`, description: $localize`24/7 chat available` },
-];
-
 const trustBadges = [
-	{ icon: '🔒', title: $localize`Secure Payment`, text: $localize`SSL encrypted checkout` },
-	{ icon: '⚡', title: $localize`Fast Delivery`, text: $localize`2-4 business days` },
-	{ icon: '✨', title: $localize`Quality Assured`, text: $localize`All products certified` },
-	{ icon: '🌍', title: $localize`Global Shipping`, text: $localize`Worldwide delivery` },
+	{ icon: '🔒', title: `Secure Payment`, text: `SSL encrypted checkout` },
+	{ icon: '⚡', title: `Fast Delivery`, text: `2-4 business days` },
+	{ icon: '✨', title: `Quality Assured`, text: `All products certified` },
+	{ icon: '🌍', title: `Global Shipping`, text: `Worldwide delivery` },
 ];
-
-// const upcomingEvents = [
-// 	{
-// 		title: 'Beginner Workshop',
-// 		date: 'Next Saturday',
-// 		location: 'Main Beach',
-// 		spots: '5 spots left',
-// 	},
-// 	{
-// 		title: 'Pro Competition',
-// 		date: 'July 15-16',
-// 		location: 'Wind Bay',
-// 		spots: 'Registration open',
-// 	},
-// 	{
-// 		title: 'Equipment Demo Day',
-// 		date: 'Monthly',
-// 		location: 'Various Locations',
-// 		spots: 'Free entry',
-// 	},
-// ];
 
 export default component$(() => {
 	const collections = useContext(APP_STATE).collections;
@@ -78,12 +41,12 @@ export default component$(() => {
 					decoding="sync"
 					class="w-full h-full object-cover"
 				/>
-				<div class="absolute inset-0  flex items-center">
-					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-						<div class="max-w-xl" data-aos="fade-right">
-							<h1 class="text-6xl font-bold text-white mb-6">{$localize`Ride the Wind`}</h1>
-							<p class="text-2xl text-white/90 mb-8">{$localize`Premium Kitesurfing & Windfoiling Equipment`}</p>
-							<div class="flex gap-4">
+				<div class="absolute inset-0 flex items-center">
+					<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-center">
+						<div class="max-w-xl" data-aos="fade-left">
+							<h1 class="text-6xl font-bold text-white mb-6 flex justify-center">{$localize`Ride the Waves`}</h1>
+							<p class="text-4xl font-bold text-white mb-8 flex justify-center">{$localize`Enjoy the Wind`}</p>
+							<div class="flex justify-center gap-4 ">
 								<LocalizedLink
 									href="/shop"
 									class="bg-white text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-full transition-all duration-300 font-semibold"
@@ -102,16 +65,38 @@ export default component$(() => {
 			{/* Features Bar */}
 			<div class="bg-gray-50 border-y border-gray-200">
 				<div class="max-w-7xl mx-auto px-4 py-6">
-					<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-						{features.map((feature, index) => (
-							<div key={index} class="flex items-center gap-3">
-								<span class="text-2xl">{feature.icon}</span>
-								<div>
-									<h3 class="font-semibold">{feature.title}</h3>
-									<p class="text-sm text-gray-600">{feature.description}</p>
-								</div>
+					<div className="flex flex-wrap gap-5 justify-center">
+						<div className="flex items-center gap-3 p-4 border rounded-lg shadow-md">
+							<span className="text-2xl">🚚</span>
+							<div>
+								<h3 className="font-semibold">{$localize`Free Shipping`}</h3>
+								<p className="text-sm text-gray-600">{$localize`On orders over €500`}</p>
 							</div>
-						))}
+						</div>
+
+						<div className="flex items-center gap-3 p-4 border rounded-lg shadow-md">
+							<span className="text-2xl">🔄</span>
+							<div>
+								<h3 className="font-semibold">{$localize`30-Day Returns`}</h3>
+								<p className="text-sm text-gray-600">{$localize`No questions asked`}</p>
+							</div>
+						</div>
+
+						<div className="flex items-center gap-3 p-4 border rounded-lg shadow-md">
+							<span className="text-2xl">🛡️</span>
+							<div>
+								<h3 className="font-semibold">{$localize`2-Year Warranty`}</h3>
+								<p className="text-sm text-gray-600">{$localize`On all equipment`}</p>
+							</div>
+						</div>
+
+						<div className="flex items-center gap-3 p-4 border rounded-lg shadow-md">
+							<span className="text-2xl">💬</span>
+							<div>
+								<h3 className="font-semibold">{$localize`Expert Support`}</h3>
+								<p className="text-sm text-gray-600">{$localize`24/7 chat available`}</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -251,9 +236,47 @@ export default component$(() => {
 				</div>
 			</section>
 
-			{/* Upcoming Events */}
+			{/* Trust Badges */}
 
-			<section class="py-12 bg-white">
+			<div class="bg-gray-50 border-y border-gray-200">
+				<div class="max-w-7xl mx-auto px-4 py-6">
+					<div className="flex flex-wrap gap-5 justify-center">
+						<div className="flex items-center gap-3">
+							<span className="text-2xl">🔒</span>
+							<div>
+								<h3 className="font-semibold">{$localize`Secure Payment`}</h3>
+								<p className="text-sm text-gray-600">{$localize`SSL encrypted checkout`}</p>
+							</div>
+						</div>
+
+						<div className="flex items-center gap-3">
+							<span className="text-2xl">⚡</span>
+							<div>
+								<h3 className="font-semibold">{$localize`Fast Delivery`}</h3>
+								<p className="text-sm text-gray-600">{$localize`2-4 business days`}</p>
+							</div>
+						</div>
+
+						<div className="flex items-center gap-3">
+							<span className="text-2xl">✨</span>
+							<div>
+								<h3 className="font-semibold">{$localize`Quality Assured`}</h3>
+								<p className="text-sm text-gray-600">{$localize`All products certified`}</p>
+							</div>
+						</div>
+
+						<div className="flex items-center gap-3">
+							<span className="text-2xl">🌍</span>
+							<div>
+								<h3 className="font-semibold">{$localize`Global Shipping`}</h3>
+								<p className="text-sm text-gray-600">{$localize`Worldwide delivery`}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{/*			<section class="py-12 bg-white">
 				<div class="max-w-7xl mx-auto px-4">
 					<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
 						{trustBadges.map((badge, index) => (
@@ -265,7 +288,7 @@ export default component$(() => {
 						))}
 					</div>
 				</div>
-			</section>
+			</section> */}
 
 			{/* Video Section */}
 			<section class="py-16 bg-gray-50">

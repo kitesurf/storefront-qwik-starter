@@ -11,7 +11,7 @@
 		"Full name": "Vollständiger Name",
 		"Company": "Unternehmen",
 		"Address": "Adresse",
-		"Apartment, suite, etc.": "Wohnung, Appartement, usw.",
+		"Apartment, suite, etc.": "Wohnung, Appartement, etc.",
 		"City": "Stadt",
 		"Country": "Land",
 		"State / Province": "Staat/Provinz",
@@ -129,7 +129,11 @@
 		"Handpicked selection of our best-selling premium gear": "Handverlesene Auswahl unserer meistverkauften Premium-Ausrüstung",
 		"Master Your Technique": "Beherrschen Sie Ihre Technik",
 		"Tutorial video": "Tutorial-Video",
-		"Ready to Start Your Journey?": "Sind Sie bereit, Ihre Reise zu beginnen?"
+		"Ready to Start Your Journey?": "Sind Sie bereit, Ihre Reise zu beginnen?",
+		"Select Language": "Sprache auswählen",
+		"Help - FAQs": "Hilfe - FAQs",
+		"Ride the Waves": "Reiten Sie die Wellen",
+		"Enjoy the Wind": "Genieße den Wind"
 	},
 	"fr": {
 		"Your order": "Votre commande",
@@ -170,7 +174,7 @@
 		"Press": "Presse",
 		"Shop": "Boutique",
 		"Support": "Soutien",
-		"Subscribe to our newsletter": "S'abonner à notre lettre d'information",
+		"Subscribe to our newsletter": "S'abonner à la newsletter",
 		"Be the first to know about exclusive offers & deals.": "Soyez le premier à connaître les offres et les transactions exclusives.",
 		"Enter your email": "Saisissez votre adresse électronique",
 		"Subscribe": "S'abonner",
@@ -261,7 +265,11 @@
 		"Handpicked selection of our best-selling premium gear": "Sélection triée sur le volet de notre matériel haut de gamme le plus vendu",
 		"Master Your Technique": "Maîtriser sa technique",
 		"Tutorial video": "Tutoriel vidéo",
-		"Ready to Start Your Journey?": "Prêt à commencer votre voyage ?"
+		"Ready to Start Your Journey?": "Prêt à commencer votre voyage ?",
+		"Select Language": "Sélectionner la langue",
+		"Help - FAQs": "Aide - FAQ",
+		"Ride the Waves": "Surfer sur les vagues",
+		"Enjoy the Wind": "Profiter du vent"
 	},
 	"es": {
 		"Your order": "Su pedido",
@@ -314,7 +322,7 @@
 		"Contact information": "Información de contacto",
 		"Email address": "Dirección de correo electrónico",
 		"First name": "Nombre",
-		"Last name": "Apellidos",
+		"Last name": "Apellido",
 		"Shipping information": "Información de envío",
 		"Proceed to payment": "Proceder al pago",
 		"Delivery method": "Método de entrega",
@@ -370,7 +378,7 @@
 		"Hear from our community of passionate riders": "Escuche a nuestra comunidad de apasionados ciclistas",
 		"Get expert guidance and premium equipment for your water sports adventure": "Obtenga asesoramiento experto y equipamiento de primera calidad para su aventura de deportes acuáticos",
 		"Shop Equipment": "Equipamiento de la tienda",
-		"Contact Us": "Póngase en contacto con nosotros",
+		"Contact Us": "Contacte con nosotros",
 		"We respect your privacy. Unsubscribe at any time.": "Respetamos su intimidad. Anule su suscripción en cualquier momento.",
 		"Menu": "Menú",
 		"browse": "consulte",
@@ -393,7 +401,11 @@
 		"Handpicked selection of our best-selling premium gear": "Selección de nuestros productos más vendidos",
 		"Master Your Technique": "Domine su técnica",
 		"Tutorial video": "Vídeo tutorial",
-		"Ready to Start Your Journey?": "¿Listo para comenzar su viaje?"
+		"Ready to Start Your Journey?": "¿Listo para comenzar su viaje?",
+		"Select Language": "Seleccionar idioma",
+		"Help - FAQs": "Ayuda - Preguntas frecuentes",
+		"Ride the Waves": "Surca las olas",
+		"Enjoy the Wind": "Disfruta del viento"
 	},
 	"it": {
 		"Your order": "Il vostro ordine",
@@ -525,6 +537,10 @@
 		"Handpicked selection of our best-selling premium gear": "Una selezione selezionata dei nostri attrezzi premium più venduti",
 		"Master Your Technique": "Padroneggiare la tecnica",
 		"Tutorial video": "Video tutorial",
-		"Ready to Start Your Journey?": "Siete pronti a iniziare il vostro viaggio?"
+		"Ready to Start Your Journey?": "Siete pronti a iniziare il vostro viaggio?",
+		"Select Language": "Selezionare la lingua",
+		"Help - FAQs": "Aiuto - FAQ",
+		"Ride the Waves": "Cavalcare le onde",
+		"Enjoy the Wind": "Godetevi il vento"
 	}
 }
