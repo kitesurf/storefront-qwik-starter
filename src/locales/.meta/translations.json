@@ -11,7 +11,7 @@
 		"Full name": "Vollständiger Name",
 		"Company": "Unternehmen",
 		"Address": "Adresse",
-		"Apartment, suite, etc.": "Wohnung, Appartement, etc.",
+		"Apartment, suite, etc.": "Wohnung, Appartement, usw.",
 		"City": "Stadt",
 		"Country": "Land",
 		"State / Province": "Staat/Provinz",
@@ -133,7 +133,8 @@
 		"Select Language": "Sprache auswählen",
 		"Help - FAQs": "Hilfe - FAQs",
 		"Ride the Waves": "Reiten Sie die Wellen",
-		"Enjoy the Wind": "Genieße den Wind"
+		"Enjoy the Wind": "Genieße den Wind",
+		"Help &amp; FAQs": "Hilfe &amp; FAQs"
 	},
 	"fr": {
 		"Your order": "Votre commande",
@@ -174,7 +175,7 @@
 		"Press": "Presse",
 		"Shop": "Boutique",
 		"Support": "Soutien",
-		"Subscribe to our newsletter": "S'abonner à la newsletter",
+		"Subscribe to our newsletter": "S'abonner à notre lettre d'information",
 		"Be the first to know about exclusive offers & deals.": "Soyez le premier à connaître les offres et les transactions exclusives.",
 		"Enter your email": "Saisissez votre adresse électronique",
 		"Subscribe": "S'abonner",
@@ -225,7 +226,7 @@
 		"Windfoiling Enthusiast": "Passionné de voile",
 		"Outstanding selection of windfoiling gear. The customer service team really knows their stuff!": "Un choix exceptionnel de matériel pour la pratique de la planche à voile. L'équipe du service clientèle connaît vraiment son métier !",
 		"Kite Instructor": "Moniteur de cerf-volant",
-		"I recommend All For Wind to all my students. Their beginner-friendly equipment is top-notch.": "Je recommande All For Wind à tous mes élèves. Leur matériel adapté aux débutants est de première qualité.",
+		"I recommend All For Wind to all my students. Their beginner-friendly equipment is top-notch.": "Je recommande All For Wind à tous mes élèves. Leur équipement, adapté aux débutants, est de première qualité.",
 		"Stay Updated": "Restez informé",
 		"Subscribe to our newsletter for the latest gear updates and special offers": "Inscrivez-vous à notre lettre d'information pour recevoir les dernières mises à jour et offres spéciales.",
 		"Help & FAQs": "Aide et FAQ",
@@ -252,7 +253,7 @@
 		"No questions asked": "Aucune question n'est posée",
 		"2-Year Warranty": "Garantie de 2 ans",
 		"On all equipment": "Sur tous les équipements",
-		"Expert Support": "Soutien des experts",
+		"Expert Support": "Soutien d'un expert",
 		"24/7 chat available": "Chat disponible 24 heures sur 24, 7 jours sur 7",
 		"Secure Payment": "Paiement sécurisé",
 		"SSL encrypted checkout": "Paiement crypté SSL",
@@ -269,7 +270,8 @@
 		"Select Language": "Sélectionner la langue",
 		"Help - FAQs": "Aide - FAQ",
 		"Ride the Waves": "Surfer sur les vagues",
-		"Enjoy the Wind": "Profiter du vent"
+		"Enjoy the Wind": "Profiter du vent",
+		"Help &amp; FAQs": "Aide et FAQ"
 	},
 	"es": {
 		"Your order": "Su pedido",
@@ -322,7 +324,7 @@
 		"Contact information": "Información de contacto",
 		"Email address": "Dirección de correo electrónico",
 		"First name": "Nombre",
-		"Last name": "Apellido",
+		"Last name": "Apellidos",
 		"Shipping information": "Información de envío",
 		"Proceed to payment": "Proceder al pago",
 		"Delivery method": "Método de entrega",
@@ -405,7 +407,8 @@
 		"Select Language": "Seleccionar idioma",
 		"Help - FAQs": "Ayuda - Preguntas frecuentes",
 		"Ride the Waves": "Surca las olas",
-		"Enjoy the Wind": "Disfruta del viento"
+		"Enjoy the Wind": "Disfruta del viento",
+		"Help &amp; FAQs": "Ayuda y preguntas frecuentes"
 	},
 	"it": {
 		"Your order": "Il vostro ordine",
@@ -541,6 +544,7 @@
 		"Select Language": "Selezionare la lingua",
 		"Help - FAQs": "Aiuto - FAQ",
 		"Ride the Waves": "Cavalcare le onde",
-		"Enjoy the Wind": "Godetevi il vento"
+		"Enjoy the Wind": "Godetevi il vento",
+		"Help &amp; FAQs": "Aiuto e domande frequenti"
 	}
 }

@@ -2,6 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
+/* src/global.css */
+
+/* Mobile First: Basisstile (für kleine Bildschirme) */
+body {
+	font-size: 16px;
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	width: 100%;
+	padding: 10px;
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.nav {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.product-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	/* 1 Spalte für mobile Geräte */
+	gap: 20px;
+}
+
+/* Tablet: Anpassungen für mittlere Bildschirme */
+@media (min-width: 768px) {
+	.container {
+		padding: 20px;
+	}
+
+	.header {
+		flex-direction: row;
+		justify-content: space-between;
+		text-align: left;
+	}
+
+	.nav {
+		flex-direction: row;
+		gap: 20px;
+	}
+
+	.product-grid {
+		grid-template-columns: repeat(2, 1fr);
+		/* 2 Spalten für Tablets */
+	}
+}
+
+/* Desktop: Anpassungen für große Bildschirme */
+@media (min-width: 1024px) {
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.product-grid {
+		grid-template-columns: repeat(4, 1fr);
+		/* 4 Spalten für Desktops */
+	}
+}
+
 @layer components {
 	.btn-primary {
 		@apply w-full border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-primary-500;

@@ -2,8 +2,10 @@ import { component$, JSXChildren, JSXNode, Signal, useContext } from '@builder.i
 import { Image } from '@unpic/qwik';
 import CollectionCard from '~/components/collection-card/CollectionCard';
 import { LocalizedLink } from '~/components/LocalizedLink';
-import { APP_STATE } from '~/constants';
-import desktopImg from '../../../public/rm.webp';
+import { APP_STATE, CUSTOMER_NOT_DEFINED_ID } from '~/constants';
+import { getActiveCustomerQuery } from '~/providers/shop/customer/customer';
+import { createRequestOptions } from '~/utils/api';
+import desktopImg from '/src/rm.webp?https://allforwind.com/cdn-cgi/image/width=80,quality=75/1.jpg';
 
 export const translations = {
 	achievements: {
@@ -22,7 +24,13 @@ const trustBadges = [
 ];
 
 export default component$(() => {
+	const appState = useContext(APP_STATE);
 	const collections = useContext(APP_STATE).collections;
+	const currentLang = appState.language || 'en';
+	const rootCollections = appState.collections.filter(
+		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
+	);
+
 	const products = useContext(APP_STATE).products;
 	console.log('collections', collections);
 	console.log('products', JSON.stringify(products, null, 2));
@@ -33,6 +41,7 @@ export default component$(() => {
 			<div class="relative h-[85vh]">
 				<Image
 					src={desktopImg}
+					format="auto"
 					alt="Kitesurfing hero image"
 					width={1920}
 					height={1080}
@@ -47,15 +56,27 @@ export default component$(() => {
 							<h1 class="text-6xl font-bold text-white mb-6 flex justify-center">{$localize`Ride the Waves`}</h1>
 							<p class="text-4xl font-bold text-white mb-8 flex justify-center">{$localize`Enjoy the Wind`}</p>
 							<div class="flex justify-center gap-4 ">
-								<LocalizedLink
+								<nav class="hidden md:flex flex-row-reverse gap-8">
+									{rootCollections.map((collection) => (
+										<LocalizedLink
+											class="border-2 border-white font-semibold text-white hover:bg-white/10 px-12 py-4 rounded-full transition-all duration-300"
+											href={`/collections/${collection.slug}`}
+											key={collection.id}
+										>
+											{collection.name}
+										</LocalizedLink>
+									))}
+								</nav>
+
+								{/*<LocalizedLink
 									href="/shop"
-									class="bg-white text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-full transition-all duration-300 font-semibold"
+									class="border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-full transition-all duration-300"
 								>
 									{$localize`Shop Now`}
 								</LocalizedLink>
 								<button class="border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-full transition-all duration-300">
 									{$localize`Watch Demo`}
-								</button>
+								</button>*/}
 							</div>
 						</div>
 					</div>
@@ -65,36 +86,36 @@ export default component$(() => {
 			{/* Features Bar */}
 			<div class="bg-gray-50 border-y border-gray-200">
 				<div class="max-w-7xl mx-auto px-4 py-6">
-					<div className="flex flex-wrap gap-5 justify-center">
-						<div className="flex items-center gap-3 p-4 border rounded-lg shadow-md">
-							<span className="text-2xl">🚚</span>
+					<div class="flex flex-wrap gap-5 justify-center">
+						<div class="flex items-center gap-3 p-4 border rounded-lg shadow-md">
+							<span class="text-2xl">🚚</span>
 							<div>
-								<h3 className="font-semibold">{$localize`Free Shipping`}</h3>
-								<p className="text-sm text-gray-600">{$localize`On orders over €500`}</p>
+								<h3 class="font-semibold">{$localize`Free Shipping`}</h3>
+								<p class="text-sm text-gray-600">{$localize`On orders over €500`}</p>
 							</div>
 						</div>
 
-						<div className="flex items-center gap-3 p-4 border rounded-lg shadow-md">
-							<span className="text-2xl">🔄</span>
+						<div class="flex items-center gap-3 p-4 border rounded-lg shadow-md">
+							<span class="text-2xl">🔄</span>
 							<div>
-								<h3 className="font-semibold">{$localize`30-Day Returns`}</h3>
-								<p className="text-sm text-gray-600">{$localize`No questions asked`}</p>
+								<h3 class="font-semibold">{$localize`30-Day Returns`}</h3>
+								<p class="text-sm text-gray-600">{$localize`No questions asked`}</p>
 							</div>
 						</div>
 
-						<div className="flex items-center gap-3 p-4 border rounded-lg shadow-md">
-							<span className="text-2xl">🛡️</span>
+						<div class="flex items-center gap-3 p-4 border rounded-lg shadow-md">
+							<span class="text-2xl">🛡️</span>
 							<div>
-								<h3 className="font-semibold">{$localize`2-Year Warranty`}</h3>
-								<p className="text-sm text-gray-600">{$localize`On all equipment`}</p>
+								<h3 class="font-semibold">{$localize`2-Year Warranty`}</h3>
+								<p class="text-sm text-gray-600">{$localize`On all equipment`}</p>
 							</div>
 						</div>
 
-						<div className="flex items-center gap-3 p-4 border rounded-lg shadow-md">
-							<span className="text-2xl">💬</span>
+						<div class="flex items-center gap-3 p-4 border rounded-lg shadow-md">
+							<span class="text-2xl">💬</span>
 							<div>
-								<h3 className="font-semibold">{$localize`Expert Support`}</h3>
-								<p className="text-sm text-gray-600">{$localize`24/7 chat available`}</p>
+								<h3 class="font-semibold">{$localize`Expert Support`}</h3>
+								<p class="text-sm text-gray-600">{$localize`24/7 chat available`}</p>
 							</div>
 						</div>
 					</div>
@@ -240,36 +261,36 @@ export default component$(() => {
 
 			<div class="bg-gray-50 border-y border-gray-200">
 				<div class="max-w-7xl mx-auto px-4 py-6">
-					<div className="flex flex-wrap gap-5 justify-center">
-						<div className="flex items-center gap-3">
-							<span className="text-2xl">🔒</span>
+					<div class="flex flex-wrap gap-5 justify-center">
+						<div class="flex items-center gap-3">
+							<span class="text-2xl">🔒</span>
 							<div>
-								<h3 className="font-semibold">{$localize`Secure Payment`}</h3>
-								<p className="text-sm text-gray-600">{$localize`SSL encrypted checkout`}</p>
+								<h3 class="font-semibold">{$localize`Secure Payment`}</h3>
+								<p class="text-sm text-gray-600">{$localize`SSL encrypted checkout`}</p>
 							</div>
 						</div>
 
-						<div className="flex items-center gap-3">
-							<span className="text-2xl">⚡</span>
+						<div class="flex items-center gap-3">
+							<span class="text-2xl">⚡</span>
 							<div>
-								<h3 className="font-semibold">{$localize`Fast Delivery`}</h3>
-								<p className="text-sm text-gray-600">{$localize`2-4 business days`}</p>
+								<h3 class="font-semibold">{$localize`Fast Delivery`}</h3>
+								<p class="text-sm text-gray-600">{$localize`2-4 business days`}</p>
 							</div>
 						</div>
 
-						<div className="flex items-center gap-3">
-							<span className="text-2xl">✨</span>
+						<div class="flex items-center gap-3">
+							<span class="text-2xl">✨</span>
 							<div>
-								<h3 className="font-semibold">{$localize`Quality Assured`}</h3>
-								<p className="text-sm text-gray-600">{$localize`All products certified`}</p>
+								<h3 class="font-semibold">{$localize`Quality Assured`}</h3>
+								<p class="text-sm text-gray-600">{$localize`All products certified`}</p>
 							</div>
 						</div>
 
-						<div className="flex items-center gap-3">
-							<span className="text-2xl">🌍</span>
+						<div class="flex items-center gap-3">
+							<span class="text-2xl">🌍</span>
 							<div>
-								<h3 className="font-semibold">{$localize`Global Shipping`}</h3>
-								<p className="text-sm text-gray-600">{$localize`Worldwide delivery`}</p>
+								<h3 class="font-semibold">{$localize`Global Shipping`}</h3>
+								<p class="text-sm text-gray-600">{$localize`Worldwide delivery`}</p>
 							</div>
 						</div>
 					</div>

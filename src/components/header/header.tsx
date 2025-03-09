@@ -1,11 +1,11 @@
 import { $, component$, useContext, useVisibleTask$ } from '@builder.io/qwik';
 import { isBrowser } from '@builder.io/qwik/build';
-import { Image } from 'qwik-image';
+import { Image } from '@unpic/qwik';
 import { LocalizedLink } from '~/components/locallizedclientlink/LocalizedLink';
 import { APP_STATE, CUSTOMER_NOT_DEFINED_ID } from '~/constants';
 import { getActiveCustomerQuery } from '~/providers/shop/customer/customer';
 import { createRequestOptions } from '~/utils/api';
-import logo from '../../../public/logo.png';
+import logo from '/logo.png';
 import MenuIcon from '../icons/MenuIcon';
 import ShoppingBagIcon from '../icons/ShoppingBagIcon';
 import SearchBar from '../search-bar/SearchBar';
@@ -98,7 +98,7 @@ export default component$(() => {
 			<div class="hidden md:block bg-white border-b relative">
 				<div class="max-w-7xl mx-auto flex justify-end items-center space-x-4 p-1">
 					<a href="#" class="text-gray-600 hover:text-gray-900 text-sm">
-						{$localize`Help & FAQs`}
+						{$localize`Help &amp; FAQs`}
 					</a>
 
 					<div class="relative group  z-50">

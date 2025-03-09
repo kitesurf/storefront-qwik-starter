@@ -23,7 +23,7 @@ export default component$<ProductCardProps>(
 						layout=""
 						width={1000}
 						height={1000}
-						src={`${productAsset?.preview}?w=2000&h=2000&format=webp`}
+						src={`${productAsset?.preview}?w=2000&h=2000&format=auto`}
 						alt={productName}
 						class="h-full w-full transition-transform duration-500 group-hover:scale-105"
 						loading="lazy"
