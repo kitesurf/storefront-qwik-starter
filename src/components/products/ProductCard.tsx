@@ -20,7 +20,7 @@ export default component$<ProductCardProps>(
 			<LocalizedLink href={`/products/${slug}`} class="group block w-full">
 				<div class="relative aspect-square w-full overflow-hidden bg-[#f6f6f6]">
 					<Image
-						layout=""
+						// layout=""
 						width={1000}
 						height={1000}
 						src={`${productAsset?.preview}?w=2000&h=2000&format=auto`}

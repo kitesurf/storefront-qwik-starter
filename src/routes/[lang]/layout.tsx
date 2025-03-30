@@ -93,7 +93,7 @@ export default component$(() => {
 
 	const collectionsSignal = useCollectionsLoader();
 	const availableCountriesSignal = useAvailableCountriesLoader();
-
+    //@ts-ignore
 	const state = useStore<AppState>({
 		products: [],
 		product: {} as Product,

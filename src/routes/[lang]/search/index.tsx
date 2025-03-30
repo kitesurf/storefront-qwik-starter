@@ -107,19 +107,36 @@ export default component$(() => {
 					/>
 				)}
 				<div class="sm:col-span-5 lg:col-span-4">
-					<div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+					<div class="grid grid-cols-1 gap-y-12 gap-x-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 						{(state.search.items || []).map((item) => (
-							<ProductCard
-								key={item.productId}
-								productAsset={item.productAsset}
-								productName={item.productName}
-								slug={item.slug}
-								//@ts-ignore
-								priceWithTax={item.priceWithTax}
-								currencyCode={item.currencyCode}
-							></ProductCard>
+							// eslint-disable-next-line qwik/jsx-key
+							<div class="transition-opacity duration-300 hover:opacity-90">
+								<ProductCard
+									key={item.productId}
+									productAsset={item.productAsset}
+									productName={item.productName}
+									slug={item.slug}
+									//@ts-ignore
+									priceWithTax={item.priceWithTax}
+									currencyCode={item.currencyCode}
+								/>
+							</div>
 						))}
 					</div>
+
+					{/* Empty state */}
+					{(state.search.items || []).length === 0 && (
+						<div class="flex flex-col items-center justify-center py-16 text-center">
+							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2d2d2d" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+								<circle cx="11" cy="11" r="8"></circle>
+								<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+								<line x1="11" y1="8" x2="11" y2="14"></line>
+								<line x1="8" y1="11" x2="14" y2="11"></line>
+							</svg>
+							<h3 class="mt-4 text-lg font-medium text-[#2d2d2d]">No results found</h3>
+							<p class="mt-2 text-sm text-gray-500">Try adjusting your search or filter criteria.</p>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
