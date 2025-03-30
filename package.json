@@ -6,7 +6,7 @@
 	"private": true,
 	"type": "module",
 	"engines": {
-		"node": ">=16"
+		"node": ">=21.6.1"
 	},
 	"scripts": {
 		"build": "qwik build",
