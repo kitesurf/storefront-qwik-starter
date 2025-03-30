@@ -6,7 +6,7 @@
 	"private": true,
 	"type": "module",
 	"engines": {
-		"node": ">=21.6.1"
+		"node": ">=16"
 	},
 	"scripts": {
 		"build": "qwik build",
@@ -86,6 +86,5 @@
 		"@angular/compiler-cli": {
 			"typescript": "5.3.3"
 		}
-	},
-	"packageManager": "yarn@4.6.0"
+	}
 }
