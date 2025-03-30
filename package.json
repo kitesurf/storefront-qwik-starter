@@ -86,4 +86,5 @@
 		"@angular/compiler-cli": {
 			"typescript": "5.3.3"
 		}
-	}}
+	}
+}

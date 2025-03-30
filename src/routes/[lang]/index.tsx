@@ -22,7 +22,6 @@ export default component$(() => {
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
 	);
 
-	const products = useContext(APP_STATE).products;
 	// console.log('collections', collections);
 	// console.log('products', JSON.stringify(products, null, 2));
 	// console.log('products', products);
