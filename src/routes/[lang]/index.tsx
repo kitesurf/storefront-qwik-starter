@@ -261,7 +261,7 @@ export default component$(() => {
 
 						<div class="relative group" data-aos="fade-left">
 							<div class="relative aspect-video w-full bg-gray-100 border border-gray-300 rounded-[4px] overflow-hidden shadow-lg">
-				
+
 								<Image
 									src={desktopImg}
 									alt={$localize`Tutorial video`}
