@@ -34,10 +34,9 @@ export default component$(() => {
 			<div class="relative w-full md:h-[85vh]">
 				<Image
 					src={desktopImg}
-					// format="auto"
 					alt="Kitesurfing hero image"
-					width={1920}
-					height={1080}
+					width={1280}
+					height={720}
 					loading="eager"
 					fetchpriority="high"
 					decoding="sync"
