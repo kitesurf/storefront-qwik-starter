@@ -23,44 +23,27 @@ export default component$(() => {
 	);
 
 	const products = useContext(APP_STATE).products;
-	console.log('collections', collections);
-	console.log('products', JSON.stringify(products, null, 2));
-	console.log('products', products);
+	// console.log('collections', collections);
+	// console.log('products', JSON.stringify(products, null, 2));
+	// console.log('products', products);
 	return (
 		<div >
 			{/* Hero Section */}
 
 
 			<div class="relative w-full md:h-[85vh]">
-				{/* <Image
-					src={desktopImg}
-					alt="Kitesurfing hero image"
-					width={1280}
-					height={720}
-					loading="eager"
-					fetchpriority="high"
-					decoding="sync"
-					class="w-full h-full object-cover"
-				/> */}
-				<img
-					src={desktopImg}
-					srcset="
-    /src/rm.webp?https://allforwind.com/cdn-cgi/image/width=480,quality=75/1.jpg 480w,
-    /src/rm.webp?https://allforwind.com/cdn-cgi/image/width=768,quality=75/1.jpg 768w,
-    /src/rm.webp?https://allforwind.com/cdn-cgi/image/width=1280,quality=80/1.jpg 1280w"
-					sizes="(max-width: 480px) 480px,
-         (max-width: 768px) 768px,
-         1280px"
-					alt="Kitesurfing hero image"
-					width={1280}
-					height={720}
-					loading="eager"
-					//@ts-ignore
-					fetchpriority="high"
-					decoding="sync"
+			<Image
+  src={desktopImg}
+  alt="Kitesurfing hero image"
+  width={1280}
+  height={720}
+  loading="eager"
+  fetchPriority="high"
+  decoding="sync"
+  // eslint-disable-next-line qwik/no-react-props
+  className="w-full h-auto md:h-full object-cover"
+/>
 
-					class="w-full h-full object-cover"
-				/>
 				<div class="absolute inset-0 flex items-center">
 					<div class="w-full px-3 sm:px-4 md:px-6 lg:px-8">
 						<div class="w-full max-w-xs sm:max-w-sm md:max-w-xl mx-auto" data-aos="fade-left">
