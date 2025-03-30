@@ -32,7 +32,7 @@ export default component$(() => {
 
 
 			<div class="relative w-full md:h-[85vh]">
-				<Image
+				{/* <Image
 					src={desktopImg}
 					alt="Kitesurfing hero image"
 					width={1280}
@@ -40,6 +40,25 @@ export default component$(() => {
 					loading="eager"
 					fetchpriority="high"
 					decoding="sync"
+					class="w-full h-full object-cover"
+				/> */}
+				<img
+					src={desktopImg}
+					srcset="
+    /src/rm.webp?https://allforwind.com/cdn-cgi/image/width=480,quality=75/1.jpg 480w,
+    /src/rm.webp?https://allforwind.com/cdn-cgi/image/width=768,quality=75/1.jpg 768w,
+    /src/rm.webp?https://allforwind.com/cdn-cgi/image/width=1280,quality=80/1.jpg 1280w"
+					sizes="(max-width: 480px) 480px,
+         (max-width: 768px) 768px,
+         1280px"
+					alt="Kitesurfing hero image"
+					width={1280}
+					height={720}
+					loading="eager"
+					//@ts-ignore
+					fetchpriority="high"
+					decoding="sync"
+
 					class="w-full h-full object-cover"
 				/>
 				<div class="absolute inset-0 flex items-center">
@@ -138,58 +157,6 @@ export default component$(() => {
 			</div>
 
 
-
-			{/* Featured Collections */}
-			<section class="py-10 md:py-14">
-				<div class="max-w-7xl mx-auto px-3 sm:px-4">
-					<div class="mb-6 md:mb-8">
-						<h2 class="text-2xl sm:text-3xl font-bold text-[#2D2D2D] text-center">
-							{$localize`Shop by Category`}
-						</h2>
-						<p class="mt-2 text-gray-600 text-center max-w-2xl mx-auto text-sm sm:text-base">
-							{$localize`Discover our curated collection of premium water sports equipment`}
-						</p>
-					</div>
-
-					<div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-						{collections.map((collection, index) =>
-							collection.featuredAsset ? (
-								<div
-									key={collection.id}
-									data-aos="fade-up"
-									data-aos-delay={index * 50}
-								>
-									<CollectionCard collection={collection} />
-								</div>
-							) : null
-						)}
-					</div>
-				</div>
-			</section>
-
-			<div class="bg-[#2D2D2D] py-14 md:py-16">
-				<div class="max-w-7xl mx-auto px-4 sm:px-6">
-					<div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-white">
-						{[
-							{ number: translations.achievements.customers, label: $localize`Happy Customers` },
-							{ number: translations.achievements.experience, label: $localize`Years Experience` },
-							{ number: translations.achievements.products, label: $localize`Products` },
-							{ number: translations.achievements.locations, label: $localize`Shipping Locations` },
-						].map((stat, index) => (
-							<div
-								key={index}
-								class="text-center"
-								data-aos="fade-up"
-								data-aos-delay={index * 100}
-							>
-								<div class="text-4xl sm:text-5xl font-bold mb-3 text-white">{stat.number}</div>
-								<div class="text-base sm:text-lg font-medium text-white/80">{stat.label}</div>
-							</div>
-						))}
-					</div>
-				</div>
-			</div>
-
 			{/* Trust Badges */}
 			<div class="bg-white border-y border-gray-200">
 				<div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
@@ -219,6 +186,58 @@ export default component$(() => {
 							<p class="text-xs sm:text-sm text-gray-500">{$localize`Worldwide delivery`}</p>
 						</div>
 
+					</div>
+				</div>
+			</div>
+
+			{/* Featured Collections */}
+			<section class="py-10 md:py-14">
+				<div class="max-w-7xl mx-auto px-3 sm:px-4">
+					<div class="mb-6 md:mb-8">
+						<h2 class="text-2xl sm:text-3xl font-bold text-[#2D2D2D] text-center">
+							{$localize`Shop by Category`}
+						</h2>
+						<p class="mt-2 text-gray-600 text-center max-w-2xl mx-auto text-sm sm:text-base">
+							{$localize`Discover our curated collection of premium water sports equipment`}
+						</p>
+					</div>
+
+					<div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+						{collections.map((collection, index) =>
+							collection.featuredAsset ? (
+								<div
+									key={collection.id}
+									data-aos="fade-up"
+									data-aos-delay={index * 50}
+								>
+									<CollectionCard collection={collection} />
+								</div>
+							) : null
+						)}
+					</div>
+				</div>
+			</section>
+
+
+			<div class="bg-[#2D2D2D] py-14 md:py-16">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6">
+					<div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-white">
+						{[
+							{ number: translations.achievements.customers, label: $localize`Happy Customers` },
+							{ number: translations.achievements.experience, label: $localize`Years Experience` },
+							{ number: translations.achievements.products, label: $localize`Products` },
+							{ number: translations.achievements.locations, label: $localize`Shipping Locations` },
+						].map((stat, index) => (
+							<div
+								key={index}
+								class="text-center"
+								data-aos="fade-up"
+								data-aos-delay={index * 100}
+							>
+								<div class="text-4xl sm:text-5xl font-bold mb-3 text-white">{stat.number}</div>
+								<div class="text-base sm:text-lg font-medium text-white/80">{stat.label}</div>
+							</div>
+						))}
 					</div>
 				</div>
 			</div>
