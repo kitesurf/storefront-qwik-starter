@@ -1,4 +1,4 @@
-import { $, component$, useStore, useTask$ } from '@qwik.dev/core';
+import { $, component$, getLocale, useStore, useTask$ } from '@qwik.dev/core';
 import { DocumentHead, routeLoader$, useLocation } from '@qwik.dev/router';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs';
 import CollectionCard from '~/components/collection-card/CollectionCard';
@@ -20,13 +20,16 @@ import {
 	groupFacetValues,
 } from '~/utils';
 
-export const useCollectionLoader = routeLoader$(async ({ params, url, cookie }) => {
-	const lang = url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
+export const useCollectionLoader = routeLoader$(async ({ params: p, sharedMap, url, cookie }) => {
+	const lang =
+		sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
+	const params = cleanUpParams(p);
 	return await getCollectionBySlug(params.slug, lang);
 });
 
-export const useSearchLoader = routeLoader$(async ({ params: p, url, cookie }) => {
-	const lang = url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
+export const useSearchLoader = routeLoader$(async ({ params: p, url, cookie, sharedMap }) => {
+	const lang =
+		sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
 	const params = cleanUpParams(p);
 	const activeFacetValueIds: string[] = url.searchParams.get('f')?.split('-') || [];
 	return activeFacetValueIds.length
@@ -56,7 +59,8 @@ export default component$(() => {
 
 	useTask$(async ({ track }) => {
 		track(() => collectionSignal.value?.slug);
-		const lang = url.searchParams.get('lang') || 'de';
+		const activeLocale = (getLocale('de') || 'de').split('-')[0].split('_')[0];
+		const lang = url.searchParams.get('lang') || activeLocale || 'de';
 		params.slug = cleanUpParams(p).slug;
 		state.facetValueIds = url.searchParams.get('f')?.split('-') || [];
 		state.search = state.facetValueIds.length
@@ -66,7 +70,8 @@ export default component$(() => {
 	});
 
 	const onFilterChange = $(async (id: string) => {
-		const lang = url.searchParams.get('lang') || 'de';
+		const activeLocale = (getLocale('de') || 'de').split('-')[0].split('_')[0];
+		const lang = url.searchParams.get('lang') || activeLocale || 'de';
 		const { facedValues, facetValueIds } = enableDisableFacetValues(
 			state.facedValues,
 			state.facetValueIds.includes(id)

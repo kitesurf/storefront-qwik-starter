@@ -25,8 +25,9 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 	cacheControl({ staleWhileRevalidate: 60 * 60 * 24 * 7, maxAge: 5 });
 };
 
-export const useCollectionsLoader = routeLoader$(async ({ url, cookie }) => {
-	const lang = url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
+export const useCollectionsLoader = routeLoader$(async ({ sharedMap, url, cookie }) => {
+	const lang =
+		sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
 	return await getCollections(lang);
 });
 
@@ -34,7 +35,15 @@ export const useAvailableCountriesLoader = routeLoader$(async () => {
 	return await getAvailableCountriesQuery();
 });
 
-export const onRequest: RequestHandler = ({ request, query, locale, url, redirect, cookie }) => {
+export const onRequest: RequestHandler = ({
+	request,
+	query,
+	locale,
+	url,
+	redirect,
+	cookie,
+	sharedMap,
+}) => {
 	const pathname = url.pathname;
 	const match = pathname.match(/^\/(de|en|es)(\/.*)?$/);
 	if (match) {
@@ -46,13 +55,18 @@ export const onRequest: RequestHandler = ({ request, query, locale, url, redirec
 		throw redirect(302, `${remaining}${qs ? `?${qs}` : ''}`);
 	}
 	const queryLang = query.get('lang');
+	const cookieLang = cookie.get('lang')?.value;
+	const candidate = queryLang || cookieLang || request.headers.get('accept-language');
+	const guessedLocale = guessLocale(candidate) || 'de';
+
 	if (queryLang && ['de', 'en', 'es'].includes(queryLang)) {
 		cookie.set('lang', queryLang, { path: '/', maxAge: [365, 'days'], httpOnly: false });
+	} else if (!cookieLang) {
+		cookie.set('lang', guessedLocale, { path: '/', maxAge: [365, 'days'], httpOnly: false });
 	}
-	const cookieLang = cookie.get('lang')?.value;
-	const lang = queryLang || cookieLang || request.headers.get('accept-language');
-	const guessedLocale = guessLocale(lang);
+
 	locale(guessedLocale);
+	sharedMap.set('locale', guessedLocale);
 };
 
 export default component$(() => {

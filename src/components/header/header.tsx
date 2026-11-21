@@ -166,6 +166,9 @@ export default component$(() => {
 						<div class="hidden sm:flex items-center space-x-1 bg-white/10 rounded-full p-1 border border-white/15 text-xs font-semibold text-white">
 							<a
 								href={`${currentPath}?lang=de`}
+								onClick$={() => {
+									document.cookie = 'lang=de;path=/;max-age=31536000';
+								}}
 								class={[
 									'px-2 py-0.5 rounded-full transition-all',
 									activeLocale === 'de'
@@ -178,6 +181,9 @@ export default component$(() => {
 							<span class="text-white/30 text-[10px]">|</span>
 							<a
 								href={`${currentPath}?lang=en`}
+								onClick$={() => {
+									document.cookie = 'lang=en;path=/;max-age=31536000';
+								}}
 								class={[
 									'px-2 py-0.5 rounded-full transition-all',
 									activeLocale === 'en'
@@ -190,6 +196,9 @@ export default component$(() => {
 							<span class="text-white/30 text-[10px]">|</span>
 							<a
 								href={`${currentPath}?lang=es`}
+								onClick$={() => {
+									document.cookie = 'lang=es;path=/;max-age=31536000';
+								}}
 								class={[
 									'px-2 py-0.5 rounded-full transition-all',
 									activeLocale === 'es'
