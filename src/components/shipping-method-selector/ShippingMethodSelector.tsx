@@ -2,7 +2,7 @@ import { component$, useStore, useTask$ } from '@qwik.dev/core';
 import { getEligibleShippingMethodsQuery } from '~/providers/shop/checkout/checkout';
 import { setOrderShippingMethodMutation } from '~/providers/shop/orders/order';
 import { AppState, EligibleShippingMethods } from '~/types';
-import { formatPrice } from '~/utils';
+import { formatPrice } from '~/utils/formatters';
 import CheckCircleIcon from '../icons/CheckCircleIcon';
 import { _ } from 'compiled-i18n';
 

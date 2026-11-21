@@ -1,7 +1,7 @@
 import { component$ } from '@qwik.dev/core';
 import { Order } from '~/generated/graphql';
 import type { OrderPriceFields } from '~/types';
-import { formatPrice } from '~/utils';
+import { formatPrice } from '~/utils/formatters';
 
 type Props = {
 	field: OrderPriceFields;

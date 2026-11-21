@@ -1,6 +1,6 @@
 import { QRL, component$ } from '@qwik.dev/core';
 import { useNavigate } from '@qwik.dev/router';
-import { ShippingAddress } from '~/types';
+import { type ShippingAddress } from '~/types';
 import { Button } from '../buttons/Button';
 import { HighlightedButton } from '../buttons/HighlightedButton';
 import PencilIcon from '../icons/PencilIcon';

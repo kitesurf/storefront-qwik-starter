@@ -11,6 +11,10 @@ export default component$(() => {
 	const couponCodeSignal = useSignal('');
 	const errorSignal = useSignal('');
 	const successSignal = useSignal('');
+	// Translated label as a plain variable — the i18n tag cannot be transformed
+	// reliably in JSX child position under the Qwik rc optimizer (key arrives
+	// as a template literal, which the i18n plugin cannot parse).
+	const applyLabel = _`Apply`;
 
 	const applyCoupon = $(async () => {
 		if (couponCodeSignal.value) {
@@ -42,7 +46,7 @@ export default component$(() => {
 							class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
 							required
 						/>
-						<button class="btn-primary max-w-24">{_`Apply`}</button>
+						<button class="btn-primary max-w-24">{applyLabel}</button>
 					</div>
 				</form>
 			</div>

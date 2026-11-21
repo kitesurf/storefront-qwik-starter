@@ -3,7 +3,7 @@ import { useLocation } from '@qwik.dev/router';
 import { Image } from '~/components/image/image';
 import { Order } from '~/generated/graphql';
 import { getOrderByCodeQuery } from '~/providers/shop/orders/order';
-import { formatDateTime, formatPrice } from '~/utils';
+import { formatDateTime, formatPrice } from '~/utils/formatters';
 
 export default component$(() => {
 	const {

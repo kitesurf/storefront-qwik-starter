@@ -7,7 +7,12 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig(async (config) => {
 	return {
 		// Enable to analyze via source-map-explorer
-		ssr: { target: 'webworker' },
+		ssr: {
+			target: 'webworker',
+			// compiled-i18n imports the virtual '@i18n/__data' module; it must be
+			// bundled into the SSR output or SSG fails at runtime.
+			noExternal: ['compiled-i18n'],
+		},
 		build: {
 			sourcemap: config.mode === 'development',
 		},

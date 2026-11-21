@@ -1,0 +1,22 @@
+diff --git a/dist/transform-localize.mjs b/dist/transform-localize.mjs
+index fe349f867a0f58f0e63d930714bc9d83a9086723..e1feeffbb09487bc9e0c8ed0049a7692719e17d8 100644
+--- a/dist/transform-localize.mjs
++++ b/dist/transform-localize.mjs
+@@ -212,7 +212,16 @@ const replaceGlobals = ({
+     if (!argExprs.length) {
+       throw new Error(`No arguments found for __$LOCALIZE$__`);
+     }
+-    const key = JSON.parse(argExprs.shift());
++    // Patch: the Qwik 2 rc optimizer can emit the localization key as a template
++    // literal (e.g. `Apply`) instead of a JSON string. Fall back to stripping
++    // the backticks when strict JSON parsing fails.
++    let key;
++    try {
++      key = JSON.parse(argExprs.shift());
++    } catch {
++      key = argExprs[0].replace(/^`+|`+$/g, "");
++      argExprs.shift();
++    }
+     const tr = getTr(key, locale, translations);
+     code = code.slice(0, startIndex) + makeTranslatedExpr(tr, argExprs) + chunk.slice(i + 1);
+   }

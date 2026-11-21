@@ -13,8 +13,9 @@ import { APP_STATE } from '~/constants';
 import { Order, OrderLine } from '~/generated/graphql';
 import { addItemToOrderMutation } from '~/providers/shop/orders/order';
 import { getProductBySlug } from '~/providers/shop/products/products';
-import { Variant } from '~/types';
-import { cleanUpParams, generateDocumentHead, isEnvVariableEnabled } from '~/utils';
+import { type ProductVariant } from '~/generated/graphql-shop';
+import { cleanUpParams, isEnvVariableEnabled } from '~/utils/formatters';
+import { generateDocumentHead } from '~/utils/head.utils';
 
 export const useProductLoader = routeLoader$(async ({ params }) => {
 	const { slug } = cleanUpParams(params);
@@ -41,7 +42,7 @@ export default component$(() => {
 	const addItemToOrderErrorSignal = useSignal('');
 	const quantitySignal = useComputed$<Record<string, number>>(() => {
 		const result: Record<string, number> = {};
-		(productSignal.value.variants || []).forEach((variant: Variant) => {
+		(productSignal.value.variants || []).forEach((variant: ProductVariant) => {
 			const orderLine = (appState.activeOrder?.lines || []).find(
 				(l: OrderLine) =>
 					l.productVariant.id === variant.id &&

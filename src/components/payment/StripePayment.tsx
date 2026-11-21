@@ -7,14 +7,10 @@ import { createStripePaymentIntentMutation } from '~/providers/shop/checkout/che
 import CreditCardIcon from '../icons/CreditCardIcon';
 import XCircleIcon from '../icons/XCircleIcon';
 
-let _stripe: Promise<Stripe | null>;
-function getStripe(publishableKey: string) {
-	if (!_stripe && publishableKey) {
-		_stripe = loadStripe(publishableKey);
-	}
-	return _stripe;
-}
-const stripePromise = getStripe(ENV_VARIABLES.VITE_STRIPE_PUBLISHABLE_KEY);
+const publishableKey = ENV_VARIABLES.VITE_STRIPE_PUBLISHABLE_KEY;
+// Module-level mutable state is not allowed by the Qwik optimizer; a plain
+// immutable promise (or null when no key is configured) is serialization-safe.
+const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
 
 export default component$(() => {
 	const appState = useContext(APP_STATE);
@@ -29,11 +25,13 @@ export default component$(() => {
 	useVisibleTask$(async () => {
 		store.clientSecret = await createStripePaymentIntentMutation();
 
-		await stripePromise.then((stripe) => {
-			store.resolvedStripe = noSerialize(stripe as Stripe);
-			store.stripeElements = noSerialize(stripe?.elements({ clientSecret: store.clientSecret }));
-			store.stripeElements?.create('payment').mount('#payment-form');
-		});
+		if (!stripePromise) {
+			return;
+		}
+		const stripe = await stripePromise;
+		store.resolvedStripe = noSerialize(stripe as Stripe);
+		store.stripeElements = noSerialize(stripe?.elements({ clientSecret: store.clientSecret }));
+		store.stripeElements?.create('payment').mount('#payment-form');
 	});
 
 	return (
@@ -55,7 +53,7 @@ export default component$(() => {
 
 			<button
 				class="flex px-6 bg-primary-600 hover:bg-primary-700 items-center justify-center space-x-2 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-				disabled={!_stripe}
+				disabled={!stripePromise}
 				onClick$={$(async () => {
 					const result = await store.stripeElements?.submit();
 					if (!result?.error) {

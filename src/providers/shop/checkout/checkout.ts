@@ -13,6 +13,7 @@ import {
 	ShippingMethodQuote,
 } from '~/generated/graphql';
 import { shopSdk } from '~/graphql-wrapper';
+import { requester } from '~/utils/api';
 
 export const getAvailableCountriesQuery = async () => {
 	return shopSdk
@@ -28,8 +29,44 @@ export const addPaymentToOrderMutation = async (
 		.then((res: AddPaymentToOrderMutation) => res.addPaymentToOrder as Order);
 };
 
-export const transitionOrderToStateMutation = async (state = 'ArrangingPayment') => {
-	return shopSdk.transitionOrderToState({ state });
+export type OrderTransitionResult = {
+	__typename?: string;
+	errorCode?: string;
+	message?: string;
+	transitionError?: string;
+} & Partial<Order>;
+
+/**
+ * Vendure >=3.8 recalculates the order when transitioning to `ArrangingPayment`.
+ * If the selected shipping method is no longer eligible the transition fails with
+ * `transitionError = 'cannot-transition-to-payment-with-ineligible-shipping-method'`,
+ * so the storefront must be able to read `transitionError` and recover.
+ */
+const transitionOrderToStateDocument = gql`
+	mutation transitionOrderToState($state: String!) {
+		transitionOrderToState(state: $state) {
+			...OrderDetail
+			... on ErrorResult {
+				errorCode
+				message
+			}
+			... on OrderStateTransitionError {
+				transitionError
+				fromState
+				toState
+			}
+		}
+	}
+`;
+
+export const transitionOrderToStateMutation = async (
+	state = 'ArrangingPayment'
+): Promise<OrderTransitionResult> => {
+	const res = await requester<{ transitionOrderToState: OrderTransitionResult }, { state: string }>(
+		transitionOrderToStateDocument,
+		{ state }
+	);
+	return res.transitionOrderToState;
 };
 
 export const getEligibleShippingMethodsQuery = async () => {
@@ -87,18 +124,6 @@ gql`
 gql`
 	mutation addPaymentToOrder($input: PaymentInput!) {
 		addPaymentToOrder(input: $input) {
-			...OrderDetail
-			... on ErrorResult {
-				errorCode
-				message
-			}
-		}
-	}
-`;
-
-gql`
-	mutation transitionOrderToState($state: String!) {
-		transitionOrderToState(state: $state) {
 			...OrderDetail
 			... on ErrorResult {
 				errorCode

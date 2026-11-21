@@ -1,7 +1,7 @@
 import { component$ } from '@qwik.dev/core';
 import { useDocumentHead, useLocation } from '@qwik.dev/router';
 import { DEFAULT_METADATA_TITLE } from '~/constants';
-import { generateDocumentHead } from '~/utils';
+import { generateDocumentHead } from '~/utils/head.utils';
 
 export const Head = component$(() => {
 	const documentHead = useDocumentHead();

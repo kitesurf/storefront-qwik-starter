@@ -1,6 +1,6 @@
 import { component$, Signal } from '@qwik.dev/core';
-import { CurrencyCode } from '~/types';
-import { formatPrice } from '~/utils';
+import { type CurrencyCode } from '~/generated/graphql-shop';
+import { formatPrice } from '~/utils/formatters';
 
 export default component$<{
 	priceWithTax: number | undefined;

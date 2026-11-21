@@ -5,13 +5,18 @@ import { APP_STATE } from '~/constants';
 import {
 	addPaymentToOrderMutation,
 	generateBraintreeClientTokenQuery,
+	getEligibleShippingMethodsQuery,
 	transitionOrderToStateMutation,
 } from '~/providers/shop/checkout/checkout';
+import { setOrderShippingMethodMutation } from '~/providers/shop/orders/order';
 import CreditCardIcon from '../icons/CreditCardIcon';
 import XCircleIcon from '../icons/XCircleIcon';
 const client = {
 	dropin: {} as braintree.Dropin,
 };
+
+const INELIGIBLE_SHIPPING_TRANSITION_ERROR =
+	'cannot-transition-to-payment-with-ineligible-shipping-method';
 
 export default component$(() => {
 	const appState = useContext(APP_STATE);
@@ -69,7 +74,39 @@ export default component$(() => {
 						return;
 					}
 					const paymentResult = await client.dropin.requestPaymentMethod();
-					await transitionOrderToStateMutation();
+
+					// Vendure >=3.8 recalculates prices and shipping eligibility when
+					// transitioning to ArrangingPayment. If the shipping method became
+					// ineligible, re-query eligible methods, pick the first one and
+					// retry the transition once before failing.
+					const transition = await transitionOrderToStateMutation();
+					if (transition.__typename !== 'Order') {
+						if (transition.transitionError === INELIGIBLE_SHIPPING_TRANSITION_ERROR) {
+							const eligible = await getEligibleShippingMethodsQuery();
+							if (!eligible.length) {
+								store.error =
+									'Your shipping method is no longer available. Please go back and select a different one.';
+								return;
+							}
+							const updated = await setOrderShippingMethodMutation([eligible[0].id]);
+							if ((updated as { __typename?: string }).__typename !== 'Order') {
+								store.error =
+									(updated as { message?: string }).message ??
+									'Your shipping method is no longer available. Please go back and select a different one.';
+								return;
+							}
+							appState.activeOrder = updated;
+							const retry = await transitionOrderToStateMutation();
+							if (retry.__typename !== 'Order') {
+								store.error = retry.message ?? 'The order could not be finalized.';
+								return;
+							}
+						} else {
+							store.error = transition.message ?? 'The order could not be finalized.';
+							return;
+						}
+					}
+
 					const activeOrder = await addPaymentToOrderMutation({
 						method: 'braintree-payment',
 						metadata: paymentResult,

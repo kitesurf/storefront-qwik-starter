@@ -1,0 +1,6 @@
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
+patchedDependencies:
+  compiled-i18n@1.3.0: patches/compiled-i18n@1.3.0.patch

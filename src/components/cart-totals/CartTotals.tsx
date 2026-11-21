@@ -3,7 +3,7 @@ import { $, component$, useContext } from '@qwik.dev/core';
 import { APP_STATE } from '~/constants';
 import { Order } from '~/generated/graphql';
 import { removeCouponCodeMutation } from '~/providers/shop/orders/order';
-import { formatPrice } from '~/utils';
+import { formatPrice } from '~/utils/formatters';
 import CouponInput from '../coupon-input/CouponInput';
 import XMarkIcon from '../icons/XMarkIcon';
 import CartPrice from './CartPrice';

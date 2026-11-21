@@ -1,7 +1,6 @@
-import { component$, useStyles$ } from '@qwik.dev/core';
-import { QwikRouterProvider, RouterOutlet, ServiceWorkerRegister } from '@qwik.dev/router';
+import { component$ } from '@qwik.dev/core';
+import { QwikRouterProvider, RouterOutlet } from '@qwik.dev/router';
 import { Head } from './components/head/head';
-import globalStyles from './global.css?inline';
 
 export default component$(() => {
 	/**
@@ -10,14 +9,12 @@ export default component$(() => {
 	 *
 	 * Don't remove the `<head>` and `<body>` elements.
 	 */
-	useStyles$(globalStyles);
 
 	return (
 		<QwikRouterProvider>
 			<Head />
 			<body lang="en">
 				<RouterOutlet />
-				<ServiceWorkerRegister />
 			</body>
 		</QwikRouterProvider>
 	);

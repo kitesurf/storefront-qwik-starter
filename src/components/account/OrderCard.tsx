@@ -2,7 +2,7 @@ import { component$ } from '@qwik.dev/core';
 import { useNavigate } from '@qwik.dev/router';
 import { HighlightedButton } from '~/components/buttons/HighlightedButton';
 import { Order } from '~/generated/graphql';
-import { formatPrice } from '~/utils';
+import Price from '~/components/products/Price';
 import { Image } from '../image/image';
 
 type IProps = {
@@ -32,7 +32,9 @@ export default component$<IProps>(({ order }) => {
 					<span class="bg-teal-200 text-teal-800 text-xs px-2 py-2 mt-2 inline-block rounded-full  uppercase font-semibold tracking-wide">
 						{order.state}
 					</span>
-					<p class="my-2">{formatPrice(order?.totalWithTax, order?.currencyCode || 'USD')}</p>
+					<div class="my-2">
+						<Price priceWithTax={order?.totalWithTax} currencyCode={order?.currencyCode} />
+					</div>
 				</div>
 			</div>
 			<div>
