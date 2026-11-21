@@ -1,0 +1,28 @@
+import type { RequestHandler } from '@qwik.dev/router';
+
+export const onGet: RequestHandler = ({ send }) => {
+	const content = `# ALL FOR WIND
+
+> Performance Shop for Kitesurfing, Wingfoiling, Hydrofoils, and Twintip Boards. Official Eleveight Partner.
+
+## Main Collections
+- Foils: https://allforwind.com/collections/foils
+- Foil Packages: https://allforwind.com/collections/foil-packages
+- Kitesurfing: https://allforwind.com/collections/kitesurfing
+- Wingfoiling: https://allforwind.com/collections/wing-foiling
+
+## Languages
+- German: https://allforwind.com/?lang=de
+- English: https://allforwind.com/?lang=en
+- Spanish: https://allforwind.com/?lang=es
+`;
+	send(
+		new Response(content, {
+			status: 200,
+			headers: {
+				'Content-Type': 'text/plain; charset=utf-8',
+				'Cache-Control': 'public, max-age=86400',
+			},
+		})
+	);
+};
