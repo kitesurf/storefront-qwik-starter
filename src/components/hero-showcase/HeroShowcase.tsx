@@ -19,9 +19,9 @@ export const SLIDES: HeroSlide[] = [
 		title: 'KITESURFING',
 		subtitle: 'LIMITLESS BIG AIR & SPEED',
 		description:
-			'Konstruiert für maximale Hangtime, explosive Beschleunigung und kompromisslose Kontrolle bei jedem Sturm.',
+			'Konstruiert für maximale Hangtime, explosive Beschleunigung und kompromisslose Kontrolle bei jedem Wind.',
 		ctaText: 'Kitesurfen Entdecken',
-		ctaLink: '/collections/kitesurfing',
+		ctaLink: '/collections/kitesurfen',
 		image: '/images/hero/kitesurfing-hero.jpg',
 		thumb: '/images/hero/kitesurfing-hero.jpg',
 	},
@@ -31,15 +31,15 @@ export const SLIDES: HeroSlide[] = [
 		title: 'WINGFOILING',
 		subtitle: 'FLY FREELY ABOVE THE WAVES',
 		description:
-			'Ultraleichte Carbon-Steifigkeit, sofortige Kraftentfaltung und intuitive Balance für grenzenlose Gleitflüge.',
+			'Ultraleichte Carbon-Performance, sofortige Kraftentfaltung und intuitive Balance für grenzenlose Gleitflüge.',
 		ctaText: 'Wingfoiling Entdecken',
-		ctaLink: '/collections/wing-foiling',
+		ctaLink: '/collections/wingfoilen',
 		image: '/images/hero/wingfoiling-hero.jpg',
 		thumb: '/images/hero/wingfoiling-hero.jpg',
 	},
 	{
 		id: 'hydrofoils',
-		tag: 'CARBON MASTS & ADVANCED WINGS',
+		tag: 'CARBON MASTS & GLIDE SERIES',
 		title: 'HYDROFOILS',
 		subtitle: 'EFFORTLESS GLIDE & CARVES',
 		description:
@@ -57,7 +57,7 @@ export const SLIDES: HeroSlide[] = [
 		description:
 			'High-Tech Carbon-Layouts für radikale Absprünge, butterweiche Landungen und ultimativen Kantengrip.',
 		ctaText: 'Boards Entdecken',
-		ctaLink: '/collections/kitesurfing',
+		ctaLink: '/collections/kitesurfen',
 		image: '/images/hero/twintips-hero.jpg',
 		thumb: '/images/hero/twintips-hero.jpg',
 	},
@@ -114,7 +114,7 @@ export default component$(() => {
 
 	return (
 		<div
-			class="relative w-full h-[88vh] min-h-[620px] max-h-[920px] overflow-hidden bg-slate-950 text-white select-none"
+			class="relative w-full h-[88vh] min-h-[620px] max-h-[920px] overflow-hidden bg-sky-900 text-white select-none"
 			onMouseEnter$={() => (isPaused.value = true)}
 			onMouseLeave$={() => (isPaused.value = false)}
 		>
@@ -215,17 +215,16 @@ export default component$(() => {
 				})}
 			</div>
 
-			{/* Cinematic Dark Gradient & Blur Overlays */}
-			<div class="absolute inset-0 z-20 pointer-events-none bg-gradient-to-r from-slate-950/95 via-slate-950/70 to-slate-950/20" />
-			<div class="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-slate-950 via-transparent to-slate-950/60" />
-			<div class="absolute inset-0 z-20 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-transparent to-slate-950/80" />
+			{/* Light & Airy Oceanic Daylight Overlays (keeps >75% of photo bright and vibrant) */}
+			<div class="absolute inset-0 z-20 pointer-events-none bg-gradient-to-r from-sky-950/60 via-sky-950/20 to-transparent" />
+			<div class="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-sky-950/65 via-transparent to-sky-950/15" />
 
 			{/* Main Content Layout */}
 			<div class="relative z-30 max-w-7xl mx-auto h-full px-6 sm:px-8 lg:px-12 flex flex-col justify-between py-10 sm:py-14">
 				{/* Top Branding / Partner Badge */}
 				<div class="flex items-center space-x-3">
-					<div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-semibold tracking-wider uppercase text-cyan-300">
-						<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+					<div class="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/30 text-xs sm:text-sm font-medium tracking-widest uppercase text-white shadow-sm">
+						<span class="w-2 h-2 rounded-full bg-cyan-300 animate-pulse shadow-[0_0_8px_#67e8f9]" />
 						<span>All For Wind // Official Eleveight Partner</span>
 					</div>
 				</div>
@@ -247,29 +246,27 @@ export default component$(() => {
 												: 'opacity-0 -translate-y-4 scale-95 pointer-events-none absolute inset-0',
 										]}
 									>
-										<span class="inline-block text-xs sm:text-sm font-semibold tracking-widest uppercase text-cyan-400 mb-2 drop-shadow">
+										<span class="inline-block px-3.5 py-1 mb-3 rounded-md bg-cyan-400/25 border border-cyan-300/40 backdrop-blur-md text-cyan-100 text-xs sm:text-sm font-bold tracking-widest uppercase shadow-sm">
 											{slide.tag}
 										</span>
-										<h1 class="text-4xl sm:text-6xl xl:text-7xl font-extrabold tracking-tight text-white leading-[1.05] drop-shadow-2xl">
+										<h1 class="text-4xl sm:text-6xl xl:text-7xl font-black tracking-tight text-white leading-[1.0] drop-shadow-[0_4px_20px_rgba(0,0,0,0.45)]">
 											{slide.title}
 										</h1>
-										<p class="mt-2 text-lg sm:text-2xl font-light text-cyan-200/90 tracking-wide drop-shadow">
+										<p class="mt-2 text-lg sm:text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-white to-sky-200 tracking-wide uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]">
 											{slide.subtitle}
 										</p>
-										<p class="mt-4 max-w-xl text-sm sm:text-base text-gray-300/95 leading-relaxed drop-shadow">
+										<p class="mt-4 text-sm sm:text-base text-white max-w-xl leading-relaxed font-medium drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
 											{slide.description}
 										</p>
-
-										{/* Call-To-Action Buttons */}
-										<div class="mt-8 flex flex-wrap gap-4 items-center">
+										<div class="mt-7 flex flex-wrap items-center gap-4">
 											<a
 												href={slide.ctaLink}
-												class="group relative inline-flex items-center justify-center px-8 py-3.5 rounded-full font-medium text-sm sm:text-base text-white overflow-hidden shadow-2xl transition-all duration-300 hover:scale-[1.03] active:scale-95 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500"
+												class="group relative inline-flex items-center px-7 py-3.5 rounded-full text-sm sm:text-base font-bold text-slate-950 bg-gradient-to-r from-cyan-300 via-sky-300 to-cyan-400 hover:from-white hover:to-cyan-200 shadow-[0_0_30px_rgba(56,189,248,0.5)] transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden"
 											>
-												<span class="relative z-10 flex items-center font-semibold tracking-wide">
-													{slide.ctaText}
+												<span class="relative z-10 flex items-center space-x-2">
+													<span>{slide.ctaText}</span>
 													<svg
-														class="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1.5"
+														class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -277,16 +274,15 @@ export default component$(() => {
 														<path
 															stroke-linecap="round"
 															stroke-linejoin="round"
-															stroke-width="2"
+															stroke-width="2.5"
 															d="M14 5l7 7m0 0l-7 7m7-7H3"
 														/>
 													</svg>
 												</span>
-												<div class="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 bg-white/20" />
 											</a>
 											<a
-												href="/collections"
-												class="inline-flex items-center px-6 py-3.5 rounded-full text-sm sm:text-base font-medium text-gray-200 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/15 transition-all duration-300"
+												href="/collections/kitesurfen"
+												class="inline-flex items-center px-6 py-3.5 rounded-full text-sm sm:text-base font-semibold text-white bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/30 shadow-sm transition-all duration-300"
 											>
 												Alle Kategorien
 											</a>
@@ -309,8 +305,8 @@ export default component$(() => {
 										class={[
 											'relative flex-shrink-0 w-28 sm:w-36 h-40 sm:h-48 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 text-left group',
 											isActive
-												? 'ring-2 ring-cyan-400 shadow-[0_0_25px_rgba(34,211,238,0.45)] scale-105'
-												: 'opacity-70 hover:opacity-100 hover:scale-100 border border-white/20',
+												? 'ring-2 ring-cyan-300 shadow-[0_0_30px_rgba(103,232,249,0.55)] scale-105'
+												: 'opacity-85 hover:opacity-100 hover:scale-100 border border-white/35',
 										]}
 									>
 										<img
@@ -318,18 +314,18 @@ export default component$(() => {
 											height="192"
 											src={slide.thumb}
 											alt={slide.title}
-											class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+											class="absolute inset-0 w-full h-full object-cover brightness-105 transition-transform duration-500 group-hover:scale-110"
 										/>
-										<div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+										<div class="absolute inset-0 bg-gradient-to-t from-sky-950/80 via-sky-950/15 to-transparent" />
 										<div class="relative z-10 h-full p-3 flex flex-col justify-between">
-											<span class="text-[11px] font-mono tracking-wider font-semibold text-cyan-300 px-2 py-0.5 rounded bg-black/40 backdrop-blur-sm self-start border border-white/10">
+											<span class="text-[11px] font-mono tracking-wider font-bold text-cyan-200 px-2 py-0.5 rounded-md bg-sky-950/50 backdrop-blur-md self-start border border-white/25">
 												0{index + 1}
 											</span>
 											<div>
-												<p class="text-xs font-bold text-white tracking-wide uppercase line-clamp-1 drop-shadow">
+												<p class="text-xs font-extrabold text-white tracking-wide uppercase line-clamp-1 drop-shadow">
 													{slide.title}
 												</p>
-												<p class="text-[10px] text-cyan-300 font-medium tracking-tight drop-shadow">
+												<p class="text-[10px] text-cyan-200 font-semibold tracking-tight drop-shadow">
 													Ansehen &rarr;
 												</p>
 											</div>
@@ -342,19 +338,19 @@ export default component$(() => {
 				</div>
 
 				{/* Bottom Navigation & Live Progress Bar */}
-				<div class="flex items-center justify-between pt-6 border-t border-white/10">
+				<div class="flex items-center justify-between pt-6 border-t border-white/25">
 					{/* Prev / Next Glass Buttons */}
 					<div class="flex items-center space-x-3">
 						<button
 							onClick$={prevSlide}
 							aria-label="Previous Slide"
-							class="w-11 h-11 rounded-full border border-white/20 bg-white/5 hover:bg-white/20 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-400"
+							class="w-11 h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm"
 						>
 							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
-									stroke-width="2"
+									stroke-width="2.5"
 									d="M15 19l-7-7 7-7"
 								/>
 							</svg>
@@ -362,13 +358,13 @@ export default component$(() => {
 						<button
 							onClick$={nextSlide}
 							aria-label="Next Slide"
-							class="w-11 h-11 rounded-full border border-white/20 bg-white/5 hover:bg-white/20 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-400"
+							class="w-11 h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm"
 						>
 							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
-									stroke-width="2"
+									stroke-width="2.5"
 									d="M9 5l7 7-7 7"
 								/>
 							</svg>
@@ -377,19 +373,19 @@ export default component$(() => {
 
 					{/* Auto-play Progress Bar */}
 					<div class="flex-1 max-w-md mx-6 hidden sm:flex items-center space-x-3">
-						<div class="h-1.5 flex-1 bg-white/15 rounded-full overflow-hidden backdrop-blur-sm">
+						<div class="h-1.5 flex-1 bg-white/25 rounded-full overflow-hidden backdrop-blur-sm">
 							<div
-								class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full transition-all duration-75"
+								class="h-full bg-gradient-to-r from-cyan-300 to-sky-400 rounded-full transition-all duration-75 shadow-[0_0_10px_#67e8f9]"
 								style={{ width: `${progress.value}%` }}
 							/>
 						</div>
 					</div>
 
 					{/* Slide Counter (e.g. 01 / 04) */}
-					<div class="flex items-baseline space-x-1 font-mono text-sm tracking-widest text-cyan-300">
-						<span class="text-lg font-bold text-white">0{activeIndex.value + 1}</span>
-						<span class="text-white/40">/</span>
-						<span class="text-white/60">0{SLIDES.length}</span>
+					<div class="flex items-baseline space-x-1 font-mono text-sm tracking-widest text-cyan-200 drop-shadow">
+						<span class="text-lg font-extrabold text-white">0{activeIndex.value + 1}</span>
+						<span class="text-white/60">/</span>
+						<span class="text-white/80">0{SLIDES.length}</span>
 					</div>
 				</div>
 			</div>

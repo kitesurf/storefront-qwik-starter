@@ -1,5 +1,6 @@
-import { server$ } from '@qwik.dev/router';
+import { getLocale } from '@qwik.dev/core';
 import { isBrowser } from '@qwik.dev/core/build';
+import { server$ } from '@qwik.dev/router';
 import type { DocumentNode } from 'graphql/index';
 import { print } from 'graphql/index';
 import { AUTH_TOKEN, DEV_API, HEADER_AUTH_TOKEN_KEY, PROD_API } from '~/constants';
@@ -18,7 +19,12 @@ export const requester = async <R, V>(
 	vars?: V,
 	options: RequesterOptions = { token: '', apiUrl: shopApi, channelToken: '' }
 ): Promise<R> => {
-	options.apiUrl = options?.apiUrl ?? shopApi;
+	const rawLang = getLocale('de') || 'de';
+	const lang = rawLang.split('_')[0].split('-')[0] || 'de';
+	const targetUrl = options?.apiUrl ?? shopApi;
+	options.apiUrl = targetUrl.includes('languageCode=')
+		? targetUrl
+		: `${targetUrl}${targetUrl.includes('?') ? '&' : '?'}languageCode=${lang}`;
 	return execute<R, V>({ query: print(doc), variables: vars }, options);
 };
 
@@ -45,9 +51,6 @@ const execute = async <R, V = Record<string, any>>(
 		isBrowser && !import.meta.env.DEV
 			? await executeOnTheServer(requestOptions, options.apiUrl!)
 			: await executeRequest(requestOptions, options.apiUrl!);
-
-	// DELETE THIS
-	// const response: ResponseProps<R> = await executeRequest(requestOptions, options.apiUrl!);
 
 	if (isBrowser && response.token) {
 		setCookie(AUTH_TOKEN, response.token, 365);
@@ -87,7 +90,6 @@ const extractTokenAndData = async (response: Response, apiUrl: string) => {
 	const token = response.headers.get(HEADER_AUTH_TOKEN_KEY) || '';
 	const { data, errors } = await response.json();
 	if (errors && !data) {
-		// e.g. API access related errors, like auth issues.
 		throw new Error(errors[0].message);
 	}
 	return { token, data };
