@@ -33,7 +33,17 @@ export const useAvailableCountriesLoader = routeLoader$(async () => {
 	return await getAvailableCountriesQuery();
 });
 
-export const onRequest: RequestHandler = ({ request, query, locale }) => {
+export const onRequest: RequestHandler = ({ request, query, locale, url, redirect }) => {
+	const pathname = url.pathname;
+	const match = pathname.match(/^\/(de|en|es)(\/.*)?$/);
+	if (match) {
+		const lang = match[1];
+		const remaining = match[2] || '/';
+		const searchParams = new URLSearchParams(url.search);
+		searchParams.set('lang', lang);
+		const qs = searchParams.toString();
+		throw redirect(302, `${remaining}${qs ? `?${qs}` : ''}`);
+	}
 	const lang = query.get('lang') || request.headers.get('accept-language');
 	const guessedLocale = guessLocale(lang);
 	locale(guessedLocale);
