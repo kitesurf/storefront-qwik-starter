@@ -25,12 +25,13 @@ export const useCollectionLoader = routeLoader$(async ({ params, url, cookie }) 
 	return await getCollectionBySlug(params.slug, lang);
 });
 
-export const useSearchLoader = routeLoader$(async ({ params: p, url }) => {
+export const useSearchLoader = routeLoader$(async ({ params: p, url, cookie }) => {
+	const lang = url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
 	const params = cleanUpParams(p);
 	const activeFacetValueIds: string[] = url.searchParams.get('f')?.split('-') || [];
 	return activeFacetValueIds.length
-		? await searchQueryWithTerm(params.slug, '', activeFacetValueIds)
-		: await searchQueryWithCollectionSlug(params.slug);
+		? await searchQueryWithTerm(params.slug, '', activeFacetValueIds, lang)
+		: await searchQueryWithCollectionSlug(params.slug, lang);
 });
 
 export default component$(() => {
@@ -55,15 +56,17 @@ export default component$(() => {
 
 	useTask$(async ({ track }) => {
 		track(() => collectionSignal.value?.slug);
+		const lang = url.searchParams.get('lang') || 'de';
 		params.slug = cleanUpParams(p).slug;
 		state.facetValueIds = url.searchParams.get('f')?.split('-') || [];
 		state.search = state.facetValueIds.length
-			? await searchQueryWithTerm(params.slug, '', state.facetValueIds)
-			: await searchQueryWithCollectionSlug(params.slug);
+			? await searchQueryWithTerm(params.slug, '', state.facetValueIds, lang)
+			: await searchQueryWithCollectionSlug(params.slug, lang);
 		state.facedValues = groupFacetValues(state.search as SearchResponse, state.facetValueIds);
 	});
 
 	const onFilterChange = $(async (id: string) => {
+		const lang = url.searchParams.get('lang') || 'de';
 		const { facedValues, facetValueIds } = enableDisableFacetValues(
 			state.facedValues,
 			state.facetValueIds.includes(id)
@@ -75,8 +78,8 @@ export default component$(() => {
 		changeUrlParamsWithoutRefresh('', facetValueIds);
 
 		state.search = facetValueIds.length
-			? await searchQueryWithTerm(params.slug, '', state.facetValueIds)
-			: await searchQueryWithCollectionSlug(params.slug);
+			? await searchQueryWithTerm(params.slug, '', state.facetValueIds, lang)
+			: await searchQueryWithCollectionSlug(params.slug, lang);
 	});
 
 	const onOpenCloseFilter = $((id: string) => {

@@ -17,9 +17,10 @@ import { type ProductVariant } from '~/generated/graphql-shop';
 import { cleanUpParams, isEnvVariableEnabled } from '~/utils/formatters';
 import { generateDocumentHead } from '~/utils/head.utils';
 
-export const useProductLoader = routeLoader$(async ({ params }) => {
+export const useProductLoader = routeLoader$(async ({ params, url, cookie }) => {
+	const lang = url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
 	const { slug } = cleanUpParams(params);
-	const product = await getProductBySlug(slug);
+	const product = await getProductBySlug(slug, lang);
 	if (product.assets.length === 1) {
 		product.assets.push({
 			...product.assets[0],

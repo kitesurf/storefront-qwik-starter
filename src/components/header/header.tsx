@@ -108,13 +108,51 @@ export default component$(() => {
 
 						<nav class="hidden sm:flex items-center space-x-6">
 							{collections.map((collection) => (
-								<a
-									class="text-sm md:text-base font-bold text-white/90 hover:text-cyan-300 transition-colors"
-									href={`/collections/${collection.slug}`}
-									key={collection.id}
-								>
-									{collection.name}
-								</a>
+								<div class="relative group/nav py-2" key={collection.id}>
+									<a
+										class="text-sm md:text-base font-bold text-white/90 hover:text-cyan-300 transition-colors flex items-center gap-1.5"
+										href={`/collections/${collection.slug}`}
+									>
+										<span>{collection.name}</span>
+										{collection.children && collection.children.length > 0 && (
+											<svg
+												class="w-3.5 h-3.5 text-white/50 group-hover/nav:text-cyan-300 group-hover/nav:rotate-180 transition-transform duration-200"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke="currentColor"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													stroke-width="2.5"
+													d="M19 9l-7 7-7-7"
+												/>
+											</svg>
+										)}
+									</a>
+									{collection.children && collection.children.length > 0 && (
+										<div class="absolute left-0 top-full pt-1 opacity-0 invisible group-hover/nav:opacity-100 group-hover/nav:visible transition-all duration-200 pointer-events-none group-hover/nav:pointer-events-auto z-50">
+											<div class="bg-sky-950/95 backdrop-blur-md border border-white/15 rounded-xl shadow-2xl py-2 min-w-[220px] flex flex-col">
+												<a
+													href={`/collections/${collection.slug}`}
+													class="px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-cyan-400 hover:bg-white/10 transition-colors border-b border-white/10"
+												>
+													{collection.name}
+												</a>
+												{collection.children.map((sub: any) => (
+													<a
+														key={sub.id}
+														href={`/collections/${sub.slug}`}
+														class="px-4 py-2.5 text-sm font-medium text-white/90 hover:text-cyan-300 hover:bg-white/10 transition-colors flex items-center justify-between"
+													>
+														<span>{sub.name}</span>
+														<span class="text-xs text-white/30">→</span>
+													</a>
+												))}
+											</div>
+										</div>
+									)}
+								</div>
 							))}
 						</nav>
 					</div>

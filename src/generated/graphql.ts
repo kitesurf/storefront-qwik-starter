@@ -3892,6 +3892,12 @@ export type CollectionsQuery = {
 			name: string;
 			slug: string;
 			parent?: { __typename?: 'Collection'; name: string } | null;
+			children?: Array<{
+				__typename?: 'Collection';
+				id: string;
+				name: string;
+				slug: string;
+			}> | null;
 			featuredAsset?: { __typename?: 'Asset'; id: string; preview: string } | null;
 		}>;
 	};

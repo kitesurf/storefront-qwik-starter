@@ -25,7 +25,13 @@ gql`
 				name
 				slug
 				parent {
+					id
 					name
+				}
+				children {
+					id
+					name
+					slug
 				}
 				featuredAsset {
 					id

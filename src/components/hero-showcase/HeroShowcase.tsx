@@ -342,9 +342,7 @@ export default component$(() => {
 												</p>
 												<a
 													href={slide.ctaLink}
-													onClick$={(e) => {
-														e.stopPropagation();
-													}}
+													stoppropagation:click
 													class="text-[10px] text-cyan-200 hover:text-white font-semibold tracking-tight drop-shadow inline-block mt-0.5 underline"
 												>
 													{_`View`} &rarr;

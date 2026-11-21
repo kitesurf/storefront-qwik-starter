@@ -82,15 +82,32 @@ export default component$(() => {
 											</div>
 										</div>
 
-										<div class="flex flex-col pt-6">
+										<div class="flex flex-col pt-6 space-y-4">
 											{collections.map((collection) => (
-												<a
-													class="text-lg font-medium text-gray-900 hover:text-sky-600 pt-4"
-													href={`/collections/${collection.slug}`}
-													key={collection.id}
-												>
-													{collection.name}
-												</a>
+												<div key={collection.id} class="border-b border-gray-100 pb-3">
+													<a
+														class="text-lg font-bold text-gray-900 hover:text-sky-600 block"
+														href={`/collections/${collection.slug}`}
+														onClick$={() => (appState.showMenu = false)}
+													>
+														{collection.name}
+													</a>
+													{collection.children && collection.children.length > 0 && (
+														<div class="pl-3 mt-2 flex flex-col space-y-2 border-l-2 border-cyan-400">
+															{collection.children.map((sub: any) => (
+																<a
+																	key={sub.id}
+																	href={`/collections/${sub.slug}`}
+																	class="text-sm font-medium text-gray-600 hover:text-cyan-600 py-0.5 flex items-center justify-between"
+																	onClick$={() => (appState.showMenu = false)}
+																>
+																	<span>{sub.name}</span>
+																	<span class="text-xs text-gray-400">→</span>
+																</a>
+															))}
+														</div>
+													)}
+												</div>
 											))}
 										</div>
 									</div>

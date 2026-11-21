@@ -1,24 +1,30 @@
 import gql from 'graphql-tag';
 import { Product, ProductQuery, SearchInput, SearchResponse } from '~/generated/graphql';
 import { shopSdk } from '~/graphql-wrapper';
+import { DEV_API, PROD_API } from '~/constants';
 
-export const search = async (searchInput: SearchInput) => {
+const baseUrl = import.meta.env.DEV ? DEV_API : PROD_API;
+
+export const search = async (searchInput: SearchInput, lang?: string) => {
+	const apiUrl = lang ? `${baseUrl}/shop-api?languageCode=${lang}` : undefined;
 	return await shopSdk
-		.search({ input: { groupByProduct: true, ...searchInput } })
+		.search({ input: { groupByProduct: true, ...searchInput } }, { apiUrl })
 		.then((res) => res.search as SearchResponse);
 };
 
-export const searchQueryWithCollectionSlug = async (collectionSlug: string) =>
-	search({ collectionSlug });
+export const searchQueryWithCollectionSlug = async (collectionSlug: string, lang?: string) =>
+	search({ collectionSlug }, lang);
 
 export const searchQueryWithTerm = async (
 	collectionSlug: string,
 	term: string,
-	facetValueIds: string[]
-) => search({ collectionSlug, term, facetValueFilters: [{ or: facetValueIds }] });
+	facetValueIds: string[],
+	lang?: string
+) => search({ collectionSlug, term, facetValueFilters: [{ or: facetValueIds }] }, lang);
 
-export const getProductBySlug = async (slug: string) => {
-	return shopSdk.product({ slug }).then((res: ProductQuery) => res.product as Product);
+export const getProductBySlug = async (slug: string, lang?: string) => {
+	const apiUrl = lang ? `${baseUrl}/shop-api?languageCode=${lang}` : undefined;
+	return shopSdk.product({ slug }, { apiUrl }).then((res: ProductQuery) => res.product as Product);
 };
 
 export const detailedProductFragment = gql`
