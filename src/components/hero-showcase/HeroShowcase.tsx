@@ -1,5 +1,4 @@
 import { $, component$, useSignal, useVisibleTask$ } from '@qwik.dev/core';
-import { _ } from 'compiled-i18n';
 
 interface HeroSlide {
 	id: string;
@@ -148,7 +147,7 @@ export default component$(() => {
 				<div class="flex items-center space-x-3 pt-2">
 					<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 backdrop-blur-md">
 						<span class="w-2 h-2 rounded-full bg-cyan-400 mr-2 animate-pulse" />
-						{_`All For Wind // Official Eleveight Partner`}
+						All For Wind // Official Eleveight Partner
 					</span>
 				</div>
 
@@ -208,7 +207,7 @@ export default component$(() => {
 												href="/collections"
 												class="inline-flex items-center px-6 py-3.5 rounded-full text-sm sm:text-base font-medium text-gray-200 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/15 transition-all duration-300"
 											>
-												{_`Alle Kategorien`}
+												Alle Kategorien
 											</a>
 										</div>
 									</div>
@@ -250,7 +249,7 @@ export default component$(() => {
 													{slide.title}
 												</p>
 												<p class="text-[10px] text-cyan-300 font-medium tracking-tight drop-shadow">
-													{_`Ansehen`} &rarr;
+													Ansehen &rarr;
 												</p>
 											</div>
 										</div>

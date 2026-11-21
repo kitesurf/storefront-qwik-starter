@@ -1,5 +1,4 @@
 import { component$, useContext } from '@qwik.dev/core';
-import { _ } from 'compiled-i18n';
 import CollectionCard from '~/components/collection-card/CollectionCard';
 import HeroShowcase from '~/components/hero-showcase/HeroShowcase';
 import { APP_STATE } from '~/constants';
@@ -16,14 +15,15 @@ export default component$(() => {
 				<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-slate-800">
 					<div>
 						<span class="text-xs font-semibold tracking-widest uppercase text-cyan-400">
-							{_`Kollektionen & Equipment`}
+							Kollektionen & Equipment
 						</span>
 						<h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white mt-1">
-							{_`Shop by Category`}
+							Shop by Category
 						</h2>
 					</div>
 					<p class="text-sm text-gray-400 mt-2 md:mt-0 max-w-md">
-						{_`Entdecke die neueste Range an Kites, Wings, Boards und Hydrofoils – kompromisslose Qualität für dein nächstes Level.`}
+						Entdecke die neueste Range an Kites, Wings, Boards und Hydrofoils – kompromisslose
+						Qualität für dein nächstes Level.
 					</p>
 				</div>
 
