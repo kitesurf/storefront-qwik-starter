@@ -1,13 +1,20 @@
 import gql from 'graphql-tag';
 import { Collection } from '~/generated/graphql';
 import { shopSdk } from '~/graphql-wrapper';
+import { DEV_API, PROD_API } from '~/constants';
 
-export const getCollections = async () => {
-	return await shopSdk.collections().then((res) => res?.collections.items as Collection[]);
+const baseUrl = import.meta.env.DEV ? DEV_API : PROD_API;
+
+export const getCollections = async (lang?: string) => {
+	const apiUrl = lang ? `${baseUrl}/shop-api?languageCode=${lang}` : undefined;
+	return await shopSdk
+		.collections(undefined, { apiUrl })
+		.then((res) => res?.collections.items as Collection[]);
 };
 
-export const getCollectionBySlug = async (slug: string) => {
-	return await shopSdk.collection({ slug }).then((res) => res.collection as Collection);
+export const getCollectionBySlug = async (slug: string, lang?: string) => {
+	const apiUrl = lang ? `${baseUrl}/shop-api?languageCode=${lang}` : undefined;
+	return await shopSdk.collection({ slug }, { apiUrl }).then((res) => res.collection as Collection);
 };
 
 gql`

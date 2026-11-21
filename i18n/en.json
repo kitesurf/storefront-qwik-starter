@@ -112,6 +112,12 @@
 		"TWINTIP BOARDS": "TWINTIP BOARDS",
 		"EXPLOSIVE POP & CONTROL": "EXPLOSIVE POP & CONTROL",
 		"High-tech carbon layups for radical take-offs, buttery smooth landings and ultimate edge control.": "High-tech carbon layups for radical take-offs, buttery smooth landings and ultimate edge control.",
-		"Explore Boards": "Explore Boards"
-	}
+		"Explore Boards": "Explore Boards",
+		"Explore Kites": "",
+		"Explore Wings": "",
+		"Explore Twintips": ""
+	},
+	"Explore Kites": "Explore Kites",
+	"Explore Wings": "Explore Wings",
+	"Explore Twintips": "Explore Twintips"
 }

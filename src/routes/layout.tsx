@@ -25,8 +25,9 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 	cacheControl({ staleWhileRevalidate: 60 * 60 * 24 * 7, maxAge: 5 });
 };
 
-export const useCollectionsLoader = routeLoader$(async () => {
-	return await getCollections();
+export const useCollectionsLoader = routeLoader$(async ({ query, cookie }) => {
+	const lang = query.get('lang') || cookie.get('lang')?.value || 'de';
+	return await getCollections(lang);
 });
 
 export const useAvailableCountriesLoader = routeLoader$(async () => {

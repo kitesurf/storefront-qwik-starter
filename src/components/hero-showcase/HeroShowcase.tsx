@@ -27,8 +27,8 @@ export default component$(() => {
 			title: _`KITESURFING`,
 			subtitle: _`LIMITLESS BIG AIR & SPEED`,
 			description: _`Engineered for maximum hangtime, explosive acceleration and uncompromising control in any wind condition.`,
-			ctaText: _`Explore Kitesurfing`,
-			ctaLink: '/collections/kitesurfen',
+			ctaText: _`Explore Kites`,
+			ctaLink: '/collections/kites',
 			image: '/images/hero/kitesurfing-hero.jpg',
 			thumb: '/images/hero/kitesurfing-hero.jpg',
 		},
@@ -38,8 +38,8 @@ export default component$(() => {
 			title: _`WINGFOILING`,
 			subtitle: _`FLY FREELY ABOVE THE WAVES`,
 			description: _`Ultra-lightweight carbon performance, instantaneous power delivery and intuitive balance for endless gliding flights.`,
-			ctaText: _`Explore Wingfoiling`,
-			ctaLink: '/collections/wingfoilen',
+			ctaText: _`Explore Wings`,
+			ctaLink: '/collections/wings',
 			image: '/images/hero/wingfoiling-hero.jpg',
 			thumb: '/images/hero/wingfoiling-hero.jpg',
 		},
@@ -50,7 +50,7 @@ export default component$(() => {
 			subtitle: _`EFFORTLESS GLIDE & CARVES`,
 			description: _`Hydrodynamic precision for early lift-off, razor-sharp turns and maximum efficiency across the water.`,
 			ctaText: _`Explore Foils`,
-			ctaLink: '/collections/foils',
+			ctaLink: '/collections/foil-packages',
 			image: '/images/hero/hydrofoils-hero.jpg',
 			thumb: '/images/hero/hydrofoils-hero.jpg',
 		},
@@ -60,8 +60,8 @@ export default component$(() => {
 			title: _`TWINTIP BOARDS`,
 			subtitle: _`EXPLOSIVE POP & CONTROL`,
 			description: _`High-tech carbon layups for radical take-offs, buttery smooth landings and ultimate edge control.`,
-			ctaText: _`Explore Boards`,
-			ctaLink: '/collections/kitesurfen',
+			ctaText: _`Explore Twintips`,
+			ctaLink: '/collections/twintips',
 			image: '/images/hero/twintips-hero.jpg',
 			thumb: '/images/hero/twintips-hero.jpg',
 		},
@@ -200,7 +200,15 @@ export default component$(() => {
 				}
 
 				return (
-					<div key={slide.id} class={['w-slide-box', statusClass]}>
+					<div
+						key={slide.id}
+						class={['w-slide-box', statusClass, isCurrent ? 'cursor-pointer' : '']}
+						onClick$={() => {
+							if (isCurrent) {
+								window.location.href = slide.ctaLink;
+							}
+						}}
+					>
 						<img
 							width="1920"
 							height="1080"
@@ -218,9 +226,9 @@ export default component$(() => {
 			<div class="absolute inset-0 bg-gradient-to-t from-sky-950/85 via-transparent to-sky-950/30 pointer-events-none z-20" />
 
 			{/* Content Container */}
-			<div class="relative z-30 h-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col justify-between pt-16 pb-10">
+			<div class="relative z-30 h-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col justify-between pt-16 pb-10 pointer-events-none">
 				{/* Top Status Bar: Partner Tag & Pill */}
-				<div class="flex items-center justify-between">
+				<div class="flex items-center justify-between pointer-events-auto">
 					<div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-xs sm:text-sm font-semibold tracking-wide text-cyan-200 shadow-sm">
 						<span class="w-2 h-2 rounded-full bg-cyan-300 animate-pulse" />
 						<span>{_`All For Wind // Official Eleveight Partner`}</span>
@@ -230,7 +238,7 @@ export default component$(() => {
 				{/* Middle Row: Left Text Content + Right Wanderers Thumbnails */}
 				<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end my-auto">
 					{/* Left Column: Kinetic Text Reveal */}
-					<div class="lg:col-span-7 space-y-4 max-w-2xl">
+					<div class="lg:col-span-7 space-y-4 max-w-2xl pointer-events-auto">
 						<div class="relative min-h-[260px] sm:min-h-[290px] flex flex-col justify-center">
 							{SLIDES.map((slide, index) => {
 								const isActive = index === activeIndex.value;
@@ -247,9 +255,11 @@ export default component$(() => {
 										<span class="text-xs sm:text-sm font-mono tracking-widest uppercase text-cyan-300 font-bold drop-shadow">
 											{slide.tag}
 										</span>
-										<h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight uppercase leading-none mt-2 text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
-											{slide.title}
-										</h1>
+										<a href={slide.ctaLink} class="group inline-block cursor-pointer">
+											<h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight uppercase leading-none mt-2 text-white group-hover:text-cyan-300 transition-colors drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
+												{slide.title}
+											</h1>
+										</a>
 										<h2 class="text-base sm:text-xl font-bold tracking-wide uppercase text-cyan-100 mt-2 drop-shadow">
 											{slide.subtitle}
 										</h2>
@@ -260,12 +270,12 @@ export default component$(() => {
 										<div class="flex flex-wrap items-center gap-4 pt-6">
 											<a
 												href={slide.ctaLink}
-												class="inline-flex items-center space-x-3 px-7 py-3.5 rounded-full text-sm sm:text-base font-bold text-slate-950 bg-gradient-to-r from-cyan-300 to-sky-400 hover:from-cyan-200 hover:to-sky-300 shadow-[0_0_24px_rgba(103,232,249,0.5)] hover:shadow-[0_0_32px_rgba(103,232,249,0.8)] transition-all duration-300 transform hover:-translate-y-0.5"
+												class="inline-flex items-center px-7 py-3.5 rounded-full text-sm sm:text-base font-bold text-slate-950 bg-gradient-to-r from-cyan-300 to-sky-400 hover:from-cyan-200 hover:to-sky-300 shadow-[0_0_25px_rgba(103,232,249,0.5)] hover:shadow-[0_0_35px_rgba(103,232,249,0.8)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
 											>
 												<span>{slide.ctaText}</span>
-												<span class="w-6 h-6 rounded-full bg-slate-950/20 flex items-center justify-center">
+												<span class="ml-2.5">
 													<svg
-														class="w-3.5 h-3.5 text-slate-950"
+														class="w-4 h-4"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -281,7 +291,7 @@ export default component$(() => {
 											</a>
 											<a
 												href="/collections/kitesurfen"
-												class="inline-flex items-center px-6 py-3.5 rounded-full text-sm sm:text-base font-semibold text-white bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/30 shadow-sm transition-all duration-300"
+												class="inline-flex items-center px-6 py-3.5 rounded-full text-sm sm:text-base font-semibold text-white bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/30 shadow-sm transition-all duration-300 cursor-pointer"
 											>
 												{_`All Categories`}
 											</a>
@@ -293,16 +303,22 @@ export default component$(() => {
 					</div>
 
 					{/* Right Column: Wanderlix Thumbnail Slider */}
-					<div class="lg:col-span-5 flex flex-col items-start lg:items-end">
+					<div class="lg:col-span-5 flex flex-col items-start lg:items-end pointer-events-auto">
 						<div class="flex space-x-3 sm:space-x-4 overflow-x-auto pb-4 pt-2 max-w-full no-scrollbar">
 							{SLIDES.map((slide, index) => {
 								const isActive = index === activeIndex.value;
 								return (
-									<button
+									<div
 										key={slide.id}
-										onClick$={() => goToSlide(index)}
+										onClick$={() => {
+											if (isActive) {
+												window.location.href = slide.ctaLink;
+											} else {
+												goToSlide(index);
+											}
+										}}
 										class={[
-											'relative flex-shrink-0 w-28 sm:w-36 h-40 sm:h-48 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 text-left group',
+											'relative flex-shrink-0 w-28 sm:w-36 h-40 sm:h-48 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 text-left group select-none',
 											isActive
 												? 'ring-2 ring-cyan-300 shadow-[0_0_30px_rgba(103,232,249,0.55)] scale-105'
 												: 'opacity-85 hover:opacity-100 hover:scale-100 border border-white/35',
@@ -324,12 +340,18 @@ export default component$(() => {
 												<p class="text-xs font-extrabold text-white tracking-wide uppercase line-clamp-1 drop-shadow">
 													{slide.title}
 												</p>
-												<p class="text-[10px] text-cyan-200 font-semibold tracking-tight drop-shadow">
+												<a
+													href={slide.ctaLink}
+													onClick$={(e) => {
+														e.stopPropagation();
+													}}
+													class="text-[10px] text-cyan-200 hover:text-white font-semibold tracking-tight drop-shadow inline-block mt-0.5 underline"
+												>
 													{_`View`} &rarr;
-												</p>
+												</a>
 											</div>
 										</div>
-									</button>
+									</div>
 								);
 							})}
 						</div>
@@ -337,13 +359,13 @@ export default component$(() => {
 				</div>
 
 				{/* Bottom Navigation & Live Progress Bar */}
-				<div class="flex items-center justify-between pt-6 border-t border-white/25">
+				<div class="flex items-center justify-between pt-6 border-t border-white/25 pointer-events-auto">
 					{/* Prev / Next Glass Buttons */}
 					<div class="flex items-center space-x-3">
 						<button
 							onClick$={prevSlide}
 							aria-label={_`Previous Slide`}
-							class="w-11 h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm"
+							class="w-11 h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm cursor-pointer"
 						>
 							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
@@ -357,7 +379,7 @@ export default component$(() => {
 						<button
 							onClick$={nextSlide}
 							aria-label={_`Next Slide`}
-							class="w-11 h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm"
+							class="w-11 h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm cursor-pointer"
 						>
 							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path

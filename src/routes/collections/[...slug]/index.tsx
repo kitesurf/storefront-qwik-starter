@@ -20,8 +20,9 @@ import {
 	groupFacetValues,
 } from '~/utils';
 
-export const useCollectionLoader = routeLoader$(async ({ params }) => {
-	return await getCollectionBySlug(params.slug);
+export const useCollectionLoader = routeLoader$(async ({ params, query, cookie }) => {
+	const lang = query.get('lang') || cookie.get('lang')?.value || 'de';
+	return await getCollectionBySlug(params.slug, lang);
 });
 
 export const useSearchLoader = routeLoader$(async ({ params: p, url }) => {
@@ -53,7 +54,7 @@ export default component$(() => {
 	});
 
 	useTask$(async ({ track }) => {
-		track(() => collectionSignal.value.slug);
+		track(() => collectionSignal.value?.slug);
 		params.slug = cleanUpParams(p).slug;
 		state.facetValueIds = url.searchParams.get('f')?.split('-') || [];
 		state.search = state.facetValueIds.length
@@ -98,7 +99,7 @@ export default component$(() => {
 		>
 			<div class="flex justify-between items-center">
 				<h2 class="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
-					{collectionSignal.value.name}
+					{collectionSignal.value?.name}
 				</h2>
 				<div>
 					{!!state.facedValues.length && (
@@ -111,8 +112,8 @@ export default component$(() => {
 				</div>
 			</div>
 			<div>
-				<Breadcrumbs items={collectionSignal.value.breadcrumbs || []}></Breadcrumbs>
-				{!!collectionSignal.value.children?.length && (
+				<Breadcrumbs items={collectionSignal.value?.breadcrumbs || []}></Breadcrumbs>
+				{!!collectionSignal.value?.children?.length && (
 					<div class="max-w-2xl mx-auto py-16 sm:py-16 lg:max-w-none border-b mb-16">
 						<h2 class="text-2xl font-light text-gray-900">Collections</h2>
 						<div class="mt-6 grid max-w-xs sm:max-w-none mx-auto sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
@@ -156,10 +157,10 @@ export default component$(() => {
 
 export const head: DocumentHead = ({ resolveValue, url }) => {
 	const collection = resolveValue(useCollectionLoader);
-	let image = collection.children?.[0]?.featuredAsset?.preview || undefined;
+	let image = collection?.children?.[0]?.featuredAsset?.preview || undefined;
 	if (!image) {
 		const search = resolveValue(useSearchLoader);
 		image = search.items?.[0]?.productAsset?.preview || undefined;
 	}
-	return generateDocumentHead(url.href, collection.name, undefined, image);
+	return generateDocumentHead(url.href, collection?.name, undefined, image);
 };
