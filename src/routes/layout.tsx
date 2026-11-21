@@ -33,7 +33,7 @@ export const useAvailableCountriesLoader = routeLoader$(async () => {
 	return await getAvailableCountriesQuery();
 });
 
-export const onRequest: RequestHandler = ({ request, query, locale, url, redirect }) => {
+export const onRequest: RequestHandler = ({ request, query, locale, url, redirect, cookie }) => {
 	const pathname = url.pathname;
 	const match = pathname.match(/^\/(de|en|es)(\/.*)?$/);
 	if (match) {
@@ -44,7 +44,12 @@ export const onRequest: RequestHandler = ({ request, query, locale, url, redirec
 		const qs = searchParams.toString();
 		throw redirect(302, `${remaining}${qs ? `?${qs}` : ''}`);
 	}
-	const lang = query.get('lang') || request.headers.get('accept-language');
+	const queryLang = query.get('lang');
+	if (queryLang && ['de', 'en', 'es'].includes(queryLang)) {
+		cookie.set('lang', queryLang, { path: '/', maxAge: [365, 'days'], httpOnly: false });
+	}
+	const cookieLang = cookie.get('lang')?.value;
+	const lang = queryLang || cookieLang || request.headers.get('accept-language');
 	const guessedLocale = guessLocale(lang);
 	locale(guessedLocale);
 };

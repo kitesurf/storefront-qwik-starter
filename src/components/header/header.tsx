@@ -1,4 +1,6 @@
 import { $, component$, useContext, useVisibleTask$ } from '@qwik.dev/core';
+import { useLocation } from '@qwik.dev/router';
+import { getLocale } from '@qwik.dev/core';
 import { _ } from 'compiled-i18n';
 import { APP_STATE, CUSTOMER_NOT_DEFINED_ID } from '~/constants';
 import { logoutMutation } from '~/providers/shop/account/account';
@@ -11,6 +13,10 @@ import SearchBar from '../search-bar/SearchBar';
 
 export default component$(() => {
 	const appState = useContext(APP_STATE);
+	const location = useLocation();
+	const activeLocale = (getLocale('de') || 'de').split('-')[0].split('_')[0];
+	const currentPath = location.url.pathname;
+
 	const collections = useContext(APP_STATE).collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
 	);
@@ -54,7 +60,7 @@ export default component$(() => {
 							<MenuIcon />
 						</button>
 
-						<a href="/?lang=de" class="flex items-center gap-2.5 group">
+						<a href={`/?lang=${activeLocale}`} class="flex items-center gap-2.5 group">
 							<svg
 								viewBox="0 0 64 64"
 								fill="none"
@@ -119,16 +125,40 @@ export default component$(() => {
 
 					<div class="flex items-center space-x-3 sm:space-x-4">
 						{/* Language Switcher */}
-						<div class="hidden sm:flex items-center space-x-1 bg-white/10 rounded-full px-2 py-1 border border-white/15 text-xs font-semibold text-white">
-							<a href="/?lang=de" class="px-1.5 py-0.5 rounded hover:bg-white/20">
+						<div class="hidden sm:flex items-center space-x-1 bg-white/10 rounded-full p-1 border border-white/15 text-xs font-semibold text-white">
+							<a
+								href={`${currentPath}?lang=de`}
+								class={[
+									'px-2 py-0.5 rounded-full transition-all',
+									activeLocale === 'de'
+										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
+										: 'hover:bg-white/20 text-white/80',
+								]}
+							>
 								DE
 							</a>
-							<span class="text-white/30">|</span>
-							<a href="/?lang=en" class="px-1.5 py-0.5 rounded hover:bg-white/20">
+							<span class="text-white/30 text-[10px]">|</span>
+							<a
+								href={`${currentPath}?lang=en`}
+								class={[
+									'px-2 py-0.5 rounded-full transition-all',
+									activeLocale === 'en'
+										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
+										: 'hover:bg-white/20 text-white/80',
+								]}
+							>
 								EN
 							</a>
-							<span class="text-white/30">|</span>
-							<a href="/?lang=es" class="px-1.5 py-0.5 rounded hover:bg-white/20">
+							<span class="text-white/30 text-[10px]">|</span>
+							<a
+								href={`${currentPath}?lang=es`}
+								class={[
+									'px-2 py-0.5 rounded-full transition-all',
+									activeLocale === 'es'
+										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
+										: 'hover:bg-white/20 text-white/80',
+								]}
+							>
 								ES
 							</a>
 						</div>

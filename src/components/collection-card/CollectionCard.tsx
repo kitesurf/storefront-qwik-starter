@@ -1,4 +1,5 @@
 import { component$ } from '@qwik.dev/core';
+import { _ } from 'compiled-i18n';
 import { Collection } from '~/generated/graphql';
 import { Image } from '../image/image';
 
@@ -27,7 +28,7 @@ export default component$(({ collection }: IProps) => {
 			<div class="p-5 relative z-10 flex items-center justify-between border-t border-slate-800/80 bg-slate-900/90 backdrop-blur-sm">
 				<div>
 					<span class="text-[11px] font-semibold uppercase tracking-wider text-cyan-400">
-						Kategorie
+						{_`Category`}
 					</span>
 					<h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">
 						{collection.name}
