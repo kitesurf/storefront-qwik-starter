@@ -66,6 +66,7 @@ export const SLIDES: HeroSlide[] = [
 export default component$(() => {
 	const activeIndex = useSignal(0);
 	const prevIndex = useSignal<number | null>(null);
+	const isTransitioning = useSignal(false);
 	const isPaused = useSignal(false);
 	const progress = useSignal(0);
 
@@ -77,13 +78,13 @@ export default component$(() => {
 		if (newIndex === activeIndex.value) return;
 		prevIndex.value = activeIndex.value;
 		activeIndex.value = newIndex;
+		isTransitioning.value = true;
 		progress.value = 0;
 
 		setTimeout(() => {
-			if (prevIndex.value !== activeIndex.value) {
-				prevIndex.value = null;
-			}
-		}, 1650);
+			prevIndex.value = null;
+			isTransitioning.value = false;
+		}, 1850);
 	});
 
 	const nextSlide = $(() => {
@@ -117,38 +118,96 @@ export default component$(() => {
 			onMouseEnter$={() => (isPaused.value = true)}
 			onMouseLeave$={() => (isPaused.value = false)}
 		>
+			<style>{`
+				.w-slide-box {
+					position: absolute;
+					inset: 0;
+					width: 100%;
+					height: 100%;
+					overflow: hidden;
+				}
+				.w-slide-box img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+					object-position: center;
+					will-change: transform, opacity, filter;
+				}
+				/* Inactive / Dormant */
+				.w-dormant {
+					z-index: 0;
+					opacity: 0;
+					pointer-events: none;
+					visibility: hidden;
+				}
+				.w-dormant img {
+					transform: scale(4.5);
+					filter: blur(12px);
+					opacity: 0;
+					transition: none !important;
+				}
+				/* Outgoing: Weitet sich über den View hinaus von 1.0 auf 4.5. Bleibt bis spät im Zoom sichtbar! */
+				.w-outgoing {
+					z-index: 10;
+					pointer-events: none;
+					visibility: visible;
+				}
+				.w-outgoing img {
+					transform: scale(4.5);
+					filter: blur(8px);
+					opacity: 0;
+					transition: transform 1800ms cubic-bezier(0.25, 1, 0.5, 1),
+					            opacity 1800ms cubic-bezier(0.7, 0, 0.85, 0),
+					            filter 1800ms ease-in;
+				}
+				/* Incoming: Komprimiert sich aus den Rändern des Views von 4.5 auf 1.0 */
+				.w-incoming {
+					z-index: 20;
+					pointer-events: auto;
+					visibility: visible;
+				}
+				.w-incoming img {
+					transform: scale(1);
+					filter: blur(0px);
+					opacity: 1;
+					transition: transform 1800ms cubic-bezier(0.16, 1, 0.3, 1),
+					            opacity 1800ms cubic-bezier(0.4, 0, 0.2, 1),
+					            filter 1800ms ease-out;
+				}
+				/* Active resting */
+				.w-active {
+					z-index: 15;
+					pointer-events: auto;
+					visibility: visible;
+				}
+				.w-active img {
+					transform: scale(1);
+					filter: blur(0px);
+					opacity: 1;
+					transition: none;
+				}
+			`}</style>
+
 			{/* Wanderlix Background Scale/Blur Slides */}
 			<div class="absolute inset-0 w-full h-full overflow-hidden">
 				{SLIDES.map((slide, index) => {
 					const isActive = index === activeIndex.value;
 					const isPrev = index === prevIndex.value;
 
-					let containerClasses = 'absolute inset-0 w-full h-full overflow-hidden';
-					let imgClasses = 'w-full h-full object-cover object-center transform transition-all';
-
-					if (isActive) {
-						// Neues Bild komprimiert sich aus den Rändern des Views (scale 2.2 -> 1)
-						containerClasses += ' z-20 pointer-events-auto';
-						imgClasses +=
-							' opacity-100 scale-100 blur-0 duration-[1600ms] ease-[cubic-bezier(0.16,1,0.3,1)]';
-					} else if (isPrev) {
-						// Altes Bild weitet sich über den View hinaus (scale 1 -> 3.2)
-						containerClasses += ' z-10 pointer-events-none';
-						imgClasses += ' opacity-0 scale-[3.2] blur-[12px] duration-[1400ms] ease-in';
-					} else {
-						// Inaktive Bilder warten vergrößert im Hintergrund
-						containerClasses += ' z-0 pointer-events-none opacity-0';
-						imgClasses += ' scale-[2.2] blur-[8px] duration-0';
+					let stateClass = 'w-dormant';
+					if (isPrev) {
+						stateClass = 'w-outgoing';
+					} else if (isActive) {
+						stateClass = isTransitioning.value ? 'w-incoming' : 'w-active';
 					}
 
 					return (
-						<div key={slide.id} class={containerClasses}>
+						<div key={slide.id} class={`w-slide-box ${stateClass}`}>
 							<img
 								width="1920"
 								height="1080"
 								src={slide.image}
 								alt={slide.title}
-								class={imgClasses}
 								loading={index === 0 ? 'eager' : 'lazy'}
 							/>
 						</div>
