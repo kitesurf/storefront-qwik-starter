@@ -65,6 +65,7 @@ export const SLIDES: HeroSlide[] = [
 
 export default component$(() => {
 	const activeIndex = useSignal(0);
+	const prevIndex = useSignal<number | null>(null);
 	const isPaused = useSignal(false);
 	const progress = useSignal(0);
 
@@ -72,21 +73,29 @@ export default component$(() => {
 	const TICK_INTERVAL_MS = 50;
 	const STEP = (TICK_INTERVAL_MS / SLIDE_DURATION_MS) * 100;
 
-	const nextSlide = $(() => {
-		activeIndex.value = (activeIndex.value + 1) % SLIDES.length;
+	const switchSlide = $((newIndex: number) => {
+		if (newIndex === activeIndex.value) return;
+		prevIndex.value = activeIndex.value;
+		activeIndex.value = newIndex;
 		progress.value = 0;
+
+		setTimeout(() => {
+			if (prevIndex.value !== activeIndex.value) {
+				prevIndex.value = null;
+			}
+		}, 1650);
+	});
+
+	const nextSlide = $(() => {
+		switchSlide((activeIndex.value + 1) % SLIDES.length);
 	});
 
 	const prevSlide = $(() => {
-		activeIndex.value = (activeIndex.value - 1 + SLIDES.length) % SLIDES.length;
-		progress.value = 0;
+		switchSlide((activeIndex.value - 1 + SLIDES.length) % SLIDES.length);
 	});
 
 	const goToSlide = $((index: number) => {
-		if (index !== activeIndex.value) {
-			activeIndex.value = index;
-			progress.value = 0;
-		}
+		switchSlide(index);
 	});
 
 	useVisibleTask$(({ cleanup }) => {
@@ -94,8 +103,7 @@ export default component$(() => {
 			if (!isPaused.value) {
 				progress.value += STEP;
 				if (progress.value >= 100) {
-					activeIndex.value = (activeIndex.value + 1) % SLIDES.length;
-					progress.value = 0;
+					switchSlide((activeIndex.value + 1) % SLIDES.length);
 				}
 			}
 		}, TICK_INTERVAL_MS);
@@ -110,25 +118,37 @@ export default component$(() => {
 			onMouseLeave$={() => (isPaused.value = false)}
 		>
 			{/* Wanderlix Background Scale/Blur Slides */}
-			<div class="absolute inset-0 w-full h-full">
+			<div class="absolute inset-0 w-full h-full overflow-hidden">
 				{SLIDES.map((slide, index) => {
 					const isActive = index === activeIndex.value;
+					const isPrev = index === prevIndex.value;
+
+					let containerClasses = 'absolute inset-0 w-full h-full overflow-hidden';
+					let imgClasses = 'w-full h-full object-cover object-center transform transition-all';
+
+					if (isActive) {
+						// Neues Bild komprimiert sich aus den Rändern des Views (scale 2.2 -> 1)
+						containerClasses += ' z-20 pointer-events-auto';
+						imgClasses +=
+							' opacity-100 scale-100 blur-0 duration-[1600ms] ease-[cubic-bezier(0.16,1,0.3,1)]';
+					} else if (isPrev) {
+						// Altes Bild weitet sich über den View hinaus (scale 1 -> 3.2)
+						containerClasses += ' z-10 pointer-events-none';
+						imgClasses += ' opacity-0 scale-[3.2] blur-[12px] duration-[1400ms] ease-in';
+					} else {
+						// Inaktive Bilder warten vergrößert im Hintergrund
+						containerClasses += ' z-0 pointer-events-none opacity-0';
+						imgClasses += ' scale-[2.2] blur-[8px] duration-0';
+					}
+
 					return (
-						<div
-							key={slide.id}
-							class={[
-								'absolute inset-0 w-full h-full overflow-hidden transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
-								isActive
-									? 'opacity-100 scale-100 blur-0 z-10'
-									: 'opacity-0 scale-[2.6] blur-xl z-0 pointer-events-none',
-							]}
-						>
+						<div key={slide.id} class={containerClasses}>
 							<img
 								width="1920"
 								height="1080"
 								src={slide.image}
 								alt={slide.title}
-								class="w-full h-full object-cover object-center"
+								class={imgClasses}
 								loading={index === 0 ? 'eager' : 'lazy'}
 							/>
 						</div>
@@ -141,36 +161,36 @@ export default component$(() => {
 			<div class="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-slate-950 via-transparent to-slate-950/60" />
 			<div class="absolute inset-0 z-20 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-transparent to-slate-950/80" />
 
-			{/* Main Content Grid: Left Hero Typography + Right Thumbnail Strip */}
-			<div class="relative z-30 h-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col justify-between py-12 lg:py-16">
-				{/* Top Branding Tag */}
-				<div class="flex items-center space-x-3 pt-2">
-					<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 backdrop-blur-md">
-						<span class="w-2 h-2 rounded-full bg-cyan-400 mr-2 animate-pulse" />
-						All For Wind // Official Eleveight Partner
-					</span>
+			{/* Main Content Layout */}
+			<div class="relative z-30 max-w-7xl mx-auto h-full px-6 sm:px-8 lg:px-12 flex flex-col justify-between py-10 sm:py-14">
+				{/* Top Branding / Partner Badge */}
+				<div class="flex items-center space-x-3">
+					<div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-semibold tracking-wider uppercase text-cyan-300">
+						<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+						<span>All For Wind // Official Eleveight Partner</span>
+					</div>
 				</div>
 
-				{/* Middle Row: Left Text + Right Showcase Cards */}
+				{/* Middle Row: Left Active Slide Info + Right Thumbnails Slider */}
 				<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end my-auto">
-					{/* Left Column: Synchronized Heading & CTA */}
-					<div class="lg:col-span-7 space-y-6">
-						<div class="relative min-h-[220px] sm:min-h-[240px] flex flex-col justify-center">
+					{/* Left Column: Active Slide Details with Smooth Slide-Up */}
+					<div class="lg:col-span-7 pr-0 lg:pr-8">
+						<div class="relative min-h-[260px] sm:min-h-[290px] flex items-end">
 							{SLIDES.map((slide, index) => {
 								const isActive = index === activeIndex.value;
 								return (
 									<div
 										key={slide.id}
 										class={[
-											'transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]',
+											'transition-all duration-700 ease-out',
 											isActive
-												? 'opacity-100 translate-y-0 relative'
-												: 'opacity-0 -translate-y-8 absolute pointer-events-none inset-0',
+												? 'opacity-100 translate-y-0 scale-100 pointer-events-auto delay-200'
+												: 'opacity-0 -translate-y-4 scale-95 pointer-events-none absolute inset-0',
 										]}
 									>
-										<p class="text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase text-cyan-400 mb-2 drop-shadow">
+										<span class="inline-block text-xs sm:text-sm font-semibold tracking-widest uppercase text-cyan-400 mb-2 drop-shadow">
 											{slide.tag}
-										</p>
+										</span>
 										<h1 class="text-4xl sm:text-6xl xl:text-7xl font-extrabold tracking-tight text-white leading-[1.05] drop-shadow-2xl">
 											{slide.title}
 										</h1>
@@ -180,6 +200,8 @@ export default component$(() => {
 										<p class="mt-4 max-w-xl text-sm sm:text-base text-gray-300/95 leading-relaxed drop-shadow">
 											{slide.description}
 										</p>
+
+										{/* Call-To-Action Buttons */}
 										<div class="mt-8 flex flex-wrap gap-4 items-center">
 											<a
 												href={slide.ctaLink}
