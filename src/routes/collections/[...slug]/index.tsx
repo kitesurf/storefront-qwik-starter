@@ -20,8 +20,8 @@ import {
 	groupFacetValues,
 } from '~/utils';
 
-export const useCollectionLoader = routeLoader$(async ({ params, query, cookie }) => {
-	const lang = query.get('lang') || cookie.get('lang')?.value || 'de';
+export const useCollectionLoader = routeLoader$(async ({ params, url, cookie }) => {
+	const lang = url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
 	return await getCollectionBySlug(params.slug, lang);
 });
 
