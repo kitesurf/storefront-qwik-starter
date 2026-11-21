@@ -1,4 +1,4 @@
-import { component$, useContext } from '@qwik.dev/core';
+import { $, component$, useContext } from '@qwik.dev/core';
 import { useLocation } from '@qwik.dev/router';
 import { getLocale } from '@qwik.dev/core';
 import { _ } from 'compiled-i18n';
@@ -10,6 +10,13 @@ export default component$(() => {
 	const location = useLocation();
 	const activeLocale = (getLocale('de') || 'de').split('-')[0].split('_')[0];
 	const currentPath = location.url.pathname;
+
+	const switchLanguage$ = $((targetLang: string) => {
+		document.cookie = `lang=${targetLang};path=/;max-age=31536000`;
+		const searchParams = new URLSearchParams(window.location.search);
+		searchParams.set('lang', targetLang);
+		window.location.href = `${window.location.pathname}?${searchParams.toString()}`;
+	});
 	const collections = useContext(APP_STATE).collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
 	);
@@ -46,6 +53,10 @@ export default component$(() => {
 											<div class="flex items-center space-x-1 bg-gray-100 rounded-full p-1 text-xs font-semibold">
 												<a
 													href={`${currentPath}?lang=de`}
+													onClick$={(e) => {
+														e.preventDefault();
+														switchLanguage$('de');
+													}}
 													class={[
 														'px-2.5 py-0.5 rounded-full transition-all',
 														activeLocale === 'de'
@@ -58,6 +69,10 @@ export default component$(() => {
 												<span class="text-gray-300 text-[10px]">|</span>
 												<a
 													href={`${currentPath}?lang=en`}
+													onClick$={(e) => {
+														e.preventDefault();
+														switchLanguage$('en');
+													}}
 													class={[
 														'px-2.5 py-0.5 rounded-full transition-all',
 														activeLocale === 'en'
@@ -70,6 +85,10 @@ export default component$(() => {
 												<span class="text-gray-300 text-[10px]">|</span>
 												<a
 													href={`${currentPath}?lang=es`}
+													onClick$={(e) => {
+														e.preventDefault();
+														switchLanguage$('es');
+													}}
 													class={[
 														'px-2.5 py-0.5 rounded-full transition-all',
 														activeLocale === 'es'

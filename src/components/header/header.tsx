@@ -17,6 +17,13 @@ export default component$(() => {
 	const activeLocale = (getLocale('de') || 'de').split('-')[0].split('_')[0];
 	const currentPath = location.url.pathname;
 
+	const switchLanguage$ = $((targetLang: string) => {
+		document.cookie = `lang=${targetLang};path=/;max-age=31536000`;
+		const searchParams = new URLSearchParams(window.location.search);
+		searchParams.set('lang', targetLang);
+		window.location.href = `${window.location.pathname}?${searchParams.toString()}`;
+	});
+
 	const collections = useContext(APP_STATE).collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
 	);
@@ -166,8 +173,9 @@ export default component$(() => {
 						<div class="hidden sm:flex items-center space-x-1 bg-white/10 rounded-full p-1 border border-white/15 text-xs font-semibold text-white">
 							<a
 								href={`${currentPath}?lang=de`}
-								onClick$={() => {
-									document.cookie = 'lang=de;path=/;max-age=31536000';
+								onClick$={(e) => {
+									e.preventDefault();
+									switchLanguage$('de');
 								}}
 								class={[
 									'px-2 py-0.5 rounded-full transition-all',
@@ -181,8 +189,9 @@ export default component$(() => {
 							<span class="text-white/30 text-[10px]">|</span>
 							<a
 								href={`${currentPath}?lang=en`}
-								onClick$={() => {
-									document.cookie = 'lang=en;path=/;max-age=31536000';
+								onClick$={(e) => {
+									e.preventDefault();
+									switchLanguage$('en');
 								}}
 								class={[
 									'px-2 py-0.5 rounded-full transition-all',
@@ -196,8 +205,9 @@ export default component$(() => {
 							<span class="text-white/30 text-[10px]">|</span>
 							<a
 								href={`${currentPath}?lang=es`}
-								onClick$={() => {
-									document.cookie = 'lang=es;path=/;max-age=31536000';
+								onClick$={(e) => {
+									e.preventDefault();
+									switchLanguage$('es');
 								}}
 								class={[
 									'px-2 py-0.5 rounded-full transition-all',
