@@ -15,7 +15,7 @@ export default component$(() => {
 	return (
 		<QwikRouterProvider>
 			<Head />
-			<body lang="en">
+			<body>
 				<RouterOutlet />
 			</body>
 		</QwikRouterProvider>
