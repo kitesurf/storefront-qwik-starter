@@ -115,7 +115,15 @@
 		"Explore Boards": "Boards entdecken",
 		"Explore Kites": "",
 		"Explore Wings": "",
-		"Explore Twintips": ""
+		"Explore Twintips": "",
+		"Sign in to your account": "In Ihr Konto einloggen",
+		"Or": "Oder",
+		"register a new account": "ein neues Konto registrieren",
+		"Password": "Passwort",
+		"Remember me": "Angemeldet bleiben",
+		"Forgot your password?": "Passwort vergessen?",
+		"Sign in": "Anmelden",
+		"We ran into a problem signing you in!": "Es gab ein Problem bei der Anmeldung!"
 	},
 	"Explore Kites": "Kites entdecken",
 	"Explore Wings": "Wings entdecken",
