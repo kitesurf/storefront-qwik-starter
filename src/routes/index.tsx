@@ -1,4 +1,6 @@
 import { component$, useContext } from '@qwik.dev/core';
+import { type DocumentHead } from '@qwik.dev/router';
+import { generateDocumentHead } from '~/utils/head.utils';
 import { _ } from 'compiled-i18n';
 import CollectionCard from '~/components/collection-card/CollectionCard';
 import HeroShowcase from '~/components/hero-showcase/HeroShowcase';
@@ -38,3 +40,5 @@ export default component$(() => {
 		</div>
 	);
 });
+
+export const head: DocumentHead = () => generateDocumentHead();
