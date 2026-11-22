@@ -17,7 +17,9 @@ export const Head = component$(() => {
 			<title>{head.title || DEFAULT_METADATA_TITLE}</title>
 
 			<link rel="manifest" href="/manifest.json" />
-			<link rel="apple-touch-icon" href="/logo-192-192.png" />
+			<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+			<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+			<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 			<link rel="preconnect" href="https://demo.vendure.io" />
 			<link rel="canonical" href={loc.url.toString()} />
 

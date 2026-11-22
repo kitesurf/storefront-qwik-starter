@@ -1,12 +1,12 @@
 {
 	"$schema": "https://json.schemastore.org/web-manifest-combined.json",
-	"name": "Vendure Qwik Storefront",
-	"short_name": "Qwik Storefront",
-	"start_url": ".",
+	"name": "ALL FOR WIND",
+	"short_name": "ALL FOR WIND",
+	"start_url": "/",
 	"display": "standalone",
-	"theme_color": "#1D4ED8",
-	"background_color": "#fff",
-	"description": "A Qwik version of the Vendure Storefront.",
+	"theme_color": "#082f49",
+	"background_color": "#082f49",
+	"description": "ALL FOR WIND — Kite, Wing & Foil Performance Shop",
 	"icons": [
 		{
 			"src": "logo-512-512.png",
