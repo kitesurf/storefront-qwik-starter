@@ -27,31 +27,31 @@ export const Head = component$(() => {
 			{/* International SEO / Hreflang Tags */}
 			{loc.url.pathname === '/' ? (
 				<>
-					<link rel="alternate" hrefLang="de" href="https://allforwind.com/?lang=de" />
-					<link rel="alternate" hrefLang="en" href="https://allforwind.com/?lang=en" />
-					<link rel="alternate" hrefLang="es" href="https://allforwind.com/?lang=es" />
-					<link rel="alternate" hrefLang="x-default" href="https://allforwind.com/" />
+					<link rel="alternate" hreflang="de" href="https://allforwind.com/?lang=de" />
+					<link rel="alternate" hreflang="en" href="https://allforwind.com/?lang=en" />
+					<link rel="alternate" hreflang="es" href="https://allforwind.com/?lang=es" />
+					<link rel="alternate" hreflang="x-default" href="https://allforwind.com/" />
 				</>
 			) : (
 				<>
 					<link
 						rel="alternate"
-						hrefLang="de"
+						hreflang="de"
 						href={`https://allforwind.com${loc.url.pathname}?lang=de`}
 					/>
 					<link
 						rel="alternate"
-						hrefLang="en"
+						hreflang="en"
 						href={`https://allforwind.com${loc.url.pathname}?lang=en`}
 					/>
 					<link
 						rel="alternate"
-						hrefLang="es"
+						hreflang="es"
 						href={`https://allforwind.com${loc.url.pathname}?lang=es`}
 					/>
 					<link
 						rel="alternate"
-						hrefLang="x-default"
+						hreflang="x-default"
 						href={`https://allforwind.com${loc.url.pathname}`}
 					/>
 				</>
