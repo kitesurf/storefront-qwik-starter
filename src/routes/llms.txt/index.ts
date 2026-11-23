@@ -11,10 +11,10 @@ export const onGet: RequestHandler = ({ send }) => {
 - [Kitesurfing](https://allforwind.com/collections/kitesurfing): High performance freeride, big air, freestyle kites, control bars, and accessories by Eleveight.
 - [Wingfoiling](https://allforwind.com/collections/wing-foiling): Lightweight performance wings, wing boards, and accessories for effortless flight above the water.
 
-## Languages & Localization
-- [English](https://allforwind.com/): ALL FOR WIND Storefront in English (default language).
-- [German](https://allforwind.com/?lang=de): ALL FOR WIND Storefront in German.
-- [Spanish](https://allforwind.com/?lang=es): ALL FOR WIND Storefront in Spanish.
+## Regional Storefronts & Localization
+- [English Storefront (Default)](https://allforwind.com/): Official English global storefront.
+- [German Storefront](https://allforwind.com/de/): Official German storefront.
+- [Spanish Storefront](https://allforwind.com/es/): Official Spanish storefront.
 
 ## Optional
 - [Full LLM Knowledge Base](https://allforwind.com/llms-full.txt): Comprehensive product catalog, brand specifications, and technical details.

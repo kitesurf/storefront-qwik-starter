@@ -9,13 +9,25 @@ export default component$(() => {
 	const appState = useContext(APP_STATE);
 	const location = useLocation();
 	const activeLocale = (getLocale('en') || 'en').split('-')[0].split('_')[0];
-	const currentPath = location.url.pathname;
+	const rawPath = location.url.pathname;
+	const cleanPath = rawPath.replace(/^\/(de|es)(\/|$)/, '/').replace(/\/+$/, '') || '';
+	const deHref = `/de${cleanPath || '/'}`;
+	const esHref = `/es${cleanPath || '/'}`;
+	const enHref = cleanPath || '/';
 
 	const switchLanguage$ = $((targetLang: string) => {
 		document.cookie = `lang=${targetLang};path=/;max-age=31536000`;
-		const searchParams = new URLSearchParams(window.location.search);
-		searchParams.set('lang', targetLang);
-		window.location.href = `${window.location.pathname}?${searchParams.toString()}`;
+		const raw = window.location.pathname;
+		const clean = raw.replace(/^\/(de|es)(\/|$)/, '/').replace(/\/+$/, '') || '';
+		let targetUrl: string;
+		if (targetLang === 'de') {
+			targetUrl = `/de${clean || '/'}`;
+		} else if (targetLang === 'es') {
+			targetUrl = `/es${clean || '/'}`;
+		} else {
+			targetUrl = clean || '/';
+		}
+		window.location.href = targetUrl;
 	});
 	const collections = useContext(APP_STATE).collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
@@ -52,7 +64,7 @@ export default component$(() => {
 											</span>
 											<div class="flex items-center space-x-1 bg-gray-100 rounded-full p-1 text-xs font-semibold">
 												<a
-													href={`${currentPath}?lang=de`}
+													href={deHref}
 													preventdefault:click
 													onClick$={() => {
 														switchLanguage$('de');
@@ -68,7 +80,7 @@ export default component$(() => {
 												</a>
 												<span class="text-gray-300 text-xs">|</span>
 												<a
-													href={`${currentPath}?lang=en`}
+													href={enHref}
 													preventdefault:click
 													onClick$={() => {
 														switchLanguage$('en');
@@ -84,7 +96,7 @@ export default component$(() => {
 												</a>
 												<span class="text-gray-300 text-xs">|</span>
 												<a
-													href={`${currentPath}?lang=es`}
+													href={esHref}
 													preventdefault:click
 													onClick$={() => {
 														switchLanguage$('es');

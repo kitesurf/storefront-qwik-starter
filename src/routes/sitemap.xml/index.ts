@@ -7,12 +7,45 @@ export const onGet: RequestHandler = ({ send }) => {
     <loc>https://allforwind.com/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/?lang=de"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/de/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/es/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/"/>
   </url>
   <url>
     <loc>https://allforwind.com/collections/foils</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/collections/foils"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/collections/foils"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/collections/foils"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/collections/foils"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/de/collections/foils</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://allforwind.com/es/collections/foils</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -20,14 +53,56 @@ export const onGet: RequestHandler = ({ send }) => {
     <loc>https://allforwind.com/collections/foil-packages</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/collections/foil-packages"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/collections/foil-packages"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/collections/foil-packages"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/collections/foil-packages"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/de/collections/foil-packages</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://allforwind.com/es/collections/foil-packages</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://allforwind.com/collections/kitesurfing</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/collections/kitesurfing"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/collections/kitesurfing"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/collections/kitesurfing"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/collections/kitesurfing"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/de/collections/kitesurfing</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://allforwind.com/es/collections/kitesurfing</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://allforwind.com/collections/wing-foiling</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/collections/wing-foiling"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/collections/wing-foiling"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/collections/wing-foiling"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/collections/wing-foiling"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/de/collections/wing-foiling</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://allforwind.com/es/collections/wing-foiling</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -37,7 +112,7 @@ export const onGet: RequestHandler = ({ send }) => {
 			status: 200,
 			headers: {
 				'Content-Type': 'application/xml; charset=utf-8',
-				'Cache-Control': 'public, max-age=86400',
+				'Cache-Control': 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=86400',
 			},
 		})
 	);

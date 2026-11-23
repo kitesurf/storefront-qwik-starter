@@ -25,37 +25,21 @@ export const Head = component$(() => {
 			<link rel="canonical" href={loc.url.toString()} />
 
 			{/* International SEO / Hreflang Tags */}
-			{loc.url.pathname === '/' ? (
-				<>
-					<link rel="alternate" hreflang="de" href="https://allforwind.com/?lang=de" />
-					<link rel="alternate" hreflang="en" href="https://allforwind.com/?lang=en" />
-					<link rel="alternate" hreflang="es" href="https://allforwind.com/?lang=es" />
-					<link rel="alternate" hreflang="x-default" href="https://allforwind.com/" />
-				</>
-			) : (
-				<>
-					<link
-						rel="alternate"
-						hreflang="de"
-						href={`https://allforwind.com${loc.url.pathname}?lang=de`}
-					/>
-					<link
-						rel="alternate"
-						hreflang="en"
-						href={`https://allforwind.com${loc.url.pathname}?lang=en`}
-					/>
-					<link
-						rel="alternate"
-						hreflang="es"
-						href={`https://allforwind.com${loc.url.pathname}?lang=es`}
-					/>
-					<link
-						rel="alternate"
-						hreflang="x-default"
-						href={`https://allforwind.com${loc.url.pathname}`}
-					/>
-				</>
-			)}
+			{(() => {
+				const rawPath = loc.url.pathname;
+				const cleanPath = rawPath.replace(/^\/(de|es)(\/|$)/, '/').replace(/\/+$/, '') || '';
+				const deUrl = `https://allforwind.com/de${cleanPath || '/'}`;
+				const esUrl = `https://allforwind.com/es${cleanPath || '/'}`;
+				const enUrl = `https://allforwind.com${cleanPath || '/'}`;
+				return (
+					<>
+						<link rel="alternate" hreflang="de" href={deUrl} />
+						<link rel="alternate" hreflang="es" href={esUrl} />
+						<link rel="alternate" hreflang="en" href={enUrl} />
+						<link rel="alternate" hreflang="x-default" href={enUrl} />
+					</>
+				);
+			})()}
 
 			{!hasDescription && (
 				<meta

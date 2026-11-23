@@ -12,12 +12,14 @@ ALL FOR WIND is a premier online performance shop specializing in high-grade wat
 - Target Audience: Watersports enthusiasts ranging from ambitious beginners to seasoned pro riders seeking uncompromising performance, durability, and innovation.
 - Store URL: https://allforwind.com
 - Supported Currencies & Markets: European Union (EUR), Worldwide delivery.
-- Languages: English (en - default), German (de), Spanish (es).
+- Languages: English (en - default at /), German (de at /de/), Spanish (es at /es/).
 
 ## Product Collections & Details
 
 ### 1. Foils
 - Collection URL: https://allforwind.com/collections/foils
+- German Collection URL: https://allforwind.com/de/collections/foils
+- Spanish Collection URL: https://allforwind.com/es/collections/foils
 - Description: Advanced carbon and aluminum hydrofoils engineered for maximum gliding efficiency, ultra-low stall speeds, and responsive carving.
 - Key Components:
   - Front Wings: High-aspect and mid-aspect wings optimized for pump-foiling, downwinders, wave riding, and freeride gliding.
@@ -27,12 +29,16 @@ ALL FOR WIND is a premier online performance shop specializing in high-grade wat
 
 ### 2. Foil Packages
 - Collection URL: https://allforwind.com/collections/foil-packages
+- German Collection URL: https://allforwind.com/de/collections/foil-packages
+- Spanish Collection URL: https://allforwind.com/es/collections/foil-packages
 - Description: Fully assembled and modular hydrofoil packages ready to ride.
 - Contents: Complete setup consisting of mast, fuselage, front wing, rear stabilizer, padded travel covers, and high-tensile titanium/stainless steel mounting hardware.
 - Compatibility: Universal track-mount plate system compatible with all standard 90mm US foil tracks.
 
 ### 3. Kitesurfing
 - Collection URL: https://allforwind.com/collections/kitesurfing
+- German Collection URL: https://allforwind.com/de/collections/kitesurfing
+- Spanish Collection URL: https://allforwind.com/es/collections/kitesurfing
 - Description: Industry-leading kiteboarding equipment engineered by Eleveight.
 - Featured Models & Gear:
   - Eleveight RS / RS+: Versatile crossover / freeride delta-hybrid kite designed for massive hangtime, huge wind range, and fast turning.
@@ -43,6 +49,8 @@ ALL FOR WIND is a premier online performance shop specializing in high-grade wat
 
 ### 4. Wingfoiling
 - Collection URL: https://allforwind.com/collections/wing-foiling
+- German Collection URL: https://allforwind.com/de/collections/wing-foiling
+- Spanish Collection URL: https://allforwind.com/es/collections/wing-foiling
 - Description: Modern inflatable wings and compact wing boards.
 - Features:
   - Eleveight WFS & WFS Pro: Ergonomic rigid handles or carbon boom, lightweight canopy framing, quick acceleration, and neutral drift during wave riding.
@@ -62,14 +70,14 @@ ALL FOR WIND is a premier online performance shop specializing in high-grade wat
 - Checkout & Security: Secure SSL-encrypted payment processing supporting credit/debit cards, PayPal, Klarna, and Apple Pay/Google Pay.
 
 ## Main Navigation & Index
-- [Home](https://allforwind.com/): Storefront homepage in English featuring latest collections and seasonal highlights.
+- [Home (English)](https://allforwind.com/): Storefront homepage in English.
+- [Home (German)](https://allforwind.com/de/): Storefront homepage in German.
+- [Home (Spanish)](https://allforwind.com/es/): Storefront homepage in Spanish.
 - [Foils Collection](https://allforwind.com/collections/foils): Hydrodynamic precision foils and carbon wings.
 - [Foil Packages Collection](https://allforwind.com/collections/foil-packages): All-in-one hydrofoil packages.
 - [Kitesurfing Collection](https://allforwind.com/collections/kitesurfing): Kites, bars, harnesses, and accessories.
 - [Wingfoiling Collection](https://allforwind.com/collections/wing-foiling): Wings, boards, and wing foil packages.
 - [Product Search](https://allforwind.com/search): Interactive catalog search with facet filtering.
-- [German Storefront](https://allforwind.com/?lang=de): German language storefront.
-- [Spanish Storefront](https://allforwind.com/?lang=es): Spanish language storefront.
 `;
 	send(
 		new Response(content, {

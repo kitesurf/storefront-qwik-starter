@@ -57,11 +57,9 @@ export const useAvailableCountriesLoader = routeLoader$(async () => {
 });
 
 export const onRequest: RequestHandler = ({
-	request,
 	query,
 	locale,
 	url,
-	redirect,
 	cookie,
 	sharedMap,
 	cacheControl,
@@ -69,46 +67,15 @@ export const onRequest: RequestHandler = ({
 	method,
 }) => {
 	const pathname = url.pathname;
-	const match = pathname.match(/^\/(de|en|es)(\/.*)?$/);
-	if (match) {
-		const lang = match[1];
-		const remaining = match[2] || '/';
-		const searchParams = new URLSearchParams(url.search);
-		if (lang === 'en') {
-			searchParams.delete('lang');
-		} else {
-			searchParams.set('lang', lang);
-		}
-		const qs = searchParams.toString();
-		throw redirect(302, `${remaining}${qs ? `?${qs}` : ''}`);
-	}
 	const queryLang = query.get('lang');
 	const cookieLang = cookie.get('lang')?.value;
 	let activeLang = 'en';
 
 	if (queryLang && ['de', 'en', 'es'].includes(queryLang)) {
 		activeLang = queryLang;
-		cookie.set('lang', queryLang, { path: '/', maxAge: [365, 'days'], httpOnly: false });
 	} else if (cookieLang && ['de', 'en', 'es'].includes(cookieLang)) {
 		activeLang = cookieLang;
 	} else {
-		// First visit without explicit language parameter or cookie
-		const acceptLang = (request.headers.get('accept-language') || '').toLowerCase();
-		if (acceptLang.startsWith('de') || acceptLang.includes(',de') || acceptLang.includes(';de')) {
-			const searchParams = new URLSearchParams(url.search);
-			searchParams.set('lang', 'de');
-			const qs = searchParams.toString();
-			throw redirect(302, `${pathname}${qs ? `?${qs}` : ''}`);
-		} else if (
-			acceptLang.startsWith('es') ||
-			acceptLang.includes(',es') ||
-			acceptLang.includes(';es')
-		) {
-			const searchParams = new URLSearchParams(url.search);
-			searchParams.set('lang', 'es');
-			const qs = searchParams.toString();
-			throw redirect(302, `${pathname}${qs ? `?${qs}` : ''}`);
-		}
 		activeLang = 'en';
 	}
 
