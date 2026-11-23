@@ -53,8 +53,8 @@ export default component$(() => {
 											<div class="flex items-center space-x-1 bg-gray-100 rounded-full p-1 text-xs font-semibold">
 												<a
 													href={`${currentPath}?lang=de`}
-													onClick$={(e) => {
-														e.preventDefault();
+													preventdefault:click
+													onClick$={() => {
 														switchLanguage$('de');
 													}}
 													class={[
@@ -69,8 +69,8 @@ export default component$(() => {
 												<span class="text-gray-300 text-[10px]">|</span>
 												<a
 													href={`${currentPath}?lang=en`}
-													onClick$={(e) => {
-														e.preventDefault();
+													preventdefault:click
+													onClick$={() => {
 														switchLanguage$('en');
 													}}
 													class={[
@@ -85,8 +85,8 @@ export default component$(() => {
 												<span class="text-gray-300 text-[10px]">|</span>
 												<a
 													href={`${currentPath}?lang=es`}
-													onClick$={(e) => {
-														e.preventDefault();
+													preventdefault:click
+													onClick$={() => {
 														switchLanguage$('es');
 													}}
 													class={[

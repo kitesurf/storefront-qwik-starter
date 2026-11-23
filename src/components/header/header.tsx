@@ -178,8 +178,8 @@ export default component$(() => {
 						<div class="hidden sm:flex items-center space-x-1 bg-white/10 rounded-full p-1 border border-white/15 text-xs font-semibold text-white">
 							<a
 								href={`${currentPath}?lang=de`}
-								onClick$={(e) => {
-									e.preventDefault();
+								preventdefault:click
+								onClick$={() => {
 									switchLanguage$('de');
 								}}
 								class={[
@@ -194,8 +194,8 @@ export default component$(() => {
 							<span class="text-white/30 text-[10px]">|</span>
 							<a
 								href={`${currentPath}?lang=en`}
-								onClick$={(e) => {
-									e.preventDefault();
+								preventdefault:click
+								onClick$={() => {
 									switchLanguage$('en');
 								}}
 								class={[
@@ -210,8 +210,8 @@ export default component$(() => {
 							<span class="text-white/30 text-[10px]">|</span>
 							<a
 								href={`${currentPath}?lang=es`}
-								onClick$={(e) => {
-									e.preventDefault();
+								preventdefault:click
+								onClick$={() => {
 									switchLanguage$('es');
 								}}
 								class={[
