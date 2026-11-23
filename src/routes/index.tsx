@@ -17,7 +17,7 @@ export default component$(() => {
 			<section class="py-16 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
 				<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-slate-200">
 					<div>
-						<span class="text-xs font-bold tracking-widest uppercase text-sky-600">
+						<span class="text-xs font-bold tracking-widest uppercase text-sky-700">
 							{_`Collections & Equipment`}
 						</span>
 						<h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 mt-1">

@@ -62,12 +62,17 @@ export default component$(() => {
 						<button
 							class="block sm:hidden text-white p-1"
 							onClick$={() => (appState.showMenu = !appState.showMenu)}
+							aria-label={_`Open Menu`}
 						>
-							<span class="sr-only">Menu</span>
+							<span class="sr-only">{_`Menu`}</span>
 							<MenuIcon />
 						</button>
 
-						<a href={`/?lang=${activeLocale}`} class="flex items-center gap-2.5 group">
+						<a
+							href={`/?lang=${activeLocale}`}
+							class="flex items-center gap-2.5 group"
+							aria-label="All For Wind Home"
+						>
 							<svg
 								viewBox="0 0 64 64"
 								fill="none"
@@ -222,6 +227,9 @@ export default component$(() => {
 
 						<a
 							href={appState.customer.id !== CUSTOMER_NOT_DEFINED_ID ? '/account' : '/sign-in'}
+							aria-label={
+								appState.customer.id !== CUSTOMER_NOT_DEFINED_ID ? _`My Account` : _`Sign In`
+							}
 							class="flex items-center space-x-1.5 text-sm font-medium text-white/90 hover:text-cyan-300 transition-colors"
 						>
 							<UserIcon />

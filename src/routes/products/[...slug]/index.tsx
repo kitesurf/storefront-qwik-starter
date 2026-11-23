@@ -61,14 +61,15 @@ export default component$(() => {
 			)}
 			<div class="max-w-6xl mx-auto px-4 py-10">
 				<div>
-					<h2 class="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
+					<h1 class="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
 						{productSignal.value.name}
-					</h2>
+					</h1>
 					<Breadcrumbs
 						items={
 							productSignal.value.collections[productSignal.value.collections.length - 1]
 								?.breadcrumbs ?? []
 						}
+						darkMode={false}
 					></Breadcrumbs>
 					<div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start mt-4 md:mt-12">
 						<div class="w-full max-w-2xl mx-auto sm:block lg:max-w-none">
@@ -116,8 +117,12 @@ export default component$(() => {
 							</div>
 							{1 < productSignal.value.variants.length && (
 								<div class="mt-4">
-									<label class="block text-sm font-medium text-gray-700">Select option</label>
+									<label for="variant-select" class="block text-sm font-medium text-gray-700">
+										{_`Select option`}
+									</label>
 									<select
+										id="variant-select"
+										aria-label={_`Select option`}
 										class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
 										value={selectedVariantIdSignal.value}
 										onChange$={(_, el) => (selectedVariantIdSignal.value = el.value)}

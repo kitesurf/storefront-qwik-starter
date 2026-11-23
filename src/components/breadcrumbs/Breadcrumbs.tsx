@@ -5,7 +5,7 @@ import SlashIcon from '../icons/SlashIcon';
 export default component$<{
 	items: { name: string; slug: string; id: string }[];
 	darkMode?: boolean;
-}>(({ items, darkMode = true }) => {
+}>(({ items, darkMode = false }) => {
 	return (
 		<nav class="flex py-2">
 			<ol class="flex items-center space-x-1 md:space-x-2 text-xs md:text-sm">
@@ -16,7 +16,7 @@ export default component$<{
 							class={
 								darkMode
 									? 'text-slate-400 hover:text-cyan-300 transition-colors flex items-center'
-									: 'text-gray-400 hover:text-gray-500 flex items-center'
+									: 'text-gray-600 hover:text-gray-900 flex items-center'
 							}
 						>
 							<HomeIcon />
@@ -43,7 +43,7 @@ export default component$<{
 													: 'text-slate-300 hover:text-cyan-300'
 												: isLast
 													? 'text-gray-900 font-semibold'
-													: 'text-gray-500 hover:text-gray-700'
+													: 'text-gray-600 hover:text-gray-900'
 										}`}
 									>
 										{item.name}

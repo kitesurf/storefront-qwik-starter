@@ -30,12 +30,12 @@ export default component$(() => {
 					<div class="grid grid-cols-2 gap-8 xl:col-span-2">
 						<div class="md:grid md:grid-cols-2 md:gap-8">
 							<div>
-								<h3 class="text-sm font-semibold text-gray-500 tracking-wider uppercase">{_`Shop`}</h3>
+								<h3 class="text-sm font-semibold text-gray-600 tracking-wider uppercase">{_`Shop`}</h3>
 								<ul class="mt-4 space-y-4">
 									{collections.map((collection) => (
 										<li key={collection.id}>
 											<a
-												class="text-base text-gray-500 hover:text-gray-600"
+												class="text-base text-gray-600 hover:text-gray-900"
 												href={`/collections/${collection.slug}`}
 												key={collection.id}
 											>
@@ -46,13 +46,13 @@ export default component$(() => {
 								</ul>
 							</div>
 							<div class="mt-12 md:mt-0">
-								<h3 class="text-sm font-semibold text-gray-500 tracking-wider uppercase">
+								<h3 class="text-sm font-semibold text-gray-600 tracking-wider uppercase">
 									{_`Support`}
 								</h3>
 								<ul class="mt-4 space-y-4">
 									{navigation.support.map((item) => (
 										<li key={item.name}>
-											<a href={item.href} class="text-base text-gray-500 hover:text-gray-600">
+											<a href={item.href} class="text-base text-gray-600 hover:text-gray-900">
 												{item.name}
 											</a>
 										</li>
@@ -62,13 +62,13 @@ export default component$(() => {
 						</div>
 						<div class="md:grid md:grid-cols-2 md:gap-8">
 							<div>
-								<h3 class="text-sm font-semibold text-gray-500 tracking-wider uppercase">
+								<h3 class="text-sm font-semibold text-gray-600 tracking-wider uppercase">
 									{_`Company`}
 								</h3>
 								<ul class="mt-4 space-y-4">
 									{navigation.company.map((item) => (
 										<li key={item.name}>
-											<a href={item.href} class="text-base text-gray-500 hover:text-gray-600">
+											<a href={item.href} class="text-base text-gray-600 hover:text-gray-900">
 												{item.name}
 											</a>
 										</li>
@@ -78,23 +78,24 @@ export default component$(() => {
 						</div>
 					</div>
 					<div class="mt-8 xl:mt-0">
-						<h3 class="text-sm font-semibold text-gray-500 tracking-wider uppercase">
+						<h3 class="text-sm font-semibold text-gray-600 tracking-wider uppercase">
 							{_`Subscribe to our newsletter`}
 						</h3>
-						<p class="mt-4 text-base text-gray-500">
+						<p class="mt-4 text-base text-gray-600">
 							{_`Be the first to know about exclusive offers & deals.`}
 						</p>
 						<div class="mt-4 sm:flex sm:max-w-md">
-							<label id="email-subscription" class="sr-only">
-								Email address
+							<label for="email-subscription" class="sr-only">
+								{_`Email address`}
 							</label>
 							<input
+								id="email-subscription"
 								type="email"
 								autoComplete="email"
 								required
 								class="input-text"
 								placeholder={_`Enter your email`}
-								aria-labelledby="email-subscription"
+								aria-label={_`Email address`}
 							/>
 							<div class="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
 								<button class="btn-primary" onClick$={() => {}}>
@@ -106,7 +107,7 @@ export default component$(() => {
 				</div>
 				<div class="mt-8 border-t pt-8">
 					<a
-						class="flex items-center space-x-4 font-medium text-gray-500 hover:text-gray-700"
+						class="flex items-center space-x-4 font-medium text-gray-600 hover:text-gray-900"
 						target="_blank"
 						href="https://github.com/vendure-ecommerce/storefront-qwik-starter"
 					>
