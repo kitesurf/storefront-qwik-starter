@@ -10,7 +10,9 @@ interface HeroSlide {
 	ctaText: string;
 	ctaLink: string;
 	image: string;
+	webpImage: string;
 	thumb: string;
+	thumbWebp: string;
 }
 
 export default component$(() => {
@@ -30,7 +32,9 @@ export default component$(() => {
 			ctaText: _`Explore Kites`,
 			ctaLink: '/collections/kites',
 			image: '/images/hero/kitesurfing-hero.jpg',
-			thumb: '/images/hero/kitesurfing-hero.jpg',
+			webpImage: '/images/hero/kitesurfing-hero.webp',
+			thumb: '/images/hero/kitesurfing-hero-thumb.jpg',
+			thumbWebp: '/images/hero/kitesurfing-hero-thumb.webp',
 		},
 		{
 			id: 'wingfoiling',
@@ -41,7 +45,9 @@ export default component$(() => {
 			ctaText: _`Explore Wings`,
 			ctaLink: '/collections/wings',
 			image: '/images/hero/wingfoiling-hero.jpg',
-			thumb: '/images/hero/wingfoiling-hero.jpg',
+			webpImage: '/images/hero/wingfoiling-hero.webp',
+			thumb: '/images/hero/wingfoiling-hero-thumb.jpg',
+			thumbWebp: '/images/hero/wingfoiling-hero-thumb.webp',
 		},
 		{
 			id: 'hydrofoils',
@@ -52,7 +58,9 @@ export default component$(() => {
 			ctaText: _`Explore Foils`,
 			ctaLink: '/collections/foil-packages',
 			image: '/images/hero/hydrofoils-hero.jpg',
-			thumb: '/images/hero/hydrofoils-hero.jpg',
+			webpImage: '/images/hero/hydrofoils-hero.webp',
+			thumb: '/images/hero/hydrofoils-hero-thumb.jpg',
+			thumbWebp: '/images/hero/hydrofoils-hero-thumb.webp',
 		},
 		{
 			id: 'twintips',
@@ -63,7 +71,9 @@ export default component$(() => {
 			ctaText: _`Explore Twintips`,
 			ctaLink: '/collections/twintips',
 			image: '/images/hero/twintips-hero.jpg',
-			thumb: '/images/hero/twintips-hero.jpg',
+			webpImage: '/images/hero/twintips-hero.webp',
+			thumb: '/images/hero/twintips-hero-thumb.jpg',
+			thumbWebp: '/images/hero/twintips-hero-thumb.webp',
 		},
 	];
 
@@ -132,6 +142,11 @@ export default component$(() => {
 					width: 100%;
 					height: 100%;
 					overflow: hidden;
+				}
+				.w-slide-box picture {
+					width: 100%;
+					height: 100%;
+					display: block;
 				}
 				.w-slide-box img {
 					width: 100%;
@@ -220,14 +235,19 @@ export default component$(() => {
 							}
 						}}
 					>
-						<img
-							width="1920"
-							height="1080"
-							src={slide.image}
-							alt={slide.title}
-							loading={index === 0 ? 'eager' : 'lazy'}
-							class="brightness-95 contrast-105"
-						/>
+						<picture class="w-full h-full block">
+							<source srcset={slide.webpImage} type="image/webp" />
+							<img
+								width="1920"
+								height="1080"
+								src={slide.image}
+								alt={slide.title}
+								loading={index === 0 ? 'eager' : 'lazy'}
+								fetchPriority={index === 0 ? 'high' : 'auto'}
+								decoding={index === 0 ? 'sync' : 'async'}
+								class="brightness-95 contrast-105"
+							/>
+						</picture>
 					</div>
 				);
 			})}
@@ -357,13 +377,18 @@ export default component$(() => {
 												: 'opacity-85 hover:opacity-100 hover:scale-100 border border-white/35',
 										]}
 									>
-										<img
-											width="144"
-											height="192"
-											src={slide.thumb}
-											alt={slide.title}
-											class="absolute inset-0 w-full h-full object-cover brightness-105 transition-transform duration-500 group-hover:scale-110"
-										/>
+										<picture class="absolute inset-0 w-full h-full block">
+											<source srcset={slide.thumbWebp} type="image/webp" />
+											<img
+												width="144"
+												height="192"
+												src={slide.thumb}
+												alt={slide.title}
+												loading="lazy"
+												decoding="async"
+												class="w-full h-full object-cover brightness-105 transition-transform duration-500 group-hover:scale-110"
+											/>
+										</picture>
 										<div class="absolute inset-0 bg-gradient-to-t from-sky-950/80 via-sky-950/15 to-transparent" />
 										<div class="relative z-10 h-full p-3 flex flex-col justify-between">
 											<span class="text-xs font-mono tracking-wider font-bold text-cyan-300 px-2 py-0.5 rounded-md bg-sky-950/80 backdrop-blur-md self-start border border-cyan-400/30">
