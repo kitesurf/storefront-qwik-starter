@@ -20,10 +20,21 @@ export const executeQuery = $(
 );
 
 export const useSearchLoader = routeLoader$(async ({ query }) => {
-	const term = query.get('q') || '';
-	const activeFacetValueIds: string[] = query.get('f')?.split('-') || [];
-	const search = await executeQuery(term, activeFacetValueIds);
-	return { search, query };
+	try {
+		const term = query.get('q') || '';
+		const activeFacetValueIds: string[] = query.get('f')?.split('-') || [];
+		const search = await executeQuery(term, activeFacetValueIds);
+		return {
+			search: search || { totalItems: 0, items: [], facetValues: [], collections: [] },
+			query,
+		};
+	} catch (err) {
+		console.error('useSearchLoader error:', err);
+		return {
+			search: { totalItems: 0, items: [], facetValues: [], collections: [] } as SearchResponse,
+			query,
+		};
+	}
 });
 
 export default component$(() => {

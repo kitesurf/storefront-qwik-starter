@@ -72,25 +72,77 @@ const executeOnTheServer = server$(async (options: Options, apiUrl: string) =>
 	executeRequest(options, apiUrl)
 );
 
-const executeRequest = async (options: Options, apiUrl: string) => {
-	let httpResponse: Response = new Response();
+const executeRequest = async (options: Options, apiUrl: string): Promise<ResponseProps<any>> => {
+	const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+	const timeoutId = controller ? setTimeout(() => controller.abort(), 6000) : null;
+
+	let httpResponse: Response | null = null;
 	try {
-		httpResponse = await fetch(apiUrl, options);
-	} catch (error) {
-		console.error(`Could not fetch from ${apiUrl}. Reason: ${error}`);
+		httpResponse = await fetch(apiUrl, {
+			...options,
+			signal: controller?.signal,
+		});
+	} catch (error: any) {
+		if (error?.name === 'AbortError') {
+			console.error(`Request to ${apiUrl} timed out after 6000ms`);
+		} else {
+			console.error(`Could not fetch from ${apiUrl}. Reason:`, error);
+		}
+		return { token: '', data: {} };
+	} finally {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
 	}
+
+	if (!httpResponse) {
+		return { token: '', data: {} };
+	}
+
 	return await extractTokenAndData(httpResponse, apiUrl);
 };
 
-const extractTokenAndData = async (response: Response, apiUrl: string) => {
-	if (response.body === null) {
-		console.error(`Emtpy request body for a call to ${apiUrl}`);
+const extractTokenAndData = async (
+	response: Response,
+	apiUrl: string
+): Promise<ResponseProps<any>> => {
+	try {
+		const token = response.headers.get(HEADER_AUTH_TOKEN_KEY) || '';
+
+		if (!response.ok) {
+			const errorText = await response.text().catch(() => '');
+			console.error(
+				`HTTP error ${response.status} (${response.statusText}) from ${apiUrl}. Response preview: ${errorText.slice(0, 200)}`
+			);
+			return { token, data: {} };
+		}
+
+		const text = await response.text().catch(() => '');
+		if (!text || !text.trim()) {
+			console.warn(`Empty response body from ${apiUrl}`);
+			return { token, data: {} };
+		}
+
+		let json: any;
+		try {
+			json = JSON.parse(text);
+		} catch (parseErr) {
+			console.error(
+				`Failed to parse JSON from ${apiUrl}. Body preview: ${text.slice(0, 200)}`,
+				parseErr
+			);
+			return { token, data: {} };
+		}
+
+		const { data, errors } = json || {};
+		if (errors && errors.length > 0) {
+			console.error(`GraphQL errors from ${apiUrl}:`, errors);
+			return { token, data: data || {} };
+		}
+
+		return { token, data: data || {} };
+	} catch (err) {
+		console.error(`Unexpected error in extractTokenAndData from ${apiUrl}:`, err);
 		return { token: '', data: {} };
 	}
-	const token = response.headers.get(HEADER_AUTH_TOKEN_KEY) || '';
-	const { data, errors } = await response.json();
-	if (errors && !data) {
-		throw new Error(errors[0].message);
-	}
-	return { token, data };
 };

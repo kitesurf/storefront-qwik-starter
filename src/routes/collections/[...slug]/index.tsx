@@ -22,20 +22,31 @@ import {
 } from '~/utils';
 
 export const useCollectionLoader = routeLoader$(async ({ params: p, sharedMap, url, cookie }) => {
-	const lang =
-		sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
-	const params = cleanUpParams(p);
-	return await getCollectionBySlug(params.slug, lang);
+	try {
+		const lang =
+			sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
+		const params = cleanUpParams(p);
+		return (await getCollectionBySlug(params.slug, lang)) || null;
+	} catch (err) {
+		console.error('useCollectionLoader error:', err);
+		return null;
+	}
 });
 
 export const useSearchLoader = routeLoader$(async ({ params: p, url, cookie, sharedMap }) => {
-	const lang =
-		sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
-	const params = cleanUpParams(p);
-	const activeFacetValueIds: string[] = url.searchParams.get('f')?.split('-') || [];
-	return activeFacetValueIds.length
-		? await searchQueryWithTerm(params.slug, '', activeFacetValueIds, lang)
-		: await searchQueryWithCollectionSlug(params.slug, lang);
+	try {
+		const lang =
+			sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
+		const params = cleanUpParams(p);
+		const activeFacetValueIds: string[] = url.searchParams.get('f')?.split('-') || [];
+		const res = activeFacetValueIds.length
+			? await searchQueryWithTerm(params.slug, '', activeFacetValueIds, lang)
+			: await searchQueryWithCollectionSlug(params.slug, lang);
+		return res || { totalItems: 0, items: [], facetValues: [] };
+	} catch (err) {
+		console.error('useSearchLoader error:', err);
+		return { totalItems: 0, items: [], facetValues: [] };
+	}
 });
 
 export default component$(() => {
@@ -46,6 +57,12 @@ export default component$(() => {
 	const collectionSignal = useCollectionLoader();
 	const searchSignal = useSearchLoader();
 
+	const initialSearch = (searchSignal.value || {
+		totalItems: 0,
+		items: [],
+		facetValues: [],
+	}) as SearchResponse;
+
 	const state = useStore<{
 		showMenu: boolean;
 		search: SearchResponse;
@@ -53,8 +70,8 @@ export default component$(() => {
 		facetValueIds: string[];
 	}>({
 		showMenu: false,
-		search: searchSignal.value as SearchResponse,
-		facedValues: groupFacetValues(searchSignal.value as SearchResponse, activeFacetValueIds),
+		search: initialSearch,
+		facedValues: groupFacetValues(initialSearch, activeFacetValueIds),
 		facetValueIds: activeFacetValueIds,
 	});
 
@@ -170,7 +187,7 @@ export default component$(() => {
 					)}
 					<div class={state.facedValues.length ? 'lg:col-span-4' : 'lg:col-span-5'}>
 						<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-							{state.search.items.map((item) => (
+							{(state.search?.items || []).map((item) => (
 								<ProductCard
 									key={item.productId}
 									productAsset={item.productAsset}
@@ -181,7 +198,7 @@ export default component$(() => {
 								/>
 							))}
 						</div>
-						{state.search.items.length === 0 && (
+						{(!state.search?.items || state.search.items.length === 0) && (
 							<div class="text-center py-16 bg-slate-900/40 rounded-2xl border border-white/10 backdrop-blur-sm">
 								<p class="text-slate-400 text-lg">{_`No products found in this category.`}</p>
 							</div>
@@ -198,7 +215,7 @@ export const head: DocumentHead = ({ resolveValue, url }) => {
 	let image = collection?.children?.[0]?.featuredAsset?.preview || undefined;
 	if (!image) {
 		const search = resolveValue(useSearchLoader);
-		image = search.items?.[0]?.productAsset?.preview || undefined;
+		image = search?.items?.[0]?.productAsset?.preview || undefined;
 	}
 	const title = collection?.name ? `${collection.name} — ALL FOR WIND` : undefined;
 	return generateDocumentHead(url.href, title, undefined, image);

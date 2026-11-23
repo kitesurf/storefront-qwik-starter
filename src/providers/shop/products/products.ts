@@ -1,15 +1,29 @@
 import gql from 'graphql-tag';
-import { Product, ProductQuery, SearchInput, SearchResponse } from '~/generated/graphql';
+import { Product, SearchInput, SearchResponse } from '~/generated/graphql';
 import { shopSdk } from '~/graphql-wrapper';
 import { DEV_API, PROD_API } from '~/constants';
 
 const baseUrl = import.meta.env.DEV ? DEV_API : PROD_API;
 
-export const search = async (searchInput: SearchInput, lang?: string) => {
-	const apiUrl = lang ? `${baseUrl}/shop-api?languageCode=${lang}` : undefined;
-	return await shopSdk
-		.search({ input: { groupByProduct: true, ...searchInput } }, { apiUrl })
-		.then((res) => res.search as SearchResponse);
+export const search = async (searchInput: SearchInput, lang?: string): Promise<SearchResponse> => {
+	try {
+		const apiUrl = lang ? `${baseUrl}/shop-api?languageCode=${lang}` : undefined;
+		const res = await shopSdk.search(
+			{ input: { groupByProduct: true, ...searchInput } },
+			{ apiUrl }
+		);
+		return (
+			(res?.search as SearchResponse) || {
+				totalItems: 0,
+				items: [],
+				facetValues: [],
+				collections: [],
+			}
+		);
+	} catch (err) {
+		console.error('search failed:', err);
+		return { totalItems: 0, items: [], facetValues: [], collections: [] };
+	}
 };
 
 export const searchQueryWithCollectionSlug = async (collectionSlug: string, lang?: string) =>
@@ -22,9 +36,18 @@ export const searchQueryWithTerm = async (
 	lang?: string
 ) => search({ collectionSlug, term, facetValueFilters: [{ or: facetValueIds }] }, lang);
 
-export const getProductBySlug = async (slug: string, lang?: string) => {
-	const apiUrl = lang ? `${baseUrl}/shop-api?languageCode=${lang}` : undefined;
-	return shopSdk.product({ slug }, { apiUrl }).then((res: ProductQuery) => res.product as Product);
+export const getProductBySlug = async (
+	slug: string,
+	lang?: string
+): Promise<Product | undefined> => {
+	try {
+		const apiUrl = lang ? `${baseUrl}/shop-api?languageCode=${lang}` : undefined;
+		const res = await shopSdk.product({ slug }, { apiUrl });
+		return (res?.product as Product) || undefined;
+	} catch (err) {
+		console.error(`getProductBySlug failed for ${slug}:`, err);
+		return undefined;
+	}
 };
 
 export const detailedProductFragment = gql`

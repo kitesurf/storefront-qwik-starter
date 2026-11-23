@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
 import {
 	AddPaymentToOrderMutation,
-	AvailableCountriesQuery,
 	Country,
 	CreateStripePaymentIntentMutation,
 	EligiblePaymentMethodsQuery,
@@ -15,10 +14,15 @@ import {
 import { shopSdk } from '~/graphql-wrapper';
 import { requester } from '~/utils/api';
 
-export const getAvailableCountriesQuery = async () => {
-	return shopSdk
-		.availableCountries({})
-		.then((res: AvailableCountriesQuery) => res?.availableCountries as Country[]);
+export const getAvailableCountriesQuery = async (): Promise<Country[]> => {
+	try {
+		const res = await shopSdk.availableCountries({});
+		const countries = res?.availableCountries;
+		return Array.isArray(countries) ? (countries as Country[]) : [];
+	} catch (err) {
+		console.error('getAvailableCountriesQuery failed:', err);
+		return [];
+	}
 };
 
 export const addPaymentToOrderMutation = async (

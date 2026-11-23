@@ -26,13 +26,25 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 };
 
 export const useCollectionsLoader = routeLoader$(async ({ sharedMap, url, cookie }) => {
-	const lang =
-		sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
-	return await getCollections(lang);
+	try {
+		const lang =
+			sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
+		const collections = await getCollections(lang);
+		return Array.isArray(collections) ? collections : [];
+	} catch (err) {
+		console.error('useCollectionsLoader error:', err);
+		return [];
+	}
 });
 
 export const useAvailableCountriesLoader = routeLoader$(async () => {
-	return await getAvailableCountriesQuery();
+	try {
+		const countries = await getAvailableCountriesQuery();
+		return Array.isArray(countries) ? countries : [];
+	} catch (err) {
+		console.error('useAvailableCountriesLoader error:', err);
+		return [];
+	}
 });
 
 export const onRequest: RequestHandler = ({

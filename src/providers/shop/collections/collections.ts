@@ -5,16 +5,30 @@ import { DEV_API, PROD_API } from '~/constants';
 
 const baseUrl = import.meta.env.DEV ? DEV_API : PROD_API;
 
-export const getCollections = async (lang?: string) => {
-	const apiUrl = lang ? `${baseUrl}/shop-api?languageCode=${lang}` : undefined;
-	return await shopSdk
-		.collections(undefined, { apiUrl })
-		.then((res) => res?.collections.items as Collection[]);
+export const getCollections = async (lang?: string): Promise<Collection[]> => {
+	try {
+		const apiUrl = lang ? `${baseUrl}/shop-api?languageCode=${lang}` : undefined;
+		const res = await shopSdk.collections(undefined, { apiUrl });
+		const items = res?.collections?.items;
+		return Array.isArray(items) ? (items as Collection[]) : [];
+	} catch (err) {
+		console.error('getCollections failed:', err);
+		return [];
+	}
 };
 
-export const getCollectionBySlug = async (slug: string, lang?: string) => {
-	const apiUrl = lang ? `${baseUrl}/shop-api?languageCode=${lang}` : undefined;
-	return await shopSdk.collection({ slug }, { apiUrl }).then((res) => res.collection as Collection);
+export const getCollectionBySlug = async (
+	slug: string,
+	lang?: string
+): Promise<Collection | undefined> => {
+	try {
+		const apiUrl = lang ? `${baseUrl}/shop-api?languageCode=${lang}` : undefined;
+		const res = await shopSdk.collection({ slug }, { apiUrl });
+		return (res?.collection as Collection) || undefined;
+	} catch (err) {
+		console.error(`getCollectionBySlug failed for ${slug}:`, err);
+		return undefined;
+	}
 };
 
 gql`

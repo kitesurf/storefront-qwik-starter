@@ -16,43 +16,70 @@ import { type ProductVariant } from '~/generated/graphql-shop';
 import { cleanUpParams } from '~/utils/formatters';
 import { generateDocumentHead } from '~/utils/head.utils';
 
-export const useProductLoader = routeLoader$(async ({ params, sharedMap, url, cookie }) => {
-	const lang =
-		sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
-	const { slug } = cleanUpParams(params);
-	const product = await getProductBySlug(slug, lang);
-	if (product.assets.length === 1) {
-		product.assets.push({
-			...product.assets[0],
-			id: 'placeholder_2',
-			name: 'placeholder',
-			preview: '/asset_placeholder.webp',
-		});
+export const useProductLoader = routeLoader$(async ({ params, sharedMap, url, cookie, status }) => {
+	try {
+		const lang =
+			sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
+		const { slug } = cleanUpParams(params);
+		const product = await getProductBySlug(slug, lang);
+		if (!product) {
+			status(404);
+			return null;
+		}
+		if (product.assets && product.assets.length === 1) {
+			product.assets.push({
+				...product.assets[0],
+				id: 'placeholder_2',
+				name: 'placeholder',
+				preview: '/asset_placeholder.webp',
+			});
+		}
+		return product;
+	} catch (err) {
+		console.error('useProductLoader error:', err);
+		status(404);
+		return null;
 	}
-	return product;
 });
 
 export default component$(() => {
 	const appState = useContext(APP_STATE);
 	const productSignal = useProductLoader();
-	const currentImageSig = useSignal(productSignal.value.assets[0]);
-	const selectedVariantIdSignal = useSignal(productSignal.value.variants[0].id);
+	const product = productSignal.value;
+	const currentImageSig = useSignal(product?.assets?.[0]);
+	const selectedVariantIdSignal = useSignal(product?.variants?.[0]?.id || '');
 	const selectedVariantSignal = useComputed$(() =>
-		productSignal.value.variants.find((v) => v.id === selectedVariantIdSignal.value)
+		product?.variants?.find((v) => v.id === selectedVariantIdSignal.value)
 	);
 	const addItemToOrderErrorSignal = useSignal('');
 	const quantitySignal = useComputed$<Record<string, number>>(() => {
 		const result: Record<string, number> = {};
-		(productSignal.value.variants || []).forEach((variant: ProductVariant) => {
+		(product?.variants || []).forEach((variant: ProductVariant) => {
 			const orderLine = (appState.activeOrder?.lines || []).find(
 				(l: OrderLine) =>
-					l.productVariant.id === variant.id &&
-					l.productVariant.product.id === productSignal.value.id
+					l.productVariant.id === variant.id && l.productVariant.product.id === product?.id
 			);
 			result[variant.id] = orderLine?.quantity || 0;
 		});
 		return result;
 	});
+
+	if (!product) {
+		return (
+			<div class="max-w-6xl mx-auto px-4 py-20 text-center">
+				<h1 class="text-3xl font-bold text-gray-900 mb-4">{_`Product not found`}</h1>
+				<p class="text-gray-600 mb-8">
+					{_`The requested product could not be found or is currently unavailable.`}
+				</p>
+				<a
+					href="/"
+					class="inline-block bg-sky-700 hover:bg-sky-800 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+				>
+					{_`Home`}
+				</a>
+			</div>
+		);
+	}
 
 	return (
 		<div>
@@ -62,37 +89,36 @@ export default component$(() => {
 			<div class="max-w-6xl mx-auto px-4 py-10">
 				<div>
 					<h1 class="text-3xl sm:text-5xl font-light tracking-tight text-gray-900 my-8">
-						{productSignal.value.name}
+						{product.name}
 					</h1>
 					<Breadcrumbs
-						items={
-							productSignal.value.collections[productSignal.value.collections.length - 1]
-								?.breadcrumbs ?? []
-						}
+						items={product.collections[product.collections.length - 1]?.breadcrumbs ?? []}
 						darkMode={false}
 					></Breadcrumbs>
 					<div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start mt-4 md:mt-12">
 						<div class="w-full max-w-2xl mx-auto sm:block lg:max-w-none">
 							<span class="rounded-md overflow-hidden">
 								<div class="h-[400px] w-full md:w-[400px]">
-									<Image
-										layout="fixed"
-										class="object-center object-cover rounded-lg mx-auto"
-										width="400"
-										height="400"
-										src={currentImageSig.value.preview + '?w=400&h=400&format=webp'}
-										alt={`Image of: ${currentImageSig.value.name}`}
-									/>
+									{currentImageSig.value && (
+										<Image
+											layout="fixed"
+											class="object-center object-cover rounded-lg mx-auto"
+											width="400"
+											height="400"
+											src={currentImageSig.value.preview + '?w=400&h=400&format=webp'}
+											alt={`Image of: ${currentImageSig.value.name}`}
+										/>
+									)}
 								</div>
-								{productSignal.value.assets.length > 1 && (
+								{product.assets.length > 1 && (
 									<div class="w-full md:w-[400px] my-2 flex flex-wrap gap-3 justify-center">
-										{productSignal.value.assets.map((asset, key) => (
+										{product.assets.map((asset, key) => (
 											<Image
 												key={key}
 												layout="fixed"
 												class={{
 													'object-center object-cover rounded-lg': true,
-													'border-b-8 border-primary-600': currentImageSig.value.id === asset.id,
+													'border-b-8 border-primary-600': currentImageSig.value?.id === asset.id,
 												}}
 												width="80"
 												height="80"
@@ -112,10 +138,10 @@ export default component$(() => {
 								<h2 class="sr-only">{_`Description`}</h2>
 								<div
 									class="text-base text-gray-700"
-									dangerouslySetInnerHTML={productSignal.value.description}
+									dangerouslySetInnerHTML={product.description}
 								/>
 							</div>
-							{1 < productSignal.value.variants.length && (
+							{1 < product.variants.length && (
 								<div class="mt-4">
 									<label for="variant-select" class="block text-sm font-medium text-gray-700">
 										{_`Select option`}
@@ -127,7 +153,7 @@ export default component$(() => {
 										value={selectedVariantIdSignal.value}
 										onChange$={(_, el) => (selectedVariantIdSignal.value = el.value)}
 									>
-										{productSignal.value.variants.map((variant) => (
+										{product.variants.map((variant) => (
 											<option
 												key={variant.id}
 												value={variant.id}
@@ -225,6 +251,9 @@ export default component$(() => {
 
 export const head: DocumentHead = ({ resolveValue, url }) => {
 	const product = resolveValue(useProductLoader);
+	if (!product) {
+		return generateDocumentHead(url.href, 'Produkt — ALL FOR WIND');
+	}
 	return generateDocumentHead(
 		url.href,
 		product.name,

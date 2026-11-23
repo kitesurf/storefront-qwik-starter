@@ -7,7 +7,8 @@ import HeroShowcase from '~/components/hero-showcase/HeroShowcase';
 import { APP_STATE } from '~/constants';
 
 export default component$(() => {
-	const collections = useContext(APP_STATE).collections;
+	const appState = useContext(APP_STATE);
+	const collections = appState.collections || [];
 
 	const structuredData = {
 		'@context': 'https://schema.org',
@@ -49,8 +50,8 @@ export default component$(() => {
 				</div>
 
 				<div class="grid justify-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-10 gap-x-8">
-					{collections.map((collection) =>
-						collection.featuredAsset ? (
+					{(collections || []).map((collection) =>
+						collection?.featuredAsset ? (
 							<CollectionCard key={collection.id} collection={collection} />
 						) : null
 					)}
