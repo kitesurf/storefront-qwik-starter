@@ -68,11 +68,7 @@ export default component$(() => {
 							<MenuIcon />
 						</button>
 
-						<a
-							href={`/?lang=${activeLocale}`}
-							class="flex items-center gap-2.5 group"
-							aria-label="All For Wind Home"
-						>
+						<a href={`/?lang=${activeLocale}`} class="flex items-center gap-2.5 group">
 							<svg
 								viewBox="0 0 64 64"
 								fill="none"

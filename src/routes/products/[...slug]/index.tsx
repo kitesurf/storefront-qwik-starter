@@ -109,7 +109,7 @@ export default component$(() => {
 						</div>
 						<div class="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
 							<div class="">
-								<h3 class="sr-only">Description</h3>
+								<h2 class="sr-only">{_`Description`}</h2>
 								<div
 									class="text-base text-gray-700"
 									dangerouslySetInnerHTML={productSignal.value.description}
@@ -201,7 +201,7 @@ export default component$(() => {
 							)}
 
 							<section class="mt-12 pt-12 border-t text-xs">
-								<h3 class="text-gray-600 font-bold mb-2">{_`Shipping & Returns`}</h3>
+								<h2 class="text-gray-600 font-bold mb-2">{_`Shipping & Returns`}</h2>
 								<div class="text-gray-500 space-y-1">
 									<p>
 										{_`Standard shipping: 3 - 5 working days. Express shipping: 1 - 3 working days.`}
