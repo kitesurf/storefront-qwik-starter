@@ -41,4 +41,4 @@ export default component$(() => {
 	);
 });
 
-export const head: DocumentHead = () => generateDocumentHead();
+export const head: DocumentHead = ({ url }) => generateDocumentHead(url.href);

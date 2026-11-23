@@ -13,6 +13,28 @@ export const DEFAULT_METADATA_DESCRIPTION =
 	'Offizieller Eleveight Partner Shop für Kitesurfing, Wingfoiling, Hydrofoils und Twintip Boards.';
 export const DEFAULT_METADATA_IMAGE = 'https://allforwind.com/social-image.jpg?v=2';
 export const DEFAULT_LOCALE = 'de';
+
+export const METADATA_BY_LOCALE = {
+	de: {
+		title: 'ALL FOR WIND — Kite, Wing & Foil Performance Shop',
+		description:
+			'Offizieller Eleveight Partner Shop für Kitesurfing, Wingfoiling, Hydrofoils und Twintip Boards.',
+		ogLocale: 'de_DE',
+	},
+	en: {
+		title: 'ALL FOR WIND — Kite, Wing & Foil Performance Shop',
+		description:
+			'Official Eleveight Partner Shop for Kitesurfing, Wingfoiling, Hydrofoils and Twintip Boards.',
+		ogLocale: 'en_US',
+	},
+	es: {
+		title: 'ALL FOR WIND — Tienda Especializada en Kite, Wing & Foil',
+		description:
+			'Tienda oficial Eleveight de kitesurf, wingfoil, hydrofoils y tablas twintip. Rendimiento y calidad sin concesiones.',
+		ogLocale: 'es_ES',
+	},
+} as const;
+
 export const DEV_API = import.meta.env.VITE_VENDURE_DEV_URL || 'https://vendure.allforwind.com';
 export const PROD_API = import.meta.env.VITE_VENDURE_PROD_URL || 'https://vendure.allforwind.com';
 export const LOCAL_API = import.meta.env.VITE_VENDURE_LOCAL_URL || 'http://localhost:3000';

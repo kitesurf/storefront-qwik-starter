@@ -138,7 +138,7 @@ export default component$(() => {
 			<Header />
 			<Cart />
 			<Menu />
-			<main class="pb-12 bg-gray-50">
+			<main class="min-h-screen bg-gray-50">
 				<Slot />
 			</main>
 			<Footer />

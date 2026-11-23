@@ -141,4 +141,4 @@ export const formatDateTime = (dateToConvert: Date) => {
 
 export const isCheckoutPage = (url: string) => url.indexOf('/checkout/') >= 0;
 
-export { generateDocumentHead } from './head.utils';
+export { generateDocumentHead, getLocaleFromUrl } from './head.utils';

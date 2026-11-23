@@ -1,20 +1,21 @@
 import { component$ } from '@qwik.dev/core';
 import { useDocumentHead, useLocation } from '@qwik.dev/router';
-import { DEFAULT_METADATA_TITLE } from '~/constants';
 import { generateDocumentHead } from '~/utils/head.utils';
 
 export const Head = component$(() => {
 	const documentHead = useDocumentHead();
-	const head =
-		documentHead.meta.length > 0 ? documentHead : { ...documentHead, ...generateDocumentHead() };
 	const loc = useLocation();
+	const fallbackHead = generateDocumentHead(loc.url.href);
+	const head = documentHead.meta.length > 0 ? documentHead : { ...documentHead, ...fallbackHead };
+
+	const hasDescription = head.meta.some((m: any) => m && m.name === 'description' && !!m.content);
 
 	return (
 		<head>
 			<meta charSet="utf-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
 			<meta name="theme-color" content="#1D4ED8" />
-			<title>{head.title || DEFAULT_METADATA_TITLE}</title>
+			<title>{head.title || fallbackHead.title}</title>
 
 			<link rel="manifest" href="/manifest.json" />
 			<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -22,6 +23,16 @@ export const Head = component$(() => {
 			<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 			<link rel="preconnect" href="https://demo.vendure.io" />
 			<link rel="canonical" href={loc.url.toString()} />
+
+			{!hasDescription && (
+				<meta
+					name="description"
+					content={
+						head.meta.find((m: any) => m?.property === 'og:description')?.content ||
+						fallbackHead.meta.find((m: any) => m?.name === 'description')?.content
+					}
+				/>
+			)}
 
 			{head.meta.map((m, key) => (
 				<meta key={key} {...m} />
@@ -34,8 +45,6 @@ export const Head = component$(() => {
 			{head.styles.map(({ key, style, ...props }) => (
 				<style key={key} {...props} dangerouslySetInnerHTML={style} />
 			))}
-
-			<meta name="description" content="Vendure Qwik Storefront" />
 		</head>
 	);
 });
