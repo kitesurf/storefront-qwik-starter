@@ -27,7 +27,7 @@ export default component$(({ collection }: IProps) => {
 			</div>
 			<div class="p-5 relative z-10 flex items-center justify-between border-t border-slate-800/80 bg-slate-900/90 backdrop-blur-sm">
 				<div>
-					<span class="text-[11px] font-semibold uppercase tracking-wider text-cyan-400">
+					<span class="text-xs font-semibold uppercase tracking-wider text-cyan-400">
 						{_`Category`}
 					</span>
 					<h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">

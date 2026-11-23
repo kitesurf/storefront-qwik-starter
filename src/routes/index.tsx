@@ -8,8 +8,27 @@ import { APP_STATE } from '~/constants';
 
 export default component$(() => {
 	const collections = useContext(APP_STATE).collections;
+
+	const structuredData = {
+		'@context': 'https://schema.org',
+		'@type': 'OnlineStore',
+		name: 'ALL FOR WIND',
+		url: 'https://allforwind.com',
+		description: 'Eleveight Partner Shop für Kitesurfing, Wingfoiling, Hydrofoils und Boards',
+		logo: 'https://allforwind.com/apple-touch-icon.png',
+		image: 'https://allforwind.com/images/hero/kitesurfing-hero.jpg',
+		potentialAction: {
+			'@type': 'SearchAction',
+			target: 'https://allforwind.com/search?q={search_term_string}',
+			'query-input': 'required name=search_term_string',
+		},
+	};
+
 	return (
 		<div class="bg-slate-50 text-slate-900 min-h-screen">
+			{/* Schema.org JSON-LD Structured Data for Agentic Browsing & Rich Results */}
+			<script type="application/ld+json" dangerouslySetInnerHTML={JSON.stringify(structuredData)} />
+
 			{/* Wanderlix-Style Cinematic Hero Header */}
 			<HeroShowcase />
 

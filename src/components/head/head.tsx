@@ -24,6 +24,39 @@ export const Head = component$(() => {
 			<link rel="preconnect" href="https://demo.vendure.io" />
 			<link rel="canonical" href={loc.url.toString()} />
 
+			{/* International SEO / Hreflang Tags */}
+			{loc.url.pathname === '/' ? (
+				<>
+					<link rel="alternate" hrefLang="de" href="https://allforwind.com/?lang=de" />
+					<link rel="alternate" hrefLang="en" href="https://allforwind.com/?lang=en" />
+					<link rel="alternate" hrefLang="es" href="https://allforwind.com/?lang=es" />
+					<link rel="alternate" hrefLang="x-default" href="https://allforwind.com/" />
+				</>
+			) : (
+				<>
+					<link
+						rel="alternate"
+						hrefLang="de"
+						href={`https://allforwind.com${loc.url.pathname}?lang=de`}
+					/>
+					<link
+						rel="alternate"
+						hrefLang="en"
+						href={`https://allforwind.com${loc.url.pathname}?lang=en`}
+					/>
+					<link
+						rel="alternate"
+						hrefLang="es"
+						href={`https://allforwind.com${loc.url.pathname}?lang=es`}
+					/>
+					<link
+						rel="alternate"
+						hrefLang="x-default"
+						href={`https://allforwind.com${loc.url.pathname}`}
+					/>
+				</>
+			)}
+
 			{!hasDescription && (
 				<meta
 					name="description"
@@ -44,6 +77,10 @@ export const Head = component$(() => {
 
 			{head.styles.map(({ key, style, ...props }) => (
 				<style key={key} {...props} dangerouslySetInnerHTML={style} />
+			))}
+
+			{head.scripts?.map(({ key, script, ...props }) => (
+				<script key={key} {...props} dangerouslySetInnerHTML={script} />
 			))}
 		</head>
 	);

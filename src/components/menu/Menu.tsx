@@ -36,7 +36,7 @@ export default component$(() => {
 											<div class="ml-3 h-7 flex items-center">
 												<button
 													type="button"
-													class="-m-2 p-2 text-gray-400 hover:text-gray-500"
+													class="-m-2 p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 hover:text-gray-500"
 													onClick$={() => (appState.showMenu = false)}
 												>
 													<span class="sr-only">Close panel</span>
@@ -58,7 +58,7 @@ export default component$(() => {
 														switchLanguage$('de');
 													}}
 													class={[
-														'px-2.5 py-0.5 rounded-full transition-all',
+														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
 														activeLocale === 'de'
 															? 'bg-sky-600 text-white font-bold shadow-sm'
 															: 'text-gray-600 hover:bg-gray-200',
@@ -66,7 +66,7 @@ export default component$(() => {
 												>
 													DE
 												</a>
-												<span class="text-gray-300 text-[10px]">|</span>
+												<span class="text-gray-300 text-xs">|</span>
 												<a
 													href={`${currentPath}?lang=en`}
 													preventdefault:click
@@ -74,7 +74,7 @@ export default component$(() => {
 														switchLanguage$('en');
 													}}
 													class={[
-														'px-2.5 py-0.5 rounded-full transition-all',
+														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
 														activeLocale === 'en'
 															? 'bg-sky-600 text-white font-bold shadow-sm'
 															: 'text-gray-600 hover:bg-gray-200',
@@ -82,7 +82,7 @@ export default component$(() => {
 												>
 													EN
 												</a>
-												<span class="text-gray-300 text-[10px]">|</span>
+												<span class="text-gray-300 text-xs">|</span>
 												<a
 													href={`${currentPath}?lang=es`}
 													preventdefault:click
@@ -90,7 +90,7 @@ export default component$(() => {
 														switchLanguage$('es');
 													}}
 													class={[
-														'px-2.5 py-0.5 rounded-full transition-all',
+														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
 														activeLocale === 'es'
 															? 'bg-sky-600 text-white font-bold shadow-sm'
 															: 'text-gray-600 hover:bg-gray-200',

@@ -97,6 +97,13 @@ export default component$(() => {
 	});
 
 	useVisibleTask$(({ cleanup }) => {
+		if (
+			typeof window !== 'undefined' &&
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		) {
+			isPaused.value = true;
+		}
+
 		const interval = setInterval(() => {
 			if (!isPaused.value) {
 				progress.value += STEP;
@@ -112,6 +119,9 @@ export default component$(() => {
 	return (
 		<div
 			class="relative w-full h-[88vh] min-h-[620px] max-h-[920px] overflow-hidden bg-sky-900 text-white select-none"
+			role="region"
+			aria-roledescription="carousel"
+			aria-label={_`Featured equipment`}
 			onMouseEnter$={() => (isPaused.value = true)}
 			onMouseLeave$={() => (isPaused.value = false)}
 		>
@@ -203,6 +213,7 @@ export default component$(() => {
 					<div
 						key={slide.id}
 						class={['w-slide-box', statusClass, isCurrent ? 'cursor-pointer' : '']}
+						aria-hidden={!isCurrent}
 						onClick$={() => {
 							if (isCurrent) {
 								window.location.href = slide.ctaLink;
@@ -229,8 +240,8 @@ export default component$(() => {
 			<div class="relative z-30 h-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col justify-between pt-16 pb-10 pointer-events-none">
 				{/* Top Status Bar: Partner Tag & Pill */}
 				<div class="flex items-center justify-between pointer-events-auto">
-					<div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-xs sm:text-sm font-semibold tracking-wide text-cyan-200 shadow-sm">
-						<span class="w-2 h-2 rounded-full bg-cyan-300 animate-pulse" />
+					<div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-sky-950/80 backdrop-blur-md border border-cyan-400/40 text-xs sm:text-sm font-bold tracking-wide text-cyan-300 shadow-sm">
+						<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
 						<span>{_`All For Wind // Official Eleveight Partner`}</span>
 					</div>
 				</div>
@@ -245,6 +256,10 @@ export default component$(() => {
 								return (
 									<div
 										key={slide.id}
+										role="group"
+										aria-roledescription="slide"
+										aria-label={_`Slide ${index + 1} of ${SLIDES.length}: ${slide.title}`}
+										aria-hidden={!isActive}
 										class={[
 											'transition-all duration-700 absolute inset-x-0 bottom-0 top-0 flex flex-col justify-center',
 											isActive
@@ -256,13 +271,19 @@ export default component$(() => {
 											{slide.tag}
 										</span>
 										<a href={slide.ctaLink} class="group inline-block cursor-pointer">
-											<h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight uppercase leading-none mt-2 text-white group-hover:text-cyan-300 transition-colors drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
-												{slide.title}
-											</h1>
+											{isActive ? (
+												<h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight uppercase leading-none mt-2 text-white group-hover:text-cyan-300 transition-colors drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
+													{slide.title}
+												</h1>
+											) : (
+												<h2 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight uppercase leading-none mt-2 text-white group-hover:text-cyan-300 transition-colors drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
+													{slide.title}
+												</h2>
+											)}
 										</a>
-										<h2 class="text-base sm:text-xl font-bold tracking-wide uppercase text-cyan-100 mt-2 drop-shadow">
+										<p class="text-base sm:text-xl font-bold tracking-wide uppercase text-cyan-100 mt-2 drop-shadow">
 											{slide.subtitle}
-										</h2>
+										</p>
 										<p class="text-sm sm:text-base text-white/90 font-medium leading-relaxed max-w-xl mt-3 drop-shadow">
 											{slide.description}
 										</p>
@@ -310,11 +331,23 @@ export default component$(() => {
 								return (
 									<div
 										key={slide.id}
+										role="button"
+										tabIndex={0}
+										aria-label={_`Select slide: ${slide.title}`}
 										onClick$={() => {
 											if (isActive) {
 												window.location.href = slide.ctaLink;
 											} else {
 												goToSlide(index);
+											}
+										}}
+										onKeyDown$={(e) => {
+											if (e.key === 'Enter' || e.key === ' ') {
+												if (isActive) {
+													window.location.href = slide.ctaLink;
+												} else {
+													goToSlide(index);
+												}
 											}
 										}}
 										class={[
@@ -333,7 +366,7 @@ export default component$(() => {
 										/>
 										<div class="absolute inset-0 bg-gradient-to-t from-sky-950/80 via-sky-950/15 to-transparent" />
 										<div class="relative z-10 h-full p-3 flex flex-col justify-between">
-											<span class="text-[11px] font-mono tracking-wider font-bold text-cyan-200 px-2 py-0.5 rounded-md bg-sky-950/50 backdrop-blur-md self-start border border-white/25">
+											<span class="text-xs font-mono tracking-wider font-bold text-cyan-300 px-2 py-0.5 rounded-md bg-sky-950/80 backdrop-blur-md self-start border border-cyan-400/30">
 												0{index + 1}
 											</span>
 											<div>
@@ -343,7 +376,7 @@ export default component$(() => {
 												<a
 													href={slide.ctaLink}
 													stoppropagation:click
-													class="text-[10px] text-cyan-200 hover:text-white font-semibold tracking-tight drop-shadow inline-block mt-0.5 underline"
+													class="text-xs text-cyan-300 hover:text-white font-semibold tracking-tight drop-shadow inline-flex items-center min-h-[44px] py-2 underline"
 												>
 													{_`View`} &rarr;
 												</a>
@@ -358,7 +391,7 @@ export default component$(() => {
 
 				{/* Bottom Navigation & Live Progress Bar */}
 				<div class="flex items-center justify-between pt-6 border-t border-white/25 pointer-events-auto">
-					{/* Prev / Next Glass Buttons */}
+					{/* Prev / Next & Pause/Play Glass Buttons */}
 					<div class="flex items-center space-x-3">
 						<button
 							onClick$={prevSlide}
@@ -388,6 +421,21 @@ export default component$(() => {
 								/>
 							</svg>
 						</button>
+						<button
+							onClick$={() => (isPaused.value = !isPaused.value)}
+							aria-label={isPaused.value ? _`Resume slideshow` : _`Pause slideshow`}
+							class="w-11 h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm cursor-pointer"
+						>
+							{isPaused.value ? (
+								<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+									<path d="M8 5v14l11-7z" />
+								</svg>
+							) : (
+								<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+									<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+								</svg>
+							)}
+						</button>
 					</div>
 
 					{/* Auto-play Progress Bar */}
@@ -401,10 +449,10 @@ export default component$(() => {
 					</div>
 
 					{/* Slide Counter (e.g. 01 / 04) */}
-					<div class="flex items-baseline space-x-1 font-mono text-sm tracking-widest text-cyan-200 drop-shadow">
+					<div class="flex items-baseline space-x-1 font-mono text-sm tracking-widest text-cyan-300 drop-shadow">
 						<span class="text-lg font-extrabold text-white">0{activeIndex.value + 1}</span>
-						<span class="text-white/60">/</span>
-						<span class="text-white/80">0{SLIDES.length}</span>
+						<span class="text-white/80">/</span>
+						<span class="text-white/90">0{SLIDES.length}</span>
 					</div>
 				</div>
 			</div>

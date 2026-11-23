@@ -60,7 +60,7 @@ export default component$(() => {
 				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
 					<div class="flex items-center gap-4 lg:gap-8">
 						<button
-							class="block sm:hidden text-white p-1"
+							class="block sm:hidden text-white p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-white/10 active:bg-white/20"
 							onClick$={() => (appState.showMenu = !appState.showMenu)}
 							aria-label={_`Open Menu`}
 						>
@@ -105,7 +105,7 @@ export default component$(() => {
 								</defs>
 							</svg>
 							<div class="leading-none">
-								<div class="text-[9px] font-bold tracking-[0.25em] text-cyan-300 uppercase">
+								<div class="text-xs font-bold tracking-[0.2em] text-cyan-300 uppercase">
 									ALL FOR
 								</div>
 								<div class="text-xl font-black tracking-wider text-white uppercase italic -mt-0.5">
@@ -143,7 +143,7 @@ export default component$(() => {
 											<div class="bg-sky-950/95 backdrop-blur-md border border-white/15 rounded-xl shadow-2xl py-2 min-w-[220px] flex flex-col">
 												<a
 													href={`/collections/${collection.slug}`}
-													class="px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-cyan-400 hover:bg-white/10 transition-colors border-b border-white/10"
+													class="px-4 py-2 text-xs font-bold uppercase tracking-wider text-cyan-400 hover:bg-white/10 transition-colors border-b border-white/10"
 												>
 													{collection.name}
 												</a>
@@ -179,7 +179,7 @@ export default component$(() => {
 									switchLanguage$('de');
 								}}
 								class={[
-									'px-2 py-0.5 rounded-full transition-all',
+									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
 									activeLocale === 'de'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
@@ -187,7 +187,7 @@ export default component$(() => {
 							>
 								DE
 							</a>
-							<span class="text-white/30 text-[10px]">|</span>
+							<span class="text-white/30 text-xs">|</span>
 							<a
 								href={`${currentPath}?lang=en`}
 								preventdefault:click
@@ -195,7 +195,7 @@ export default component$(() => {
 									switchLanguage$('en');
 								}}
 								class={[
-									'px-2 py-0.5 rounded-full transition-all',
+									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
 									activeLocale === 'en'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
@@ -203,7 +203,7 @@ export default component$(() => {
 							>
 								EN
 							</a>
-							<span class="text-white/30 text-[10px]">|</span>
+							<span class="text-white/30 text-xs">|</span>
 							<a
 								href={`${currentPath}?lang=es`}
 								preventdefault:click
@@ -211,7 +211,7 @@ export default component$(() => {
 									switchLanguage$('es');
 								}}
 								class={[
-									'px-2 py-0.5 rounded-full transition-all',
+									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
 									activeLocale === 'es'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
@@ -226,7 +226,7 @@ export default component$(() => {
 							aria-label={
 								appState.customer.id !== CUSTOMER_NOT_DEFINED_ID ? _`My Account` : _`Sign In`
 							}
-							class="flex items-center space-x-1.5 text-sm font-medium text-white/90 hover:text-cyan-300 transition-colors"
+							class="min-h-[44px] min-w-[44px] flex items-center justify-center space-x-1.5 text-sm font-medium text-white/90 hover:text-cyan-300 transition-colors"
 						>
 							<UserIcon />
 							<span class="hidden lg:inline">
@@ -235,7 +235,10 @@ export default component$(() => {
 						</a>
 
 						{appState.customer.id !== CUSTOMER_NOT_DEFINED_ID && (
-							<button onClick$={logout} class="text-white/80 hover:text-white text-sm">
+							<button
+								onClick$={logout}
+								class="min-h-[44px] min-w-[44px] flex items-center justify-center text-white/80 hover:text-white text-sm"
+							>
 								<div class="flex items-center cursor-pointer">
 									<span class="mr-1 hidden lg:inline">{_`Logout`}</span>
 									<LogoutIcon />
@@ -246,7 +249,7 @@ export default component$(() => {
 						<button
 							name="Cart"
 							aria-label={`${totalQuantity} items in cart`}
-							class="relative w-10 h-10 bg-white/15 hover:bg-white/25 border border-white/25 rounded-full text-white p-2 flex items-center justify-center transition-all"
+							class="relative w-11 h-11 min-h-[44px] min-w-[44px] bg-white/15 hover:bg-white/25 border border-white/25 rounded-full text-white p-2 flex items-center justify-center transition-all"
 							onClick$={() => (appState.showCart = !appState.showCart)}
 						>
 							<ShoppingBagIcon />
