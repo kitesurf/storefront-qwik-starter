@@ -30,7 +30,15 @@ const fetch: typeof qwikFetch = async (request, env, ctx) => {
 		return qwikFetch(request, env, ctx);
 	}
 
-	// 2. Language prefix rewrite for /de and /es: e.g. /de/collections/foils -> /collections/foils?lang=de
+	// 2. Trailing slash normalization for clean language URLs
+	// (Ensures /de/collections/foils/ remains cleanly under /de/ without query string redirect)
+	if (!pathname.endsWith('/') && !pathname.split('/').pop()?.includes('.')) {
+		const redirectUrl = new URL(request.url);
+		redirectUrl.pathname = `${pathname}/`;
+		return Response.redirect(redirectUrl.toString(), 301);
+	}
+
+	// 3. Language prefix rewrite for /de/ and /es/: e.g. /de/collections/foils/ -> /collections/foils/?lang=de
 	const prefixMatch = pathname.match(/^\/(de|es)(\/.*)?$/);
 	if (prefixMatch) {
 		const lang = prefixMatch[1];
@@ -43,7 +51,7 @@ const fetch: typeof qwikFetch = async (request, env, ctx) => {
 		return qwikFetch(rewrittenRequest, env, ctx);
 	}
 
-	// 3. Initial visit on root '/' with browser language detection:
+	// 4. Initial visit on root '/' with browser language detection:
 	if (pathname === '/') {
 		const hasLangQuery = url.searchParams.has('lang');
 		const cookieHeader = request.headers.get('cookie') || '';
