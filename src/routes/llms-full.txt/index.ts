@@ -12,7 +12,7 @@ ALL FOR WIND is a premier online performance shop specializing in high-grade wat
 - Target Audience: Watersports enthusiasts ranging from ambitious beginners to seasoned pro riders seeking uncompromising performance, durability, and innovation.
 - Store URL: https://allforwind.com
 - Supported Currencies & Markets: European Union (EUR), Worldwide delivery.
-- Languages: German (de), English (en), Spanish (es).
+- Languages: English (en - default), German (de), Spanish (es).
 
 ## Product Collections & Details
 
@@ -62,14 +62,13 @@ ALL FOR WIND is a premier online performance shop specializing in high-grade wat
 - Checkout & Security: Secure SSL-encrypted payment processing supporting credit/debit cards, PayPal, Klarna, and Apple Pay/Google Pay.
 
 ## Main Navigation & Index
-- [Home](https://allforwind.com/): Storefront homepage featuring latest collections and seasonal highlights.
+- [Home](https://allforwind.com/): Storefront homepage in English featuring latest collections and seasonal highlights.
 - [Foils Collection](https://allforwind.com/collections/foils): Hydrodynamic precision foils and carbon wings.
 - [Foil Packages Collection](https://allforwind.com/collections/foil-packages): All-in-one hydrofoil packages.
 - [Kitesurfing Collection](https://allforwind.com/collections/kitesurfing): Kites, bars, harnesses, and accessories.
 - [Wingfoiling Collection](https://allforwind.com/collections/wing-foiling): Wings, boards, and wing foil packages.
 - [Product Search](https://allforwind.com/search): Interactive catalog search with facet filtering.
 - [German Storefront](https://allforwind.com/?lang=de): German language storefront.
-- [English Storefront](https://allforwind.com/?lang=en): English language storefront.
 - [Spanish Storefront](https://allforwind.com/?lang=es): Spanish language storefront.
 `;
 	send(

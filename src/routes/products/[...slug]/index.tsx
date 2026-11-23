@@ -1,5 +1,15 @@
 import { component$, useComputed$, useContext, useSignal } from '@qwik.dev/core';
-import { DocumentHead, routeLoader$ } from '@qwik.dev/router';
+import { DocumentHead, routeLoader$, type RequestHandler } from '@qwik.dev/router';
+
+export const onGet: RequestHandler = async ({ cacheControl, headers }) => {
+	cacheControl({
+		public: true,
+		maxAge: 60,
+		sMaxAge: 3600,
+		staleWhileRevalidate: 86400,
+	});
+	headers.set('Cache-Control', 'public, max-age=60, s-maxage=3600, stale-while-revalidate=86400');
+};
 import { _ } from 'compiled-i18n';
 import Alert from '~/components/alert/Alert';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs';
@@ -19,7 +29,7 @@ import { generateDocumentHead } from '~/utils/head.utils';
 export const useProductLoader = routeLoader$(async ({ params, sharedMap, url, cookie, status }) => {
 	try {
 		const lang =
-			sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
+			sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'en';
 		const { slug } = cleanUpParams(params);
 		const product = await getProductBySlug(slug, lang);
 		if (!product) {

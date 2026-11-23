@@ -3,7 +3,7 @@ import { DEFAULT_METADATA_IMAGE, DEFAULT_METADATA_URL, METADATA_BY_LOCALE } from
 export type SupportedLocale = 'de' | 'en' | 'es';
 
 export const getLocaleFromUrl = (urlInput?: string | URL): SupportedLocale => {
-	if (!urlInput) return 'de';
+	if (!urlInput) return 'en';
 	try {
 		const parsed =
 			typeof urlInput === 'string' ? new URL(urlInput, 'https://allforwind.com') : urlInput;
@@ -19,6 +19,9 @@ export const getLocaleFromUrl = (urlInput?: string | URL): SupportedLocale => {
 		// ignore
 	}
 	if (typeof urlInput === 'string') {
+		if (urlInput.includes('lang=de') || urlInput.includes('/de/') || urlInput.endsWith('/de')) {
+			return 'de';
+		}
 		if (urlInput.includes('lang=es') || urlInput.includes('/es/') || urlInput.endsWith('/es')) {
 			return 'es';
 		}
@@ -26,7 +29,7 @@ export const getLocaleFromUrl = (urlInput?: string | URL): SupportedLocale => {
 			return 'en';
 		}
 	}
-	return 'de';
+	return 'en';
 };
 
 const resolveImageUrl = (img?: string) => {

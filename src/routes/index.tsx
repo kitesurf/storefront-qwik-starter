@@ -1,10 +1,20 @@
 import { component$, useContext } from '@qwik.dev/core';
-import { type DocumentHead } from '@qwik.dev/router';
+import { type DocumentHead, type RequestHandler } from '@qwik.dev/router';
 import { generateDocumentHead } from '~/utils/head.utils';
 import { _ } from 'compiled-i18n';
 import CollectionCard from '~/components/collection-card/CollectionCard';
 import HeroShowcase from '~/components/hero-showcase/HeroShowcase';
 import { APP_STATE } from '~/constants';
+
+export const onGet: RequestHandler = async ({ cacheControl, headers }) => {
+	cacheControl({
+		public: true,
+		maxAge: 60,
+		sMaxAge: 3600,
+		staleWhileRevalidate: 86400,
+	});
+	headers.set('Cache-Control', 'public, max-age=60, s-maxage=3600, stale-while-revalidate=86400');
+};
 
 export default component$(() => {
 	const appState = useContext(APP_STATE);

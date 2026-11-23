@@ -1,5 +1,15 @@
 import { $, component$, getLocale, useStore, useTask$ } from '@qwik.dev/core';
-import { DocumentHead, routeLoader$, useLocation } from '@qwik.dev/router';
+import { DocumentHead, routeLoader$, useLocation, type RequestHandler } from '@qwik.dev/router';
+
+export const onGet: RequestHandler = async ({ cacheControl, headers }) => {
+	cacheControl({
+		public: true,
+		maxAge: 60,
+		sMaxAge: 3600,
+		staleWhileRevalidate: 86400,
+	});
+	headers.set('Cache-Control', 'public, max-age=60, s-maxage=3600, stale-while-revalidate=86400');
+};
 import { _ } from 'compiled-i18n';
 import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs';
 import CollectionCard from '~/components/collection-card/CollectionCard';
@@ -24,7 +34,7 @@ import {
 export const useCollectionLoader = routeLoader$(async ({ params: p, sharedMap, url, cookie }) => {
 	try {
 		const lang =
-			sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
+			sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'en';
 		const params = cleanUpParams(p);
 		return (await getCollectionBySlug(params.slug, lang)) || null;
 	} catch (err) {
@@ -36,7 +46,7 @@ export const useCollectionLoader = routeLoader$(async ({ params: p, sharedMap, u
 export const useSearchLoader = routeLoader$(async ({ params: p, url, cookie, sharedMap }) => {
 	try {
 		const lang =
-			sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
+			sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'en';
 		const params = cleanUpParams(p);
 		const activeFacetValueIds: string[] = url.searchParams.get('f')?.split('-') || [];
 		const res = activeFacetValueIds.length

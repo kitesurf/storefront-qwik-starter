@@ -12,8 +12,8 @@ export const onGet: RequestHandler = ({ send }) => {
 - [Wingfoiling](https://allforwind.com/collections/wing-foiling): Lightweight performance wings, wing boards, and accessories for effortless flight above the water.
 
 ## Languages & Localization
-- [German](https://allforwind.com/?lang=de): ALL FOR WIND Storefront in German (default language).
-- [English](https://allforwind.com/?lang=en): ALL FOR WIND Storefront in English.
+- [English](https://allforwind.com/): ALL FOR WIND Storefront in English (default language).
+- [German](https://allforwind.com/?lang=de): ALL FOR WIND Storefront in German.
 - [Spanish](https://allforwind.com/?lang=es): ALL FOR WIND Storefront in Spanish.
 
 ## Optional

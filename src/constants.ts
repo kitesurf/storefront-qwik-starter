@@ -12,7 +12,7 @@ export const DEFAULT_METADATA_TITLE = 'ALL FOR WIND — Kite, Wing & Foil Perfor
 export const DEFAULT_METADATA_DESCRIPTION =
 	'Offizieller Eleveight Partner Shop für Kitesurfing, Wingfoiling, Hydrofoils und Twintip Boards.';
 export const DEFAULT_METADATA_IMAGE = 'https://allforwind.com/social-image.jpg?v=2';
-export const DEFAULT_LOCALE = 'de';
+export const DEFAULT_LOCALE = 'en';
 
 export const METADATA_BY_LOCALE = {
 	de: {

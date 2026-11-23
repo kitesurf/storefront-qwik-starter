@@ -19,8 +19,8 @@ export const requester = async <R, V>(
 	vars?: V,
 	options: RequesterOptions = { token: '', apiUrl: shopApi, channelToken: '' }
 ): Promise<R> => {
-	const rawLang = getLocale('de') || 'de';
-	const lang = rawLang.split('_')[0].split('-')[0] || 'de';
+	const rawLang = getLocale('en') || 'en';
+	const lang = rawLang.split('_')[0].split('-')[0] || 'en';
 	const targetUrl = options?.apiUrl ?? shopApi;
 	options.apiUrl = targetUrl.includes('languageCode=')
 		? targetUrl

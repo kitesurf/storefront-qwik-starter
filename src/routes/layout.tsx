@@ -8,7 +8,6 @@ import {
 	useVisibleTask$,
 } from '@qwik.dev/core';
 import { RequestHandler, routeLoader$ } from '@qwik.dev/router';
-import { guessLocale } from 'compiled-i18n';
 import { ImageTransformerProps, useImageProvider } from '~/components/image/image';
 import Menu from '~/components/menu/Menu';
 import { APP_STATE, CUSTOMER_NOT_DEFINED_ID, IMAGE_RESOLUTIONS } from '~/constants';
@@ -38,7 +37,7 @@ export const onGet: RequestHandler = async ({ cacheControl, headers, url }) => {
 export const useCollectionsLoader = routeLoader$(async ({ sharedMap, url, cookie }) => {
 	try {
 		const lang =
-			sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'de';
+			sharedMap.get('locale') || url.searchParams.get('lang') || cookie.get('lang')?.value || 'en';
 		const collections = await getCollections(lang);
 		return Array.isArray(collections) ? collections : [];
 	} catch (err) {
@@ -65,6 +64,9 @@ export const onRequest: RequestHandler = ({
 	redirect,
 	cookie,
 	sharedMap,
+	cacheControl,
+	headers,
+	method,
 }) => {
 	const pathname = url.pathname;
 	const match = pathname.match(/^\/(de|en|es)(\/.*)?$/);
@@ -72,21 +74,62 @@ export const onRequest: RequestHandler = ({
 		const lang = match[1];
 		const remaining = match[2] || '/';
 		const searchParams = new URLSearchParams(url.search);
-		searchParams.set('lang', lang);
+		if (lang === 'en') {
+			searchParams.delete('lang');
+		} else {
+			searchParams.set('lang', lang);
+		}
 		const qs = searchParams.toString();
 		throw redirect(302, `${remaining}${qs ? `?${qs}` : ''}`);
 	}
 	const queryLang = query.get('lang');
 	const cookieLang = cookie.get('lang')?.value;
-	const candidate = queryLang || cookieLang || request.headers.get('accept-language');
-	const guessedLocale = guessLocale(candidate) || 'de';
+	let activeLang = 'en';
 
 	if (queryLang && ['de', 'en', 'es'].includes(queryLang)) {
+		activeLang = queryLang;
 		cookie.set('lang', queryLang, { path: '/', maxAge: [365, 'days'], httpOnly: false });
+	} else if (cookieLang && ['de', 'en', 'es'].includes(cookieLang)) {
+		activeLang = cookieLang;
+	} else {
+		// First visit without explicit language parameter or cookie
+		const acceptLang = (request.headers.get('accept-language') || '').toLowerCase();
+		if (acceptLang.startsWith('de') || acceptLang.includes(',de') || acceptLang.includes(';de')) {
+			const searchParams = new URLSearchParams(url.search);
+			searchParams.set('lang', 'de');
+			const qs = searchParams.toString();
+			throw redirect(302, `${pathname}${qs ? `?${qs}` : ''}`);
+		} else if (
+			acceptLang.startsWith('es') ||
+			acceptLang.includes(',es') ||
+			acceptLang.includes(';es')
+		) {
+			const searchParams = new URLSearchParams(url.search);
+			searchParams.set('lang', 'es');
+			const qs = searchParams.toString();
+			throw redirect(302, `${pathname}${qs ? `?${qs}` : ''}`);
+		}
+		activeLang = 'en';
 	}
 
-	locale(guessedLocale);
-	sharedMap.set('locale', guessedLocale);
+	locale(activeLang);
+	sharedMap.set('locale', activeLang);
+
+	if (method === 'GET') {
+		const isPrivate = pathname.startsWith('/account') || pathname.startsWith('/checkout');
+		if (!isPrivate) {
+			cacheControl({
+				public: true,
+				maxAge: 60,
+				sMaxAge: 3600,
+				staleWhileRevalidate: 86400,
+			});
+			headers.set(
+				'Cache-Control',
+				'public, max-age=60, s-maxage=3600, stale-while-revalidate=86400'
+			);
+		}
+	}
 };
 
 export default component$(() => {

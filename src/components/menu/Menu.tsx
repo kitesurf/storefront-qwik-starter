@@ -8,7 +8,7 @@ import CloseIcon from '../icons/CloseIcon';
 export default component$(() => {
 	const appState = useContext(APP_STATE);
 	const location = useLocation();
-	const activeLocale = (getLocale('de') || 'de').split('-')[0].split('_')[0];
+	const activeLocale = (getLocale('en') || 'en').split('-')[0].split('_')[0];
 	const currentPath = location.url.pathname;
 
 	const switchLanguage$ = $((targetLang: string) => {
