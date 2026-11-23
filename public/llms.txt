@@ -3,12 +3,16 @@
 > Performance Shop for Kitesurfing, Wingfoiling, Hydrofoils, and Twintip Boards. Official Eleveight Partner.
 
 ## Main Collections
-- Foils: https://allforwind.com/collections/foils
-- Foil Packages: https://allforwind.com/collections/foil-packages
-- Kitesurfing: https://allforwind.com/collections/kitesurfing
-- Wingfoiling: https://allforwind.com/collections/wing-foiling
+- [Foils](https://allforwind.com/collections/foils): Hydrodynamic precision carbon foils, front wings, stabilizers, and masts for early lift and high efficiency.
+- [Foil Packages](https://allforwind.com/collections/foil-packages): Complete hydrofoil setups including mast, fuselage, front wing, and stabilizer for wings and kites.
+- [Kitesurfing](https://allforwind.com/collections/kitesurfing): High performance freeride, big air, freestyle kites, control bars, and accessories by Eleveight.
+- [Wingfoiling](https://allforwind.com/collections/wing-foiling): Lightweight performance wings, wing boards, and accessories for effortless flight above the water.
 
-## Languages
-- German: https://allforwind.com/?lang=de
-- English: https://allforwind.com/?lang=en
-- Spanish: https://allforwind.com/?lang=es
+## Languages & Localization
+- [German](https://allforwind.com/?lang=de): ALL FOR WIND Storefront in German (default language).
+- [English](https://allforwind.com/?lang=en): ALL FOR WIND Storefront in English.
+- [Spanish](https://allforwind.com/?lang=es): ALL FOR WIND Storefront in Spanish.
+
+## Optional
+- [Full LLM Knowledge Base](https://allforwind.com/llms-full.txt): Comprehensive product catalog, brand specifications, and technical details.
+- [XML Sitemap](https://allforwind.com/sitemap.xml): Complete URL index of collections and products.

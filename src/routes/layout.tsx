@@ -21,8 +21,18 @@ import Cart from '../components/cart/Cart';
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
 
-export const onGet: RequestHandler = async ({ cacheControl }) => {
-	cacheControl({ staleWhileRevalidate: 60 * 60 * 24 * 7, maxAge: 5 });
+export const onGet: RequestHandler = async ({ cacheControl, headers, url }) => {
+	const pathname = url.pathname;
+	const isPrivate = pathname.startsWith('/account') || pathname.startsWith('/checkout');
+	if (!isPrivate) {
+		cacheControl({
+			public: true,
+			maxAge: 60,
+			sMaxAge: 3600,
+			staleWhileRevalidate: 86400,
+		});
+		headers.set('Cache-Control', 'public, max-age=60, s-maxage=3600, stale-while-revalidate=86400');
+	}
 };
 
 export const useCollectionsLoader = routeLoader$(async ({ sharedMap, url, cookie }) => {
@@ -73,8 +83,6 @@ export const onRequest: RequestHandler = ({
 
 	if (queryLang && ['de', 'en', 'es'].includes(queryLang)) {
 		cookie.set('lang', queryLang, { path: '/', maxAge: [365, 'days'], httpOnly: false });
-	} else if (!cookieLang) {
-		cookie.set('lang', guessedLocale, { path: '/', maxAge: [365, 'days'], httpOnly: false });
 	}
 
 	locale(guessedLocale);

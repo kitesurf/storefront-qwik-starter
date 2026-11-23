@@ -3,4 +3,8 @@ Allow: /
 Disallow: /account/
 Disallow: /checkout/
 
+# LLMs.txt
+Allow: /llms.txt
+Allow: /llms-full.txt
+
 Sitemap: https://allforwind.com/sitemap.xml
