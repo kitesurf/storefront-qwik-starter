@@ -106,6 +106,75 @@ export const onGet: RequestHandler = ({ send }) => {
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://allforwind.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/about"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/about?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/about?lang=es"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/shipping</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/shipping"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/shipping"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/shipping?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/shipping?lang=es"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/returns</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/returns"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/returns"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/returns?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/returns?lang=es"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/contact?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/contact?lang=es"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/faq</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/faq"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/faq"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/faq?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/faq?lang=es"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/blog"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/blog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/blog?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/blog?lang=es"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/imprint</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://allforwind.com/privacy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://allforwind.com/terms</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
 </urlset>`;
 	send(
 		new Response(sitemap, {

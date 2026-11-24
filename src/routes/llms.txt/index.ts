@@ -16,6 +16,18 @@ export const onGet: RequestHandler = ({ send }) => {
 - [German Storefront](https://allforwind.com/de/): Official German storefront.
 - [Spanish Storefront](https://allforwind.com/es/): Official Spanish storefront.
 
+## Company & Customer Support
+- Operator: Kitesurf Mallorca SL (CIF: ES-B57774572, Carrer Greco 19, 07400 Alcúdia, Illes Balears, Spain)
+- Certifications: Spanish Maritime Watersports School Registry, VDWS Licensed Center Since 2013, Official Eleveight Pro Partner & Testcenter
+- [About Us](https://allforwind.com/about): Brand history, Eleveight partnership, and team.
+- [Shipping & Delivery](https://allforwind.com/shipping): European delivery times, rates, free shipping over 150 EUR.
+- [Returns & Cancellation](https://allforwind.com/returns): 30-day returns, statutory withdrawal right, warranty.
+- [Contact & Support](https://allforwind.com/contact): Customer care and technical gear advice (support@allforwind.com).
+- [FAQ](https://allforwind.com/faq): Frequently asked questions.
+- [Imprint](https://allforwind.com/imprint): Legal notice and company details.
+- [Privacy Policy](https://allforwind.com/privacy): GDPR-compliant privacy terms.
+- [Terms & Conditions](https://allforwind.com/terms): General terms for online orders.
+
 ## Optional
 - [Full LLM Knowledge Base](https://allforwind.com/llms-full.txt): Comprehensive product catalog, brand specifications, and technical details.
 - [XML Sitemap](https://allforwind.com/sitemap.xml): Complete URL index of collections and products.
