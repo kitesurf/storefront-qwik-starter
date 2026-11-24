@@ -128,7 +128,7 @@ export default component$(() => {
 
 	return (
 		<div
-			class="relative w-full h-[88vh] min-h-[620px] max-h-[920px] overflow-hidden bg-sky-900 text-white select-none"
+			class="relative w-full h-[88vh] min-h-[580px] sm:min-h-[620px] max-h-[920px] overflow-hidden bg-sky-900 text-white select-none"
 			role="region"
 			aria-roledescription="carousel"
 			aria-label={_`Featured equipment`}
@@ -257,20 +257,19 @@ export default component$(() => {
 			<div class="absolute inset-0 bg-gradient-to-t from-sky-950/85 via-transparent to-sky-950/30 pointer-events-none z-20" />
 
 			{/* Content Container */}
-			<div class="relative z-30 h-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col justify-between pt-16 pb-10 pointer-events-none">
-				{/* Top Status Bar: Partner Tag & Pill */}
-				<div class="flex items-center justify-between pointer-events-auto">
-					<div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-sky-950/80 backdrop-blur-md border border-cyan-400/40 text-xs sm:text-sm font-bold tracking-wide text-cyan-300 shadow-sm">
-						<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-						<span>{_`All For Wind // Official Eleveight Partner`}</span>
-					</div>
-				</div>
-
-				{/* Middle Row: Left Text Content + Right Wanderers Thumbnails */}
-				<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end my-auto">
+			<div class="relative z-30 h-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex flex-col justify-between pt-6 sm:pt-10 lg:pt-12 pb-6 sm:pb-8 lg:pb-10 pointer-events-none">
+				{/* Main Row: Left Text Content + Right Wanderers Thumbnails */}
+				<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end my-auto">
 					{/* Left Column: Kinetic Text Reveal */}
-					<div class="lg:col-span-7 space-y-4 max-w-2xl pointer-events-auto">
-						<div class="relative min-h-[260px] sm:min-h-[290px] flex flex-col justify-center">
+					<div class="lg:col-span-7 space-y-3 sm:space-y-4 max-w-2xl pointer-events-auto">
+						{/* Top Partner Badge directly in column flow */}
+						<div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-sky-950/80 backdrop-blur-md border border-cyan-400/40 text-xs sm:text-sm font-bold tracking-wide text-cyan-300 shadow-sm">
+							<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+							<span>{_`All For Wind // Official Eleveight Partner`}</span>
+						</div>
+
+						{/* Kinetic Text Stack via CSS Grid */}
+						<div class="grid grid-cols-1 grid-rows-1 min-h-[250px] sm:min-h-[280px]">
 							{SLIDES.map((slide, index) => {
 								const isActive = index === activeIndex.value;
 								return (
@@ -281,42 +280,47 @@ export default component$(() => {
 										aria-label={_`Slide ${index + 1} of ${SLIDES.length}: ${slide.title}`}
 										aria-hidden={!isActive}
 										class={[
-											'transition-all duration-700 absolute inset-x-0 bottom-0 top-0 flex flex-col justify-center',
+											'col-start-1 row-start-1 flex flex-col justify-center transition-all duration-700',
 											isActive
 												? 'opacity-100 translate-y-0 pointer-events-auto z-10'
-												: 'opacity-0 translate-y-6 pointer-events-none z-0',
+												: 'opacity-0 translate-y-4 pointer-events-none z-0',
 										]}
 									>
 										<span class="text-xs sm:text-sm font-mono tracking-widest uppercase text-cyan-300 font-bold drop-shadow">
 											{slide.tag}
 										</span>
-										<a href={slide.ctaLink} class="group inline-block cursor-pointer">
+										<a
+											href={slide.ctaLink}
+											tabIndex={isActive ? 0 : -1}
+											class="group inline-block cursor-pointer"
+										>
 											{isActive ? (
-												<h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight uppercase leading-none mt-2 text-white group-hover:text-cyan-300 transition-colors drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
+												<h1 class="text-3xl sm:text-5xl lg:text-7xl font-black tracking-tight uppercase leading-none mt-1.5 sm:mt-2 text-white group-hover:text-cyan-300 transition-colors drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
 													{slide.title}
 												</h1>
 											) : (
-												<h2 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight uppercase leading-none mt-2 text-white group-hover:text-cyan-300 transition-colors drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
+												<h2 class="text-3xl sm:text-5xl lg:text-7xl font-black tracking-tight uppercase leading-none mt-1.5 sm:mt-2 text-white group-hover:text-cyan-300 transition-colors drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
 													{slide.title}
 												</h2>
 											)}
 										</a>
-										<p class="text-base sm:text-xl font-bold tracking-wide uppercase text-cyan-100 mt-2 drop-shadow">
+										<p class="text-sm sm:text-lg lg:text-xl font-bold tracking-wide uppercase text-cyan-100 mt-1.5 sm:mt-2 drop-shadow">
 											{slide.subtitle}
 										</p>
-										<p class="text-sm sm:text-base text-white/90 font-medium leading-relaxed max-w-xl mt-3 drop-shadow">
+										<p class="text-xs sm:text-sm lg:text-base text-white/90 font-medium leading-relaxed max-w-xl mt-2 sm:mt-3 drop-shadow">
 											{slide.description}
 										</p>
 
-										<div class="flex flex-wrap items-center gap-4 pt-6">
+										<div class="flex flex-wrap items-center gap-3 sm:gap-4 pt-4 sm:pt-6">
 											<a
 												href={slide.ctaLink}
-												class="inline-flex items-center px-7 py-3.5 rounded-full text-sm sm:text-base font-bold text-slate-950 bg-gradient-to-r from-cyan-300 to-sky-400 hover:from-cyan-200 hover:to-sky-300 shadow-[0_0_25px_rgba(103,232,249,0.5)] hover:shadow-[0_0_35px_rgba(103,232,249,0.8)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+												tabIndex={isActive ? 0 : -1}
+												class="inline-flex items-center px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm lg:text-base font-bold text-slate-950 bg-gradient-to-r from-cyan-300 to-sky-400 hover:from-cyan-200 hover:to-sky-300 shadow-[0_0_25px_rgba(103,232,249,0.5)] hover:shadow-[0_0_35px_rgba(103,232,249,0.8)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
 											>
 												<span>{slide.ctaText}</span>
-												<span class="ml-2.5">
+												<span class="ml-2 sm:ml-2.5">
 													<svg
-														class="w-4 h-4"
+														class="w-3.5 h-3.5 sm:w-4 sm:h-4"
 														fill="none"
 														stroke="currentColor"
 														viewBox="0 0 24 24"
@@ -332,7 +336,8 @@ export default component$(() => {
 											</a>
 											<a
 												href="/collections/kitesurfen"
-												class="inline-flex items-center px-6 py-3.5 rounded-full text-sm sm:text-base font-semibold text-white bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/30 shadow-sm transition-all duration-300 cursor-pointer"
+												tabIndex={isActive ? 0 : -1}
+												class="inline-flex items-center px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm lg:text-base font-semibold text-white bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/30 shadow-sm transition-all duration-300 cursor-pointer"
 											>
 												{_`All Categories`}
 											</a>
@@ -371,7 +376,7 @@ export default component$(() => {
 											}
 										}}
 										class={[
-											'relative flex-shrink-0 w-28 sm:w-36 h-40 sm:h-48 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 text-left group select-none',
+											'relative flex-shrink-0 w-24 sm:w-32 lg:w-36 h-32 sm:h-44 lg:h-48 rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 text-left group select-none',
 											isActive
 												? 'ring-2 ring-cyan-300 shadow-[0_0_30px_rgba(103,232,249,0.55)] scale-105'
 												: 'opacity-85 hover:opacity-100 hover:scale-100 border border-white/35',
@@ -390,7 +395,7 @@ export default component$(() => {
 											/>
 										</picture>
 										<div class="absolute inset-0 bg-gradient-to-t from-sky-950/80 via-sky-950/15 to-transparent" />
-										<div class="relative z-10 h-full p-3 flex flex-col justify-between">
+										<div class="relative z-10 h-full p-2.5 sm:p-3 flex flex-col justify-between">
 											<span class="text-xs font-mono tracking-wider font-bold text-cyan-300 px-2 py-0.5 rounded-md bg-sky-950/80 backdrop-blur-md self-start border border-cyan-400/30">
 												0{index + 1}
 											</span>
@@ -415,15 +420,20 @@ export default component$(() => {
 				</div>
 
 				{/* Bottom Navigation & Live Progress Bar */}
-				<div class="flex items-center justify-between pt-6 border-t border-white/25 pointer-events-auto">
+				<div class="flex items-center justify-between pt-4 sm:pt-6 border-t border-white/25 pointer-events-auto">
 					{/* Prev / Next & Pause/Play Glass Buttons */}
-					<div class="flex items-center space-x-3">
+					<div class="flex items-center space-x-2.5 sm:space-x-3">
 						<button
 							onClick$={prevSlide}
 							aria-label={_`Previous Slide`}
-							class="w-11 h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm cursor-pointer"
+							class="w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm cursor-pointer"
 						>
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<svg
+								class="w-4 h-4 sm:w-5 sm:h-5"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+							>
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -435,9 +445,14 @@ export default component$(() => {
 						<button
 							onClick$={nextSlide}
 							aria-label={_`Next Slide`}
-							class="w-11 h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm cursor-pointer"
+							class="w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm cursor-pointer"
 						>
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<svg
+								class="w-4 h-4 sm:w-5 sm:h-5"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+							>
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -449,14 +464,14 @@ export default component$(() => {
 						<button
 							onClick$={() => (isPaused.value = !isPaused.value)}
 							aria-label={isPaused.value ? _`Resume slideshow` : _`Pause slideshow`}
-							class="w-11 h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm cursor-pointer"
+							class="w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-white/35 bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:border-cyan-300 shadow-sm cursor-pointer"
 						>
 							{isPaused.value ? (
-								<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+								<svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24">
 									<path d="M8 5v14l11-7z" />
 								</svg>
 							) : (
-								<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+								<svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24">
 									<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
 								</svg>
 							)}
@@ -464,7 +479,7 @@ export default component$(() => {
 					</div>
 
 					{/* Auto-play Progress Bar */}
-					<div class="flex-1 max-w-md mx-6 hidden sm:flex items-center space-x-3">
+					<div class="flex-1 max-w-md mx-4 sm:mx-6 hidden sm:flex items-center space-x-3">
 						<div class="h-1.5 flex-1 bg-white/25 rounded-full overflow-hidden backdrop-blur-sm">
 							<div
 								class="h-full bg-gradient-to-r from-cyan-300 to-sky-400 rounded-full transition-all duration-75 shadow-[0_0_10px_#67e8f9]"
@@ -474,8 +489,10 @@ export default component$(() => {
 					</div>
 
 					{/* Slide Counter (e.g. 01 / 04) */}
-					<div class="flex items-baseline space-x-1 font-mono text-sm tracking-widest text-cyan-300 drop-shadow">
-						<span class="text-lg font-extrabold text-white">0{activeIndex.value + 1}</span>
+					<div class="flex items-baseline space-x-1 font-mono text-xs sm:text-sm tracking-widest text-cyan-300 drop-shadow">
+						<span class="text-base sm:text-lg font-extrabold text-white">
+							0{activeIndex.value + 1}
+						</span>
 						<span class="text-white/80">/</span>
 						<span class="text-white/90">0{SLIDES.length}</span>
 					</div>
