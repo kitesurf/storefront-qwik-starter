@@ -1,7 +1,6 @@
 import { component$ } from '@qwik.dev/core';
 import { type DocumentHead, Form, routeAction$, zod$, type RequestHandler } from '@qwik.dev/router';
 import { _ } from 'compiled-i18n';
-import nodemailer from 'nodemailer';
 import { generateDocumentHead } from '~/utils/head.utils';
 
 export const onGet: RequestHandler = async ({ cacheControl, headers }) => {
@@ -31,51 +30,67 @@ export const useContactAction = routeAction$(
 			(typeof process !== 'undefined' ? process.env?.CLOUDFLARE_EMAIL_API_TOKEN : '') ||
 			'';
 
+		const accountId =
+			requestEvent.env.get('CLOUDFLARE_ACCOUNT_ID') ||
+			(requestEvent.platform as any)?.env?.CLOUDFLARE_ACCOUNT_ID ||
+			(typeof process !== 'undefined' ? process.env?.CLOUDFLARE_ACCOUNT_ID : '') ||
+			'8a245c8aab6033cccfc3829fb5537026';
+
+		const escape = (text: string) =>
+			text
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#039;');
+
+		const textContent = `Neue Kontaktanfrage über allforwind.com:\n\nName: ${data.name}\nE-Mail: ${data.email}\nBetreff: ${data.subject}\n\nNachricht:\n${data.message}\n`;
+
+		const htmlContent = `
+			<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; color: #0f172a; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
+				<div style="border-bottom: 2px solid #0284c7; padding-bottom: 12px; margin-bottom: 20px;">
+					<h2 style="color: #0369a1; margin: 0; font-size: 20px;">ALL FOR WIND — Neue Kontaktanfrage</h2>
+				</div>
+				<p style="margin: 8px 0;"><strong>Name:</strong> ${escape(data.name)}</p>
+				<p style="margin: 8px 0;"><strong>E-Mail:</strong> <a href="mailto:${escape(data.email)}" style="color: #0284c7;">${escape(data.email)}</a></p>
+				<p style="margin: 8px 0;"><strong>Betreff:</strong> ${escape(data.subject)}</p>
+				<div style="margin-top: 20px; padding: 16px; background-color: #f8fafc; border-radius: 8px; border-left: 4px solid #0284c7;">
+					<h3 style="margin-top: 0; margin-bottom: 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Nachricht:</h3>
+					<p style="white-space: pre-wrap; margin: 0; line-height: 1.6; color: #334155;">${escape(data.message)}</p>
+				</div>
+				<p style="margin-top: 28px; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 12px;">
+					Diese Anfrage wurde über das Webformular auf allforwind.com versendet. Bei Klick auf „Antworten“ geht deine E-Mail direkt an ${escape(data.email)}.
+				</p>
+			</div>
+		`;
+
 		try {
-			const transporter = nodemailer.createTransport({
-				host: 'smtp.mx.cloudflare.net',
-				port: 465,
-				secure: true,
-				auth: {
-					user: 'api_token',
-					pass: apiToken,
-				},
-			});
+			// Sende direkt über die native Cloudflare Email Sending REST API (funktioniert perfekt im Edge Worker)
+			const res = await fetch(
+				`https://api.cloudflare.com/client/v4/accounts/${accountId}/email/sending/send`,
+				{
+					method: 'POST',
+					headers: {
+						Authorization: `Bearer ${apiToken}`,
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						from: 'noreply@allforwind.com',
+						to: 'info@allforwind.com',
+						reply_to: data.email,
+						subject: `[Webform Anfrage] ${data.subject}`,
+						text: textContent,
+						html: htmlContent,
+					}),
+				}
+			);
 
-			const escape = (text: string) =>
-				text
-					.replace(/&/g, '&amp;')
-					.replace(/</g, '&lt;')
-					.replace(/>/g, '&gt;')
-					.replace(/"/g, '&quot;')
-					.replace(/'/g, '&#039;');
+			if (!res.ok) {
+				const errText = await res.text();
+				console.error('Cloudflare Email Sending REST API error:', res.status, errText);
+				throw new Error(`Cloudflare Email API error (${res.status})`);
+			}
 
-			const mailOptions = {
-				from: '"ALL FOR WIND Webform" <noreply@allforwind.com>',
-				to: 'info@allforwind.com',
-				replyTo: data.email,
-				subject: `[Webform Anfrage] ${data.subject}`,
-				text: `Neue Kontaktanfrage über allforwind.com:\n\nName: ${data.name}\nE-Mail: ${data.email}\nBetreff: ${data.subject}\n\nNachricht:\n${data.message}\n`,
-				html: `
-					<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; color: #0f172a; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
-						<div style="border-bottom: 2px solid #0284c7; padding-bottom: 12px; margin-bottom: 20px;">
-							<h2 style="color: #0369a1; margin: 0; font-size: 20px;">ALL FOR WIND — Neue Kontaktanfrage</h2>
-						</div>
-						<p style="margin: 8px 0;"><strong>Name:</strong> ${escape(data.name)}</p>
-						<p style="margin: 8px 0;"><strong>E-Mail:</strong> <a href="mailto:${escape(data.email)}" style="color: #0284c7;">${escape(data.email)}</a></p>
-						<p style="margin: 8px 0;"><strong>Betreff:</strong> ${escape(data.subject)}</p>
-						<div style="margin-top: 20px; padding: 16px; background-color: #f8fafc; border-radius: 8px; border-left: 4px solid #0284c7;">
-							<h3 style="margin-top: 0; margin-bottom: 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">Nachricht:</h3>
-							<p style="white-space: pre-wrap; margin: 0; line-height: 1.6; color: #334155;">${escape(data.message)}</p>
-						</div>
-						<p style="margin-top: 28px; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 12px;">
-							Diese Anfrage wurde über das Webformular auf allforwind.com versendet. Bei Klick auf „Antworten“ geht deine E-Mail direkt an ${escape(data.email)}.
-						</p>
-					</div>
-				`,
-			};
-
-			await transporter.sendMail(mailOptions);
 			return { success: true };
 		} catch (error: any) {
 			console.error('Failed to send contact inquiry email:', error);
