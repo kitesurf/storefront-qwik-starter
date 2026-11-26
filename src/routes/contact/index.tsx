@@ -5,15 +5,10 @@ import { generateDocumentHead } from '~/utils/head.utils';
 
 export const onGet: RequestHandler = async ({ cacheControl, headers }) => {
 	cacheControl({
-		public: true,
-		maxAge: 3600,
-		sMaxAge: 86400,
-		staleWhileRevalidate: 86400,
+		noCache: true,
+		private: true,
 	});
-	headers.set(
-		'Cache-Control',
-		'public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400'
-	);
+	headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
 };
 
 export const useContactAction = routeAction$(
