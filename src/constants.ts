@@ -33,6 +33,12 @@ export const METADATA_BY_LOCALE = {
 			'Tienda oficial Eleveight de kitesurf, wingfoil, hydrofoils y tablas twintip. Rendimiento y calidad sin concesiones.',
 		ogLocale: 'es_ES',
 	},
+	it: {
+		title: 'ALL FOR WIND — Negozio specializzato in Kite, Wing & Foil',
+		description:
+			'Negozio partner ufficiale Eleveight per kitesurf, wingfoil, hydrofoil e tavole twintip. Prestazioni e qualità senza compromessi.',
+		ogLocale: 'it_IT',
+	},
 } as const;
 
 export const DEV_API = import.meta.env.VITE_VENDURE_DEV_URL || 'https://vendure.allforwind.com';

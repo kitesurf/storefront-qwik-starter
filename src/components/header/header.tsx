@@ -16,20 +16,23 @@ export default component$(() => {
 	const location = useLocation();
 	const activeLocale = (getLocale('en') || 'en').split('-')[0].split('_')[0];
 	const rawPath = location.url.pathname;
-	const cleanPath = rawPath.replace(/^\/(de|es)(\/|$)/, '/').replace(/\/+$/, '') || '';
+	const cleanPath = rawPath.replace(/^\/(de|es|it)(\/|$)/, '/').replace(/\/+$/, '') || '';
 	const deHref = `/de${cleanPath || '/'}`;
 	const esHref = `/es${cleanPath || '/'}`;
+	const itHref = `/it${cleanPath || '/'}`;
 	const enHref = cleanPath || '/';
 
 	const switchLanguage$ = $((targetLang: string) => {
 		document.cookie = `lang=${targetLang};path=/;max-age=31536000`;
 		const raw = window.location.pathname;
-		const clean = raw.replace(/^\/(de|es)(\/|$)/, '/').replace(/\/+$/, '') || '';
+		const clean = raw.replace(/^\/(de|es|it)(\/|$)/, '/').replace(/\/+$/, '') || '';
 		let targetUrl: string;
 		if (targetLang === 'de') {
 			targetUrl = `/de${clean || '/'}`;
 		} else if (targetLang === 'es') {
 			targetUrl = `/es${clean || '/'}`;
+		} else if (targetLang === 'it') {
+			targetUrl = `/it${clean || '/'}`;
 		} else {
 			targetUrl = clean || '/';
 		}
@@ -230,6 +233,22 @@ export default component$(() => {
 								]}
 							>
 								ES
+							</a>
+							<span class="text-white/30 text-xs">|</span>
+							<a
+								href={itHref}
+								preventdefault:click
+								onClick$={() => {
+									switchLanguage$('it');
+								}}
+								class={[
+									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
+									activeLocale === 'it'
+										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
+										: 'hover:bg-white/20 text-white/80',
+								]}
+							>
+								IT
 							</a>
 						</div>
 

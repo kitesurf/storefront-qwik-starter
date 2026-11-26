@@ -11,6 +11,7 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/it/"/>
   </url>
   <url>
     <loc>https://allforwind.com/de/</loc>
@@ -20,6 +21,7 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/it/"/>
   </url>
   <url>
     <loc>https://allforwind.com/es/</loc>
@@ -29,6 +31,17 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/it/"/>
+  </url>
+  <url>
+    <loc>https://allforwind.com/it/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://allforwind.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/it/"/>
   </url>
   <url>
     <loc>https://allforwind.com/collections/foils</loc>
@@ -38,6 +51,7 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/collections/foils"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/collections/foils"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/collections/foils"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/it/collections/foils"/>
   </url>
   <url>
     <loc>https://allforwind.com/de/collections/foils</loc>
@@ -50,6 +64,11 @@ export const onGet: RequestHandler = ({ send }) => {
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://allforwind.com/it/collections/foils</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://allforwind.com/collections/foil-packages</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -57,6 +76,7 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/collections/foil-packages"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/collections/foil-packages"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/collections/foil-packages"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/it/collections/foil-packages"/>
   </url>
   <url>
     <loc>https://allforwind.com/de/collections/foil-packages</loc>
@@ -69,6 +89,11 @@ export const onGet: RequestHandler = ({ send }) => {
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://allforwind.com/it/collections/foil-packages</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://allforwind.com/collections/kitesurfing</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -76,6 +101,7 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/collections/kitesurfing"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/collections/kitesurfing"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/collections/kitesurfing"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/it/collections/kitesurfing"/>
   </url>
   <url>
     <loc>https://allforwind.com/de/collections/kitesurfing</loc>
@@ -88,6 +114,11 @@ export const onGet: RequestHandler = ({ send }) => {
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://allforwind.com/it/collections/kitesurfing</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://allforwind.com/collections/wing-foiling</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -95,6 +126,7 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/collections/wing-foiling"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/de/collections/wing-foiling"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/es/collections/wing-foiling"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/it/collections/wing-foiling"/>
   </url>
   <url>
     <loc>https://allforwind.com/de/collections/wing-foiling</loc>
@@ -107,6 +139,11 @@ export const onGet: RequestHandler = ({ send }) => {
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://allforwind.com/it/collections/wing-foiling</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://allforwind.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -114,6 +151,7 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/about"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/about?lang=de"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/about?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/about?lang=it"/>
   </url>
   <url>
     <loc>https://allforwind.com/shipping</loc>
@@ -123,6 +161,7 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/shipping"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/shipping?lang=de"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/shipping?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/shipping?lang=it"/>
   </url>
   <url>
     <loc>https://allforwind.com/returns</loc>
@@ -132,6 +171,7 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/returns"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/returns?lang=de"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/returns?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/returns?lang=it"/>
   </url>
   <url>
     <loc>https://allforwind.com/contact</loc>
@@ -141,6 +181,7 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/contact"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/contact?lang=de"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/contact?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/contact?lang=it"/>
   </url>
   <url>
     <loc>https://allforwind.com/faq</loc>
@@ -150,6 +191,7 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/faq"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/faq?lang=de"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/faq?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/faq?lang=it"/>
   </url>
   <url>
     <loc>https://allforwind.com/blog</loc>
@@ -159,6 +201,7 @@ export const onGet: RequestHandler = ({ send }) => {
     <xhtml:link rel="alternate" hreflang="en" href="https://allforwind.com/blog"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://allforwind.com/blog?lang=de"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://allforwind.com/blog?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://allforwind.com/blog?lang=it"/>
   </url>
   <url>
     <loc>https://allforwind.com/imprint</loc>
