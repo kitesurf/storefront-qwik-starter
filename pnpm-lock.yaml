@@ -27,6 +27,9 @@ importers:
       graphql-tag:
         specifier: ^2.12.6
         version: 2.12.6(graphql@16.11.0)
+      nodemailer:
+        specifier: ^10.6.1
+        version: 10.6.1
       zod:
         specifier: ^4.1.11
         version: 4.1.11
@@ -61,6 +64,9 @@ importers:
       '@types/node':
         specifier: 24.6.2
         version: 24.6.2
+      '@types/nodemailer':
+        specifier: ^8.0.2
+        version: 8.0.2
       '@typescript-eslint/eslint-plugin':
         specifier: 7.0.1
         version: 7.0.1(@typescript-eslint/parser@7.0.1(eslint@8.57.0)(typescript@5.9.3))(eslint@8.57.0)(typescript@5.9.3)
@@ -3038,6 +3044,12 @@ packages:
     resolution:
       {
         integrity: sha512-d2L25Y4j+W3ZlNAeMKcy7yDsK425ibcAOO2t7aPTz6gNMH0z2GThtwENCDc0d/Pw9wgyRqE5Px1wkV7naz8ang==,
+      }
+
+  '@types/nodemailer@8.0.2':
+    resolution:
+      {
+        integrity: sha512-c7M5ox8p0nEOfbJ2E9Qcmt8/QCu/VzsiAhzBiZbvky2PhKZDHpKB3sQHBM5MEZNkCfBOaS6S9//AGPRTNB7IaA==,
       }
 
   '@types/paypal-checkout-components@4.0.8':
@@ -6306,6 +6318,13 @@ packages:
       {
         integrity: sha512-5b0pgg78U3hwXkCM8Z9b2FJdPZlr9Psr9V2gQPESdGHqbntyFJKFW4r5TeWGFzafGY3hzs1JC62VEQMbl1JFkw==,
       }
+
+  nodemailer@10.6.1:
+    resolution:
+      {
+        integrity: sha512-d7kfFfS/tR4Aca+SBvRaQ+MXKNv7d2JiRe5TxaRcFT/kYMh4GGPnW9aKksTIEvyEbA7d/7HYWE4YPDEHxzJj/g==,
+      }
+    engines: { node: '>=20.0.0' }
 
   normalize-path@2.1.1:
     resolution:
@@ -10030,6 +10049,10 @@ snapshots:
     dependencies:
       undici-types: 7.13.0
 
+  '@types/nodemailer@8.0.2':
+    dependencies:
+      '@types/node': 24.6.2
+
   '@types/paypal-checkout-components@4.0.8': {}
 
   '@types/prismjs@1.26.5': {}
@@ -12395,6 +12418,8 @@ snapshots:
   node-int64@0.4.0: {}
 
   node-releases@2.0.21: {}
+
+  nodemailer@10.6.1: {}
 
   normalize-path@2.1.1:
     dependencies:
