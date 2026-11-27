@@ -32,16 +32,18 @@ export const Head = component$(() => {
 			{/* International SEO / Hreflang Tags */}
 			{(() => {
 				const rawPath = loc.url.pathname;
-				const cleanPath = rawPath.replace(/^\/(de|es|it)(\/|$)/, '/').replace(/\/+$/, '') || '';
+				const cleanPath = rawPath.replace(/^\/(de|es|it|fr)(\/|$)/, '/').replace(/\/+$/, '') || '';
 				const deUrl = `https://allforwind.com/de${cleanPath || '/'}`;
 				const esUrl = `https://allforwind.com/es${cleanPath || '/'}`;
 				const itUrl = `https://allforwind.com/it${cleanPath || '/'}`;
+				const frUrl = `https://allforwind.com/fr${cleanPath || '/'}`;
 				const enUrl = `https://allforwind.com${cleanPath || '/'}`;
 				return (
 					<>
 						<link rel="alternate" hreflang="de" href={deUrl} />
 						<link rel="alternate" hreflang="es" href={esUrl} />
 						<link rel="alternate" hreflang="it" href={itUrl} />
+						<link rel="alternate" hreflang="fr" href={frUrl} />
 						<link rel="alternate" hreflang="en" href={enUrl} />
 						<link rel="alternate" hreflang="x-default" href={enUrl} />
 					</>

@@ -38,8 +38,8 @@ const fetch: typeof qwikFetch = async (request, env, ctx) => {
 		return Response.redirect(redirectUrl.toString(), 301);
 	}
 
-	// 3. Language prefix rewrite for /de/, /es/ and /it/: e.g. /de/collections/foils/ -> /collections/foils/?lang=de
-	const prefixMatch = pathname.match(/^\/(de|es|it)(\/.*)?$/);
+	// 3. Language prefix rewrite for /de/, /es/, /it/ and /fr/: e.g. /de/collections/foils/ -> /collections/foils/?lang=de
+	const prefixMatch = pathname.match(/^\/(de|es|it|fr)(\/.*)?$/);
 	if (prefixMatch) {
 		const lang = prefixMatch[1];
 		const remaining = prefixMatch[2] || '/';
@@ -55,7 +55,7 @@ const fetch: typeof qwikFetch = async (request, env, ctx) => {
 	if (pathname === '/') {
 		const hasLangQuery = url.searchParams.has('lang');
 		const cookieHeader = request.headers.get('cookie') || '';
-		const hasLangCookie = /(?:^|;\s*)lang=(de|es|it|en)(?:;|$)/.test(cookieHeader);
+		const hasLangCookie = /(?:^|;\s*)lang=(de|es|it|fr|en)(?:;|$)/.test(cookieHeader);
 
 		if (!hasLangQuery && !hasLangCookie) {
 			const acceptLang = (request.headers.get('accept-language') || '').toLowerCase();
@@ -73,6 +73,12 @@ const fetch: typeof qwikFetch = async (request, env, ctx) => {
 				acceptLang.includes(';it')
 			) {
 				return Response.redirect(new URL('/it/', request.url).toString(), 302);
+			} else if (
+				acceptLang.startsWith('fr') ||
+				acceptLang.includes(',fr') ||
+				acceptLang.includes(';fr')
+			) {
+				return Response.redirect(new URL('/fr/', request.url).toString(), 302);
 			}
 		}
 	}

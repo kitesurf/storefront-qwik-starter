@@ -28,6 +28,14 @@ export default extendConfig(baseConfig, () => {
 				input: ['src/entry.cloudflare-pages.tsx', '@qwik-city-plan'],
 			},
 		},
-		plugins: [cloudflarePagesAdapter(), compiledI18nSsgBundle()],
+		plugins: [
+			cloudflarePagesAdapter({
+				// The SSG's auto-generated static sitemap.xml would shadow our custom
+				// /sitemap.xml route (with hreflang entries) — static files win over
+				// functions in Cloudflare Pages. Disable it; our route serves the sitemap.
+				ssg: { sitemapOutFile: null },
+			}),
+			compiledI18nSsgBundle(),
+		],
 	};
 });

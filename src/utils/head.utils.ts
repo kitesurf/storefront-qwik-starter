@@ -1,6 +1,6 @@
 import { DEFAULT_METADATA_IMAGE, DEFAULT_METADATA_URL, METADATA_BY_LOCALE } from '~/constants';
 
-export type SupportedLocale = 'de' | 'en' | 'es' | 'it';
+export type SupportedLocale = 'de' | 'en' | 'es' | 'it' | 'fr';
 
 export const getLocaleFromUrl = (urlInput?: string | URL): SupportedLocale => {
 	if (!urlInput) return 'en';
@@ -8,10 +8,16 @@ export const getLocaleFromUrl = (urlInput?: string | URL): SupportedLocale => {
 		const parsed =
 			typeof urlInput === 'string' ? new URL(urlInput, 'https://allforwind.com') : urlInput;
 		const langParam = parsed.searchParams.get('lang')?.toLowerCase();
-		if (langParam === 'es' || langParam === 'en' || langParam === 'de' || langParam === 'it') {
+		if (
+			langParam === 'es' ||
+			langParam === 'en' ||
+			langParam === 'de' ||
+			langParam === 'it' ||
+			langParam === 'fr'
+		) {
 			return langParam as SupportedLocale;
 		}
-		const pathMatch = parsed.pathname.match(/^\/(de|en|es|it)(\/|$)/i);
+		const pathMatch = parsed.pathname.match(/^\/(de|en|es|it|fr)(\/|$)/i);
 		if (pathMatch) {
 			return pathMatch[1].toLowerCase() as SupportedLocale;
 		}
@@ -27,6 +33,9 @@ export const getLocaleFromUrl = (urlInput?: string | URL): SupportedLocale => {
 		}
 		if (urlInput.includes('lang=it') || urlInput.includes('/it/') || urlInput.endsWith('/it')) {
 			return 'it';
+		}
+		if (urlInput.includes('lang=fr') || urlInput.includes('/fr/') || urlInput.endsWith('/fr')) {
+			return 'fr';
 		}
 		if (urlInput.includes('lang=en') || urlInput.includes('/en/') || urlInput.endsWith('/en')) {
 			return 'en';

@@ -71,9 +71,9 @@ export const onRequest: RequestHandler = ({
 	const cookieLang = cookie.get('lang')?.value;
 	let activeLang = 'en';
 
-	if (queryLang && ['de', 'en', 'es'].includes(queryLang)) {
+	if (queryLang && ['de', 'en', 'es', 'it', 'fr'].includes(queryLang)) {
 		activeLang = queryLang;
-	} else if (cookieLang && ['de', 'en', 'es'].includes(cookieLang)) {
+	} else if (cookieLang && ['de', 'en', 'es', 'it', 'fr'].includes(cookieLang)) {
 		activeLang = cookieLang;
 	} else {
 		activeLang = 'en';

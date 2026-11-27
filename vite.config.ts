@@ -3,6 +3,26 @@ import { qwikRouter } from '@qwik.dev/router/vite';
 import { i18nPlugin } from 'compiled-i18n/vite';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import fs from 'node:fs';
+
+/**
+ * qwikRouter (rc.5) writes an auto-generated (empty) sitemap.xml into the
+ * client output directory. On Cloudflare Pages static files win over
+ * functions, so it would shadow our custom /sitemap.xml route with its
+ * hreflang entries — remove it after the build.
+ */
+function removeAutoSitemap() {
+	return {
+		name: 'remove-auto-sitemap',
+		closeBundle() {
+			try {
+				fs.rmSync('dist/sitemap.xml', { force: true });
+			} catch {
+				// ignore
+			}
+		},
+	};
+}
 
 export default defineConfig(async (config) => {
 	return {
@@ -21,8 +41,9 @@ export default defineConfig(async (config) => {
 			qwikVite(),
 			tsconfigPaths(),
 			i18nPlugin({
-				locales: ['en', 'de', 'es', 'it'],
+				locales: ['en', 'de', 'es', 'it', 'fr'],
 			}),
+			removeAutoSitemap(),
 		],
 		preview: {
 			headers: {

@@ -10,16 +10,17 @@ export default component$(() => {
 	const location = useLocation();
 	const activeLocale = (getLocale('en') || 'en').split('-')[0].split('_')[0];
 	const rawPath = location.url.pathname;
-	const cleanPath = rawPath.replace(/^\/(de|es|it)(\/|$)/, '/').replace(/\/+$/, '') || '';
+	const cleanPath = rawPath.replace(/^\/(de|es|it|fr)(\/|$)/, '/').replace(/\/+$/, '') || '';
 	const deHref = `/de${cleanPath || '/'}`;
 	const esHref = `/es${cleanPath || '/'}`;
 	const itHref = `/it${cleanPath || '/'}`;
+	const frHref = `/fr${cleanPath || '/'}`;
 	const enHref = cleanPath || '/';
 
 	const switchLanguage$ = $((targetLang: string) => {
 		document.cookie = `lang=${targetLang};path=/;max-age=31536000`;
 		const raw = window.location.pathname;
-		const clean = raw.replace(/^\/(de|es|it)(\/|$)/, '/').replace(/\/+$/, '') || '';
+		const clean = raw.replace(/^\/(de|es|it|fr)(\/|$)/, '/').replace(/\/+$/, '') || '';
 		let targetUrl: string;
 		if (targetLang === 'de') {
 			targetUrl = `/de${clean || '/'}`;
@@ -27,6 +28,8 @@ export default component$(() => {
 			targetUrl = `/es${clean || '/'}`;
 		} else if (targetLang === 'it') {
 			targetUrl = `/it${clean || '/'}`;
+		} else if (targetLang === 'fr') {
+			targetUrl = `/fr${clean || '/'}`;
 		} else {
 			targetUrl = clean || '/';
 		}
@@ -128,6 +131,22 @@ export default component$(() => {
 													]}
 												>
 													IT
+												</a>
+												<span class="text-gray-300 text-xs">|</span>
+												<a
+													href={frHref}
+													preventdefault:click
+													onClick$={() => {
+														switchLanguage$('fr');
+													}}
+													class={[
+														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
+														activeLocale === 'fr'
+															? 'bg-sky-600 text-white font-bold shadow-sm'
+															: 'text-gray-600 hover:bg-gray-200',
+													]}
+												>
+													FR
 												</a>
 											</div>
 										</div>
