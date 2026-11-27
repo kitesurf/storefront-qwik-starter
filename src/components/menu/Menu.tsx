@@ -10,15 +10,19 @@ export default component$(() => {
 	const location = useLocation();
 	const activeLocale = (getLocale('en') || 'en').split('-')[0].split('_')[0];
 	const rawPath = location.url.pathname;
-	// Native navigation links (no preventdefault) with a normalized trailing
-	// slash, so Cloudflare Pages never responds with a 301 redirect.
+	const search = location.url.search || '';
+	// Normalized trailing slash so Cloudflare Pages never responds with a 301.
+	// preventdefault:click + window.location.href force a
+	// hard browser navigation: the Qwik SPA router would otherwise fetch
+	// q-data.json, which 404s behind the products [...slug] catch-all and
+	// desyncs the loaders from the page content.
 	const clean = rawPath.replace(/^\/(de|es|it|fr)(\/|$)/, '/');
 	const normalizedPath = clean === '/' ? '/' : clean.endsWith('/') ? clean : `${clean}/`;
-	const deHref = `/de${normalizedPath}`;
-	const esHref = `/es${normalizedPath}`;
-	const itHref = `/it${normalizedPath}`;
-	const frHref = `/fr${normalizedPath}`;
-	const enHref = normalizedPath;
+	const deHref = `/de${normalizedPath}${search}`;
+	const esHref = `/es${normalizedPath}${search}`;
+	const itHref = `/it${normalizedPath}${search}`;
+	const frHref = `/fr${normalizedPath}${search}`;
+	const enHref = `${normalizedPath}${search}`;
 	const collections = useContext(APP_STATE).collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
 	);
@@ -75,7 +79,12 @@ export default component$(() => {
 											<div class="flex items-center space-x-1 bg-gray-100 rounded-full p-1 text-xs font-semibold">
 												<a
 													href={deHref}
-													onClick$={() => (appState.showMenu = false)}
+													preventdefault:click
+													onClick$={() => {
+														appState.showMenu = false;
+														document.cookie = 'lang=de; path=/; max-age=31536000; SameSite=Lax';
+														window.location.href = deHref;
+													}}
 													class={[
 														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
 														activeLocale === 'de'
@@ -88,7 +97,12 @@ export default component$(() => {
 												<span class="text-gray-300 text-xs">|</span>
 												<a
 													href={enHref}
-													onClick$={() => (appState.showMenu = false)}
+													preventdefault:click
+													onClick$={() => {
+														appState.showMenu = false;
+														document.cookie = 'lang=en; path=/; max-age=31536000; SameSite=Lax';
+														window.location.href = enHref;
+													}}
 													class={[
 														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
 														activeLocale === 'en'
@@ -101,7 +115,12 @@ export default component$(() => {
 												<span class="text-gray-300 text-xs">|</span>
 												<a
 													href={esHref}
-													onClick$={() => (appState.showMenu = false)}
+													preventdefault:click
+													onClick$={() => {
+														appState.showMenu = false;
+														document.cookie = 'lang=es; path=/; max-age=31536000; SameSite=Lax';
+														window.location.href = esHref;
+													}}
 													class={[
 														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
 														activeLocale === 'es'
@@ -114,7 +133,12 @@ export default component$(() => {
 												<span class="text-gray-300 text-xs">|</span>
 												<a
 													href={itHref}
-													onClick$={() => (appState.showMenu = false)}
+													preventdefault:click
+													onClick$={() => {
+														appState.showMenu = false;
+														document.cookie = 'lang=it; path=/; max-age=31536000; SameSite=Lax';
+														window.location.href = itHref;
+													}}
 													class={[
 														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
 														activeLocale === 'it'
@@ -127,7 +151,12 @@ export default component$(() => {
 												<span class="text-gray-300 text-xs">|</span>
 												<a
 													href={frHref}
-													onClick$={() => (appState.showMenu = false)}
+													preventdefault:click
+													onClick$={() => {
+														appState.showMenu = false;
+														document.cookie = 'lang=fr; path=/; max-age=31536000; SameSite=Lax';
+														window.location.href = frHref;
+													}}
 													class={[
 														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
 														activeLocale === 'fr'
