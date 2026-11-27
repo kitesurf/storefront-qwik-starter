@@ -23,6 +23,12 @@ const config: CodegenConfig = {
 			},
 			plugins: ['typescript', 'typescript-operations', 'typescript-generic-sdk'],
 		},
+		'src/generated/graphql.ts': {
+			config: {
+				enumsAsConst: true,
+			},
+			plugins: ['typescript', 'typescript-operations', 'typescript-generic-sdk'],
+		},
 		'src/generated/schema-shop.graphql': {
 			plugins: ['schema-ast'],
 		},
