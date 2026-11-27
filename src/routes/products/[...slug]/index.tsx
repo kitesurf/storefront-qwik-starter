@@ -1,4 +1,4 @@
-import { component$, useComputed$, useContext, useSignal } from '@qwik.dev/core';
+import { $, component$, useComputed$, useContext, useSignal } from '@qwik.dev/core';
 import { DocumentHead, routeLoader$, type RequestHandler } from '@qwik.dev/router';
 
 export const onGet: RequestHandler = async ({ cacheControl, headers, url }) => {
@@ -23,6 +23,7 @@ import Breadcrumbs from '~/components/breadcrumbs/Breadcrumbs';
 import CheckIcon from '~/components/icons/CheckIcon';
 import HeartIcon from '~/components/icons/HeartIcon';
 import { Image } from '~/components/image/image';
+import { Product360Viewer } from '~/components/products/Product360Viewer';
 import Price from '~/components/products/Price';
 import StockLevelLabel from '~/components/stock-level-label/StockLevelLabel';
 import { APP_STATE } from '~/constants';
@@ -69,6 +70,11 @@ export default component$(() => {
 	const selectedVariantIdSignal = useSignal(product?.variants?.[0]?.id || '');
 	const selectedVariantSignal = useComputed$(() =>
 		product?.variants?.find((v) => v.id === selectedVariantIdSignal.value)
+	);
+	const is360ActiveSig = useSignal(false);
+	const activeVideo360UrlSig = useComputed$(
+		() =>
+			selectedVariantSignal.value?.customFields?.video360Url || product?.customFields?.video360Url
 	);
 	const addItemToOrderErrorSignal = useSignal('');
 	const quantitySignal = useComputed$<Record<string, number>>(() => {
@@ -117,16 +123,54 @@ export default component$(() => {
 					<div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start mt-4 md:mt-12">
 						<div class="w-full max-w-2xl mx-auto sm:block lg:max-w-none">
 							<span class="rounded-md overflow-hidden">
-								<div class="h-[400px] w-full md:w-[400px]">
-									{currentImageSig.value && (
-										<Image
-											layout="fixed"
-											class="object-center object-cover rounded-lg mx-auto"
-											width="400"
-											height="400"
-											src={currentImageSig.value.preview + '?w=400&h=400&format=webp'}
-											alt={`Image of: ${currentImageSig.value.name || product.name}`}
+								<div class="h-[400px] w-full md:w-[400px] relative">
+									{activeVideo360UrlSig.value && (
+										<button
+											type="button"
+											onClick$={() => {
+												is360ActiveSig.value = !is360ActiveSig.value;
+											}}
+											aria-label={
+												is360ActiveSig.value ? 'Zur Fotogalerie wechseln' : '360° Ansicht öffnen'
+											}
+											class={{
+												'absolute top-2 right-2 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold shadow-md transition-all': true,
+												'bg-sky-700 text-white hover:bg-sky-800': is360ActiveSig.value,
+												'bg-white/90 text-gray-900 border border-gray-200 hover:bg-white hover:scale-105 active:scale-95':
+													!is360ActiveSig.value,
+											}}
+										>
+											<svg
+												class="w-4 h-4 text-sky-600"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+											>
+												<path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+											</svg>
+											<span>{is360ActiveSig.value ? 'Fotos' : '360° Ansicht'}</span>
+										</button>
+									)}
+
+									{is360ActiveSig.value && activeVideo360UrlSig.value ? (
+										<Product360Viewer
+											videoUrl={activeVideo360UrlSig.value}
+											onClose$={$(() => {
+												is360ActiveSig.value = false;
+											})}
 										/>
+									) : (
+										currentImageSig.value && (
+											<Image
+												layout="fixed"
+												class="object-center object-cover rounded-lg mx-auto"
+												width="400"
+												height="400"
+												src={currentImageSig.value.preview + '?w=400&h=400&format=webp'}
+												alt={`Image of: ${currentImageSig.value.name || product.name}`}
+											/>
+										)
 									)}
 								</div>
 								{product.assets.length > 1 && (
@@ -145,6 +189,7 @@ export default component$(() => {
 												alt={`Image of: ${asset.name}`}
 												onClick$={() => {
 													currentImageSig.value = asset;
+													is360ActiveSig.value = false;
 												}}
 											/>
 										))}

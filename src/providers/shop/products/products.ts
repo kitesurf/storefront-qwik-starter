@@ -83,6 +83,9 @@ export const detailedProductFragment = gql`
 			id
 			preview
 		}
+		customFields {
+			video360Url
+		}
 		variants {
 			id
 			name
@@ -96,6 +99,7 @@ export const detailedProductFragment = gql`
 			}
 			customFields {
 				colorCode
+				video360Url
 			}
 		}
 	}
