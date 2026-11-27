@@ -15,13 +15,18 @@ export const Head = component$(() => {
 			<meta charSet="utf-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
 			<meta name="theme-color" content="#1D4ED8" />
+			<meta name="application-name" content="allforwind" />
+			<meta name="apple-mobile-web-app-title" content="allforwind" />
+			<meta name="apple-mobile-web-app-capable" content="yes" />
+			<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+			<meta name="mobile-web-app-capable" content="yes" />
 			<title>{head.title || fallbackHead.title}</title>
 
 			<link rel="manifest" href="/manifest.json" />
 			<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 			<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 			<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-			<link rel="preconnect" href="https://demo.vendure.io" />
+			<link rel="preconnect" href="https://vendure.allforwind.com" />
 			<link rel="canonical" href={loc.url.toString()} />
 
 			{/* International SEO / Hreflang Tags */}

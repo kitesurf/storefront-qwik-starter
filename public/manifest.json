@@ -1,7 +1,8 @@
 {
 	"$schema": "https://json.schemastore.org/web-manifest-combined.json",
-	"name": "ALL FOR WIND",
-	"short_name": "ALL FOR WIND",
+	"name": "allforwind",
+	"short_name": "allforwind",
+	"id": "/",
 	"start_url": "/",
 	"display": "standalone",
 	"theme_color": "#082f49",
