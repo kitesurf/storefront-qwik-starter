@@ -12,17 +12,17 @@ export default component$(() => {
 	const rawPath = location.url.pathname;
 	const search = location.url.search || '';
 	// Normalized trailing slash so Cloudflare Pages never responds with a 301.
-	// preventdefault:click + window.location.href force a
-	// hard browser navigation: the Qwik SPA router would otherwise fetch
-	// q-data.json, which 404s behind the products [...slug] catch-all and
-	// desyncs the loaders from the page content.
-	const clean = rawPath.replace(/^\/(de|es|it|fr)(\/|$)/, '/');
+	// preventdefault:click (native buttons never get intercepted by the Qwik
+	// router) + window.location.assign force a hard browser navigation: the SPA
+	// router would otherwise fetch q-data.json, which 404s behind the products
+	// [...slug] catch-all and desyncs the loaders from the page content.
+	const clean = rawPath.replace(/^\/(de|en|es|it|fr)(\/|$)/, '/');
 	const normalizedPath = clean === '/' ? '/' : clean.endsWith('/') ? clean : `${clean}/`;
 	const deHref = `/de${normalizedPath}${search}`;
+	const enHref = `/en${normalizedPath}${search}`;
 	const esHref = `/es${normalizedPath}${search}`;
 	const itHref = `/it${normalizedPath}${search}`;
 	const frHref = `/fr${normalizedPath}${search}`;
-	const enHref = `${normalizedPath}${search}`;
 	const collections = useContext(APP_STATE).collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
 	);
@@ -77,95 +77,90 @@ export default component$(() => {
 												{_`Language`}
 											</span>
 											<div class="flex items-center space-x-1 bg-gray-100 rounded-full p-1 text-xs font-semibold">
-												<a
-													href={deHref}
-													preventdefault:click
+												<button
+													type="button"
 													onClick$={() => {
 														appState.showMenu = false;
 														document.cookie = 'lang=de; path=/; max-age=31536000; SameSite=Lax';
-														window.location.href = deHref;
+														window.location.assign(deHref);
 													}}
 													class={[
-														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
+														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all cursor-pointer',
 														activeLocale === 'de'
 															? 'bg-sky-600 text-white font-bold shadow-sm'
 															: 'text-gray-600 hover:bg-gray-200',
 													]}
 												>
 													DE
-												</a>
+												</button>
 												<span class="text-gray-300 text-xs">|</span>
-												<a
-													href={enHref}
-													preventdefault:click
+												<button
+													type="button"
 													onClick$={() => {
 														appState.showMenu = false;
 														document.cookie = 'lang=en; path=/; max-age=31536000; SameSite=Lax';
-														window.location.href = enHref;
+														window.location.assign(enHref);
 													}}
 													class={[
-														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
+														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all cursor-pointer',
 														activeLocale === 'en'
 															? 'bg-sky-600 text-white font-bold shadow-sm'
 															: 'text-gray-600 hover:bg-gray-200',
 													]}
 												>
 													EN
-												</a>
+												</button>
 												<span class="text-gray-300 text-xs">|</span>
-												<a
-													href={esHref}
-													preventdefault:click
+												<button
+													type="button"
 													onClick$={() => {
 														appState.showMenu = false;
 														document.cookie = 'lang=es; path=/; max-age=31536000; SameSite=Lax';
-														window.location.href = esHref;
+														window.location.assign(esHref);
 													}}
 													class={[
-														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
+														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all cursor-pointer',
 														activeLocale === 'es'
 															? 'bg-sky-600 text-white font-bold shadow-sm'
 															: 'text-gray-600 hover:bg-gray-200',
 													]}
 												>
 													ES
-												</a>
+												</button>
 												<span class="text-gray-300 text-xs">|</span>
-												<a
-													href={itHref}
-													preventdefault:click
+												<button
+													type="button"
 													onClick$={() => {
 														appState.showMenu = false;
 														document.cookie = 'lang=it; path=/; max-age=31536000; SameSite=Lax';
-														window.location.href = itHref;
+														window.location.assign(itHref);
 													}}
 													class={[
-														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
+														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all cursor-pointer',
 														activeLocale === 'it'
 															? 'bg-sky-600 text-white font-bold shadow-sm'
 															: 'text-gray-600 hover:bg-gray-200',
 													]}
 												>
 													IT
-												</a>
+												</button>
 												<span class="text-gray-300 text-xs">|</span>
-												<a
-													href={frHref}
-													preventdefault:click
+												<button
+													type="button"
 													onClick$={() => {
 														appState.showMenu = false;
 														document.cookie = 'lang=fr; path=/; max-age=31536000; SameSite=Lax';
-														window.location.href = frHref;
+														window.location.assign(frHref);
 													}}
 													class={[
-														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all',
+														'min-w-[44px] min-h-[44px] flex items-center justify-center px-3.5 py-2 rounded-full transition-all cursor-pointer',
 														activeLocale === 'fr'
 															? 'bg-sky-600 text-white font-bold shadow-sm'
 															: 'text-gray-600 hover:bg-gray-200',
 													]}
 												>
 													FR
-												</a>
+												</button>
 											</div>
 										</div>
 

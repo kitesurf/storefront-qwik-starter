@@ -38,8 +38,8 @@ const fetch: typeof qwikFetch = async (request, env, ctx) => {
 		return Response.redirect(redirectUrl.toString(), 301);
 	}
 
-	// 3. Language prefix rewrite for /de/, /es/, /it/ and /fr/: e.g. /de/collections/foils/ -> /collections/foils/?lang=de
-	const prefixMatch = pathname.match(/^\/(de|es|it|fr)(\/.*)?$/);
+	// 3. Language prefix rewrite for /de/, /en/, /es/, /it/ and /fr/: e.g. /en/products/rs-v10/ -> /products/rs-v10/?lang=en
+	const prefixMatch = pathname.match(/^\/(de|en|es|it|fr)(\/.*)?$/);
 	if (prefixMatch) {
 		const lang = prefixMatch[1];
 		const remaining = prefixMatch[2] || '/';

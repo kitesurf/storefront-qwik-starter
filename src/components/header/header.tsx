@@ -18,17 +18,17 @@ export default component$(() => {
 	const rawPath = location.url.pathname;
 	const search = location.url.search || '';
 	// Normalized trailing slash so Cloudflare Pages never responds with a 301.
-	// preventdefault:click + window.location.href force a
+	// preventdefault:click + window.location.assign force a
 	// hard browser navigation: the Qwik SPA router would otherwise fetch
 	// q-data.json, which 404s behind the products [...slug] catch-all and
 	// desyncs the loaders from the page content.
-	const clean = rawPath.replace(/^\/(de|es|it|fr)(\/|$)/, '/');
+	const clean = rawPath.replace(/^\/(de|en|es|it|fr)(\/|$)/, '/');
 	const normalizedPath = clean === '/' ? '/' : clean.endsWith('/') ? clean : `${clean}/`;
 	const deHref = `/de${normalizedPath}${search}`;
+	const enHref = `/en${normalizedPath}${search}`;
 	const esHref = `/es${normalizedPath}${search}`;
 	const itHref = `/it${normalizedPath}${search}`;
 	const frHref = `/fr${normalizedPath}${search}`;
-	const enHref = `${normalizedPath}${search}`;
 
 	const collections = useContext(APP_STATE).collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
@@ -176,92 +176,88 @@ export default component$(() => {
 					</div>
 
 					<div class="flex items-center space-x-3 sm:space-x-4">
-						{/* Language Switcher */}
+						{/* Language Switcher — native buttons: the Qwik City router
+						    intercepts clicks on a[href] (2-click problem), never buttons. */}
 						<div class="hidden sm:flex items-center space-x-1 bg-white/10 rounded-full p-1 border border-white/15 text-xs font-semibold text-white">
-							<a
-								href={deHref}
-								preventdefault:click
+							<button
+								type="button"
 								onClick$={() => {
 									document.cookie = 'lang=de; path=/; max-age=31536000; SameSite=Lax';
-									window.location.href = deHref;
+									window.location.assign(deHref);
 								}}
 								class={[
-									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
+									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all cursor-pointer',
 									activeLocale === 'de'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
 								]}
 							>
 								DE
-							</a>
+							</button>
 							<span class="text-white/30 text-xs">|</span>
-							<a
-								href={enHref}
-								preventdefault:click
+							<button
+								type="button"
 								onClick$={() => {
 									document.cookie = 'lang=en; path=/; max-age=31536000; SameSite=Lax';
-									window.location.href = enHref;
+									window.location.assign(enHref);
 								}}
 								class={[
-									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
+									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all cursor-pointer',
 									activeLocale === 'en'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
 								]}
 							>
 								EN
-							</a>
+							</button>
 							<span class="text-white/30 text-xs">|</span>
-							<a
-								href={esHref}
-								preventdefault:click
+							<button
+								type="button"
 								onClick$={() => {
 									document.cookie = 'lang=es; path=/; max-age=31536000; SameSite=Lax';
-									window.location.href = esHref;
+									window.location.assign(esHref);
 								}}
 								class={[
-									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
+									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all cursor-pointer',
 									activeLocale === 'es'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
 								]}
 							>
 								ES
-							</a>
+							</button>
 							<span class="text-white/30 text-xs">|</span>
-							<a
-								href={itHref}
-								preventdefault:click
+							<button
+								type="button"
 								onClick$={() => {
 									document.cookie = 'lang=it; path=/; max-age=31536000; SameSite=Lax';
-									window.location.href = itHref;
+									window.location.assign(itHref);
 								}}
 								class={[
-									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
+									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all cursor-pointer',
 									activeLocale === 'it'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
 								]}
 							>
 								IT
-							</a>
+							</button>
 							<span class="text-white/30 text-xs">|</span>
-							<a
-								href={frHref}
-								preventdefault:click
+							<button
+								type="button"
 								onClick$={() => {
 									document.cookie = 'lang=fr; path=/; max-age=31536000; SameSite=Lax';
-									window.location.href = frHref;
+									window.location.assign(frHref);
 								}}
 								class={[
-									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
+									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all cursor-pointer',
 									activeLocale === 'fr'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
 								]}
 							>
 								FR
-							</a>
+							</button>
 						</div>
 
 						<a
