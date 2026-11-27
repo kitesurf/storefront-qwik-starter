@@ -63,7 +63,9 @@ export default component$(() => {
 	const appState = useContext(APP_STATE);
 	const productSignal = useProductLoader();
 	const product = productSignal.value;
-	const currentImageSig = useSignal(product?.assets?.[0]);
+	// Initial image: prefer the first variant's featuredAsset, fall back to the
+	// product's first asset — so a variant switch instantly swaps the main image.
+	const currentImageSig = useSignal(product?.variants?.[0]?.featuredAsset || product?.assets?.[0]);
 	const selectedVariantIdSignal = useSignal(product?.variants?.[0]?.id || '');
 	const selectedVariantSignal = useComputed$(() =>
 		product?.variants?.find((v) => v.id === selectedVariantIdSignal.value)
@@ -123,7 +125,7 @@ export default component$(() => {
 											width="400"
 											height="400"
 											src={currentImageSig.value.preview + '?w=400&h=400&format=webp'}
-											alt={`Image of: ${currentImageSig.value.name}`}
+											alt={`Image of: ${currentImageSig.value.name || product.name}`}
 										/>
 									)}
 								</div>
@@ -168,7 +170,15 @@ export default component$(() => {
 										aria-label={_`Select option`}
 										class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
 										value={selectedVariantIdSignal.value}
-										onChange$={(_, el) => (selectedVariantIdSignal.value = el.value)}
+										onChange$={(_, el) => {
+											selectedVariantIdSignal.value = el.value;
+											// If the variant carries its own featured asset, switch
+											// the main product image to it immediately.
+											const variant = product.variants.find((v) => v.id === el.value);
+											if (variant?.featuredAsset) {
+												currentImageSig.value = variant.featuredAsset;
+											}
+										}}
 									>
 										{product.variants.map((variant) => (
 											<option
@@ -176,7 +186,11 @@ export default component$(() => {
 												value={variant.id}
 												selected={selectedVariantIdSignal.value === variant.id}
 											>
-												{variant.name}
+												{`${variant.name}${
+													variant.customFields?.colorCode
+														? ` (${variant.customFields.colorCode})`
+														: ''
+												}`}
 											</option>
 										))}
 									</select>
@@ -236,6 +250,11 @@ export default component$(() => {
 							<div class="mt-2 flex items-center space-x-2">
 								<span class="text-gray-500">{selectedVariantSignal.value?.sku}</span>
 								<StockLevelLabel stockLevel={selectedVariantSignal.value?.stockLevel} />
+								{selectedVariantSignal.value?.customFields?.colorCode && (
+									<span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold bg-sky-100 text-sky-800 border border-sky-200">
+										{_`Color Code`}: {selectedVariantSignal.value.customFields.colorCode}
+									</span>
+								)}
 							</div>
 							{!!addItemToOrderErrorSignal.value && (
 								<div class="mt-4">
