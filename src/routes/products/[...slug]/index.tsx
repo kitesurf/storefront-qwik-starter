@@ -1,7 +1,14 @@
 import { component$, useComputed$, useContext, useSignal } from '@qwik.dev/core';
 import { DocumentHead, routeLoader$, type RequestHandler } from '@qwik.dev/router';
 
-export const onGet: RequestHandler = async ({ cacheControl, headers }) => {
+export const onGet: RequestHandler = async ({ cacheControl, headers, url }) => {
+	// Qwik internals (route loaders / q-data) must never be cached — a cached
+	// loader would re-hydrate the page with the previously selected language.
+	if (url.pathname.includes('q-loader') || url.pathname.includes('q-data')) {
+		headers.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+		headers.set('Pragma', 'no-cache');
+		return;
+	}
 	cacheControl({
 		public: true,
 		maxAge: 60,

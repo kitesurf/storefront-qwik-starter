@@ -68,11 +68,16 @@ export const onRequest: RequestHandler = ({
 	method,
 }) => {
 	const pathname = url.pathname;
+	// The path prefix always wins over query/cookie — a /fr/… URL must render
+	// French even if an older lang cookie or ?lang=… query says otherwise.
+	const pathPrefix = url.pathname.match(/^\/(de|en|es|it|fr)(\/|$)/)?.[1];
 	const queryLang = query.get('lang');
 	const cookieLang = cookie.get('lang')?.value;
 	let activeLang = 'en';
 
-	if (queryLang && ['de', 'en', 'es', 'it', 'fr'].includes(queryLang)) {
+	if (pathPrefix) {
+		activeLang = pathPrefix;
+	} else if (queryLang && ['de', 'en', 'es', 'it', 'fr'].includes(queryLang)) {
 		activeLang = queryLang;
 	} else if (cookieLang && ['de', 'en', 'es', 'it', 'fr'].includes(cookieLang)) {
 		activeLang = cookieLang;

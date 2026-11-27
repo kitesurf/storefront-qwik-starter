@@ -51,7 +51,36 @@ const fetch: typeof qwikFetch = async (request, env, ctx) => {
 		return qwikFetch(rewrittenRequest, env, ctx);
 	}
 
-	// 4. Initial visit on root '/' with browser language detection:
+	// 4. Qwik City internals (route loaders q-loader-*.json, q-data.json and
+	//    server$ actions ?qfunc=…) carry no language prefix in their URL. Resolve
+	//    the language from the Referer path prefix (fallback: cookie) and mark the
+	//    responses as uncacheable, so the browser can never re-hydrate stale
+	//    loader data of a previously selected language.
+	const isQwikInternal = /q-loader-|q-data\.json/.test(pathname) || url.searchParams.has('qfunc');
+	if (isQwikInternal) {
+		const referer = request.headers.get('referer') || '';
+		const refererLang = referer.match(/^https?:\/\/[^/]+\/(de|en|es|it|fr)(\/|$)/)?.[1];
+		const cookieLang = (request.headers.get('cookie') || '').match(
+			/(?:^|;\s*)lang=(de|en|es|it|fr)(?:;|$)/
+		)?.[1];
+		const resolvedLang = refererLang || cookieLang || 'en';
+
+		const internalUrl = new URL(request.url);
+		internalUrl.searchParams.set('lang', resolvedLang);
+		const internalRequest = new Request(internalUrl.toString(), request);
+		const response = await qwikFetch(internalRequest, env, ctx);
+
+		const internalHeaders = new Headers(response.headers);
+		internalHeaders.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+		internalHeaders.set('Pragma', 'no-cache');
+		return new Response(response.body, {
+			status: response.status,
+			statusText: response.statusText,
+			headers: internalHeaders,
+		});
+	}
+
+	// 5. Initial visit on root '/' with browser language detection:
 	if (pathname === '/') {
 		const hasLangQuery = url.searchParams.has('lang');
 		const cookieHeader = request.headers.get('cookie') || '';

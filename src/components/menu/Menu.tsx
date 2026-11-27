@@ -10,7 +10,11 @@ export default component$(() => {
 	const location = useLocation();
 	const activeLocale = (getLocale('en') || 'en').split('-')[0].split('_')[0];
 	const rawPath = location.url.pathname;
-	const search = location.url.search || '';
+	// Cloudflare Pages internally rewrites /fr/x to /x?lang=fr — leaking that
+	// lang param into switcher links would produce /fr/x?lang=de mismatches.
+	const searchParams = new URLSearchParams(location.url.search);
+	searchParams.delete('lang');
+	const cleanSearch = searchParams.toString() ? `?${searchParams.toString()}` : '';
 	// Normalized trailing slash so Cloudflare Pages never responds with a 301.
 	// preventdefault:click (native buttons never get intercepted by the Qwik
 	// router) + window.location.assign force a hard browser navigation: the SPA
@@ -18,11 +22,11 @@ export default component$(() => {
 	// [...slug] catch-all and desyncs the loaders from the page content.
 	const clean = rawPath.replace(/^\/(de|en|es|it|fr)(\/|$)/, '/');
 	const normalizedPath = clean === '/' ? '/' : clean.endsWith('/') ? clean : `${clean}/`;
-	const deHref = `/de${normalizedPath}${search}`;
-	const enHref = `/en${normalizedPath}${search}`;
-	const esHref = `/es${normalizedPath}${search}`;
-	const itHref = `/it${normalizedPath}${search}`;
-	const frHref = `/fr${normalizedPath}${search}`;
+	const deHref = `/de${normalizedPath}${cleanSearch}`;
+	const enHref = `/en${normalizedPath}${cleanSearch}`;
+	const esHref = `/es${normalizedPath}${cleanSearch}`;
+	const itHref = `/it${normalizedPath}${cleanSearch}`;
+	const frHref = `/fr${normalizedPath}${cleanSearch}`;
 	const collections = useContext(APP_STATE).collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
 	);
