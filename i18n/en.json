@@ -322,6 +322,12 @@
 		"Thank you! Your message has been sent successfully.": "Thank you! Your message has been sent successfully.",
 		"Failed to send message": "Failed to send message",
 		"An error occurred while sending your message. Please try again or contact us directly via email.": "An error occurred while sending your message. Please try again or contact us directly via email.",
-		"Sending inquiry...": "Sending inquiry..."
+		"Sending inquiry...": "Sending inquiry...",
+		"Quick access to kites, wings & foils right from your home screen.": "Quick access to kites, wings & foils right from your home screen.",
+		"Install": "Install",
+		"1. Tap the Share button [↑] at the bottom": "1. Tap the Share button [↑] at the bottom",
+		"2. Choose 'Add to Home Screen' [+]": "2. Choose 'Add to Home Screen' [+]",
+		"Install App": "Install App",
+		"Close": "Close"
 	}
 }

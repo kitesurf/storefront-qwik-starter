@@ -1,4 +1,4 @@
-import { $, component$, useContext } from '@qwik.dev/core';
+import { $, component$, useContext, useSignal, useVisibleTask$ } from '@qwik.dev/core';
 import { useLocation } from '@qwik.dev/router';
 import { getLocale } from '@qwik.dev/core';
 import { _ } from 'compiled-i18n';
@@ -38,6 +38,26 @@ export default component$(() => {
 	const collections = useContext(APP_STATE).collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
 	);
+
+	const isStandalone = useSignal(false);
+	useVisibleTask$(() => {
+		isStandalone.value =
+			window.matchMedia('(display-mode: standalone)').matches ||
+			(navigator as any).standalone === true;
+	});
+
+	// Reuses the deferred prompt captured by the PwaInstallBanner; without one
+	// (e.g. iOS) the banner is force-opened via ?install=app with the manual steps.
+	const openPwaInstall$ = $(() => {
+		const deferred = (window as any).__afwDeferredPrompt;
+		if (deferred) {
+			deferred.prompt();
+			return;
+		}
+		const url = new URL(window.location.href);
+		url.searchParams.set('install', 'app');
+		window.location.href = url.toString();
+	});
 
 	return (
 		<>
@@ -179,6 +199,19 @@ export default component$(() => {
 												</div>
 											))}
 										</div>
+
+										{!isStandalone.value && (
+											<div class="pt-6 pb-2">
+												<button
+													type="button"
+													onClick$={openPwaInstall$}
+													class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-sky-950 text-white rounded-full text-sm font-bold hover:bg-sky-800 transition-colors border border-cyan-400/30"
+												>
+													<span aria-hidden="true">📲</span>
+													{_`Install App`}
+												</button>
+											</div>
+										)}
 									</div>
 								</div>
 							</div>

@@ -322,6 +322,12 @@
 		"Thank you! Your message has been sent successfully.": "Vielen Dank! Deine Nachricht wurde erfolgreich übermittelt.",
 		"Failed to send message": "Fehler beim Senden der Nachricht",
 		"An error occurred while sending your message. Please try again or contact us directly via email.": "Beim Senden der Nachricht ist ein Fehler aufgetreten. Bitte versuche es erneut oder kontaktiere uns direkt per E-Mail.",
-		"Sending inquiry...": "Nachricht wird gesendet..."
+		"Sending inquiry...": "Nachricht wird gesendet...",
+		"Quick access to kites, wings & foils right from your home screen.": "Schneller Zugriff auf Kites, Wings & Foils direkt vom Home-Bildschirm.",
+		"Install": "Installieren",
+		"1. Tap the Share button [↑] at the bottom": "1. Tippe unten auf Teilen [↑]",
+		"2. Choose 'Add to Home Screen' [+]": "2. Wähle 'Zum Home-Bildschirm' [+]",
+		"Install App": "App installieren",
+		"Close": "Schließen"
 	}
 }

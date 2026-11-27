@@ -19,6 +19,7 @@ import { ActiveCustomer, AppState } from '~/types';
 import Cart from '../components/cart/Cart';
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
+import PwaInstallBanner from '~/components/pwa-install/PwaInstallBanner';
 
 export const onGet: RequestHandler = async ({ cacheControl, headers, url }) => {
 	const pathname = url.pathname;
@@ -172,6 +173,7 @@ export default component$(() => {
 				<Slot />
 			</main>
 			<Footer />
+			<PwaInstallBanner />
 		</div>
 	);
 });
