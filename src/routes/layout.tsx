@@ -83,6 +83,10 @@ export const onRequest: RequestHandler = ({
 	locale(activeLang);
 	sharedMap.set('locale', activeLang);
 
+	// Persist the resolved language server-side so the cookie also survives
+	// direct URL entries (?lang=…) without any client-side JavaScript.
+	cookie.set('lang', activeLang, { path: '/', maxAge: 31536000, sameSite: 'lax' });
+
 	if (method === 'GET') {
 		const isPrivate = pathname.startsWith('/account') || pathname.startsWith('/checkout');
 		if (!isPrivate) {

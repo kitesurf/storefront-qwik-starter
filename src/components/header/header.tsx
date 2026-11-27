@@ -16,31 +16,15 @@ export default component$(() => {
 	const location = useLocation();
 	const activeLocale = (getLocale('en') || 'en').split('-')[0].split('_')[0];
 	const rawPath = location.url.pathname;
-	const cleanPath = rawPath.replace(/^\/(de|es|it|fr)(\/|$)/, '/').replace(/\/+$/, '') || '';
-	const deHref = `/de${cleanPath || '/'}`;
-	const esHref = `/es${cleanPath || '/'}`;
-	const itHref = `/it${cleanPath || '/'}`;
-	const frHref = `/fr${cleanPath || '/'}`;
-	const enHref = cleanPath || '/';
-
-	const switchLanguage$ = $((targetLang: string) => {
-		document.cookie = `lang=${targetLang};path=/;max-age=31536000`;
-		const raw = window.location.pathname;
-		const clean = raw.replace(/^\/(de|es|it|fr)(\/|$)/, '/').replace(/\/+$/, '') || '';
-		let targetUrl: string;
-		if (targetLang === 'de') {
-			targetUrl = `/de${clean || '/'}`;
-		} else if (targetLang === 'es') {
-			targetUrl = `/es${clean || '/'}`;
-		} else if (targetLang === 'it') {
-			targetUrl = `/it${clean || '/'}`;
-		} else if (targetLang === 'fr') {
-			targetUrl = `/fr${clean || '/'}`;
-		} else {
-			targetUrl = clean || '/';
-		}
-		window.location.href = targetUrl;
-	});
+	// Native navigation links (no preventdefault) with a normalized trailing
+	// slash, so Cloudflare Pages never responds with a 301 redirect.
+	const clean = rawPath.replace(/^\/(de|es|it|fr)(\/|$)/, '/');
+	const normalizedPath = clean === '/' ? '/' : clean.endsWith('/') ? clean : `${clean}/`;
+	const deHref = `/de${normalizedPath}`;
+	const esHref = `/es${normalizedPath}`;
+	const itHref = `/it${normalizedPath}`;
+	const frHref = `/fr${normalizedPath}`;
+	const enHref = normalizedPath;
 
 	const collections = useContext(APP_STATE).collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
@@ -192,10 +176,6 @@ export default component$(() => {
 						<div class="hidden sm:flex items-center space-x-1 bg-white/10 rounded-full p-1 border border-white/15 text-xs font-semibold text-white">
 							<a
 								href={deHref}
-								preventdefault:click
-								onClick$={() => {
-									switchLanguage$('de');
-								}}
 								class={[
 									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
 									activeLocale === 'de'
@@ -208,10 +188,6 @@ export default component$(() => {
 							<span class="text-white/30 text-xs">|</span>
 							<a
 								href={enHref}
-								preventdefault:click
-								onClick$={() => {
-									switchLanguage$('en');
-								}}
 								class={[
 									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
 									activeLocale === 'en'
@@ -224,10 +200,6 @@ export default component$(() => {
 							<span class="text-white/30 text-xs">|</span>
 							<a
 								href={esHref}
-								preventdefault:click
-								onClick$={() => {
-									switchLanguage$('es');
-								}}
 								class={[
 									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
 									activeLocale === 'es'
@@ -240,10 +212,6 @@ export default component$(() => {
 							<span class="text-white/30 text-xs">|</span>
 							<a
 								href={itHref}
-								preventdefault:click
-								onClick$={() => {
-									switchLanguage$('it');
-								}}
 								class={[
 									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
 									activeLocale === 'it'
@@ -256,10 +224,6 @@ export default component$(() => {
 							<span class="text-white/30 text-xs">|</span>
 							<a
 								href={frHref}
-								preventdefault:click
-								onClick$={() => {
-									switchLanguage$('fr');
-								}}
 								class={[
 									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all',
 									activeLocale === 'fr'
