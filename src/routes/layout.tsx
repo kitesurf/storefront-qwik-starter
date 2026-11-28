@@ -20,6 +20,8 @@ import Cart from '../components/cart/Cart';
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
 import PwaInstallBanner from '~/components/pwa-install/PwaInstallBanner';
+import PartnerBanner from '~/components/partner/PartnerBanner';
+import { getPartner } from '~/config/partners';
 
 export const onGet: RequestHandler = async ({ cacheControl, headers, url }) => {
 	const pathname = url.pathname;
@@ -55,6 +57,11 @@ export const useAvailableCountriesLoader = routeLoader$(async () => {
 		console.error('useAvailableCountriesLoader error:', err);
 		return [];
 	}
+});
+
+export const usePartnerLoader = routeLoader$(async ({ cookie }) => {
+	const partnerSlug = cookie.get('afw_partner')?.value;
+	return getPartner(partnerSlug);
 });
 
 export const onRequest: RequestHandler = ({
@@ -122,6 +129,7 @@ export default component$(() => {
 
 	const collectionsSignal = useCollectionsLoader();
 	const availableCountriesSignal = useAvailableCountriesLoader();
+	const partnerSignal = usePartnerLoader();
 
 	const state = useStore<AppState>({
 		showCart: false,
@@ -175,6 +183,7 @@ export default component$(() => {
 
 	return (
 		<div>
+			<PartnerBanner partner={partnerSignal.value} />
 			<Header />
 			<Cart />
 			<Menu />

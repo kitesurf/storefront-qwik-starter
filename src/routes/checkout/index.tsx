@@ -1,4 +1,4 @@
-import { $, component$, useContext, useStore, useVisibleTask$ } from '@qwik.dev/core';
+import { $, component$, useContext, useSignal, useStore, useVisibleTask$ } from '@qwik.dev/core';
 import { useNavigate } from '@qwik.dev/router';
 import { _ } from 'compiled-i18n';
 import CartContents from '~/components/cart-contents/CartContents';
@@ -8,6 +8,7 @@ import Payment from '~/components/payment/Payment';
 import Shipping from '~/components/shipping/Shipping';
 import { APP_STATE, CUSTOMER_NOT_DEFINED_ID } from '~/constants';
 import { CreateAddressInput, CreateCustomerInput } from '~/generated/graphql';
+import { getPartner, PartnerSchool } from '~/config/partners';
 import {
 	addPaymentToOrderMutation,
 	transitionOrderToStateMutation,
@@ -24,6 +25,7 @@ export default component$(() => {
 	const navigate = useNavigate();
 	const appState = useContext(APP_STATE);
 	const state = useStore<{ step: Step }>({ step: 'SHIPPING' });
+	const activePartnerSignal = useSignal<PartnerSchool | null>(null);
 	const steps: { name: string; state: Step }[] = [
 		{ name: _`Shipping Checkout`, state: 'SHIPPING' },
 		{ name: _`Payment`, state: 'PAYMENT' },
@@ -31,6 +33,10 @@ export default component$(() => {
 	];
 
 	useVisibleTask$(async () => {
+		const match = document.cookie.match(/(?:^|;\s*)afw_partner=([^;]+)/);
+		if (match && match[1]) {
+			activePartnerSignal.value = getPartner(match[1]);
+		}
 		appState.showCart = false;
 		if (appState.activeOrder?.lines?.length === 0) {
 			navigate('/');
@@ -118,6 +124,20 @@ export default component$(() => {
 									<h2 class="text-lg font-medium text-gray-900 mb-4">{_`Order summary`}</h2>
 									<CartContents />
 									<CartTotals order={appState.activeOrder} />
+
+									{activePartnerSignal.value && (
+										<div class="mt-4 p-4 rounded-xl bg-sky-50 border border-sky-200 text-xs text-sky-900">
+											<div class="flex items-center gap-2 font-bold mb-1">
+												<span>🏄‍♂️</span>
+												<span>Eleveight Partner-Abwicklung</span>
+											</div>
+											<p>
+												Betreuung & Auslieferung durch:{' '}
+												<strong>{activePartnerSignal.value.name}</strong> (
+												{activePartnerSignal.value.location}).
+											</p>
+										</div>
+									)}
 								</div>
 							)}
 						</div>
