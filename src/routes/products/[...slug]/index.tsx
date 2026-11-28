@@ -124,21 +124,14 @@ export default component$(() => {
 						<div class="w-full max-w-2xl mx-auto sm:block lg:max-w-none">
 							<span class="rounded-md overflow-hidden">
 								<div class="h-[400px] w-full md:w-[400px] relative">
-									{activeVideo360UrlSig.value && (
+									{!is360ActiveSig.value && activeVideo360UrlSig.value && (
 										<button
 											type="button"
 											onClick$={() => {
-												is360ActiveSig.value = !is360ActiveSig.value;
+												is360ActiveSig.value = true;
 											}}
-											aria-label={
-												is360ActiveSig.value ? 'Zur Fotogalerie wechseln' : '360° Ansicht öffnen'
-											}
-											class={{
-												'absolute top-2 right-2 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold shadow-md transition-all': true,
-												'bg-sky-700 text-white hover:bg-sky-800': is360ActiveSig.value,
-												'bg-white/90 text-gray-900 border border-gray-200 hover:bg-white hover:scale-105 active:scale-95':
-													!is360ActiveSig.value,
-											}}
+											aria-label="360° Ansicht öffnen"
+											class="absolute top-2 right-2 z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold shadow-md transition-all bg-white/90 text-gray-900 border border-gray-200 hover:bg-white hover:scale-105 active:scale-95"
 										>
 											<svg
 												class="w-4 h-4 text-sky-600"
@@ -149,7 +142,7 @@ export default component$(() => {
 											>
 												<path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
 											</svg>
-											<span>{is360ActiveSig.value ? 'Fotos' : '360° Ansicht'}</span>
+											<span>360° Ansicht</span>
 										</button>
 									)}
 

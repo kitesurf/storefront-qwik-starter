@@ -157,18 +157,22 @@ export const Product360Viewer = component$<Product360ViewerProps>(({ videoUrl, o
 					onClick$={$(() => {
 						if (onClose$) onClose$();
 					})}
-					aria-label="360° Ansicht schließen"
-					class="absolute top-3 right-3 z-20 p-1.5 rounded-full bg-white/90 dark:bg-gray-800/90 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white shadow-md border border-gray-200 dark:border-gray-700 hover:scale-110 transition-all pointer-events-auto"
+					aria-label="360° Ansicht schließen und zur Fotogalerie zurückkehren"
+					class="absolute top-2 right-2 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold shadow-md transition-all bg-sky-700 text-white hover:bg-sky-800 hover:scale-105 active:scale-95 pointer-events-auto"
 				>
 					<svg
-						class="w-4 h-4"
+						class="w-3.5 h-3.5"
 						viewBox="0 0 24 24"
 						fill="none"
 						stroke="currentColor"
-						stroke-width="2"
+						stroke-width="2.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
 					>
-						<path d="M18 6L6 18M6 6l12 12" />
+						<line x1="18" y1="6" x2="6" y2="18"></line>
+						<line x1="6" y1="6" x2="18" y2="18"></line>
 					</svg>
+					<span>Fotos</span>
 				</button>
 			)}
 		</div>
