@@ -20,7 +20,7 @@ export const onGet: RequestHandler = ({ send }) => {
 - Operator: Kitesurf Mallorca SL (CIF: ES-B57774572, Carrer Greco 19, 07400 Alcúdia, Illes Balears, Spain)
 - Certifications: Spanish Maritime Watersports School Registry, VDWS Licensed Center Since 2013, Official Eleveight Pro Partner & Testcenter
 - [About Us](https://allforwind.com/about): Brand history, Eleveight partnership, and team.
-- [Shipping & Delivery](https://allforwind.com/shipping): European delivery times, rates, free shipping over 150 EUR.
+- [Shipping & Delivery](https://allforwind.com/shipping): European delivery times, rates, free shipping over 499 EUR.
 - [Returns & Cancellation](https://allforwind.com/returns): 30-day returns, statutory withdrawal right, warranty.
 - [Contact & Support](https://allforwind.com/contact): Customer care and technical gear advice (support@allforwind.com).
 - [FAQ](https://allforwind.com/faq): Frequently asked questions.

@@ -39,7 +39,7 @@ export default component$(() => {
 						</div>
 						<div class="flex items-center justify-center sm:justify-start gap-2.5 text-xs sm:text-sm text-slate-300">
 							<span class="inline-block w-2 h-2 rounded-full bg-cyan-400"></span>
-							<span class="font-medium">{_`Free EU Shipping from 150 €`}</span>
+							<span class="font-medium">{_`Free EU Shipping from 499 €`}</span>
 						</div>
 						<div class="flex items-center justify-center sm:justify-start gap-2.5 text-xs sm:text-sm text-slate-300">
 							<span class="inline-block w-2 h-2 rounded-full bg-cyan-400"></span>

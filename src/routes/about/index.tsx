@@ -101,7 +101,7 @@ export default component$(() => {
 						<div class="space-y-2">
 							<h3 class="font-bold text-lg text-cyan-400">{_`Fast EU Logistics`}</h3>
 							<p class="text-sm text-slate-300 leading-relaxed">
-								{_`Express insured shipping to Germany, Spain, and all European destinations.`}
+								{_`Express insured shipping to Spain, Europe, and worldwide destinations.`}
 							</p>
 						</div>
 					</div>

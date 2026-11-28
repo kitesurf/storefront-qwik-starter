@@ -30,14 +30,14 @@ export default component$(() => {
 					{_`Shipping & Delivery Information`}
 				</h1>
 				<p class="text-lg text-slate-600 leading-relaxed max-w-3xl mb-12">
-					{_`We ship performance kites, wings, hydrofoils, and boards quickly and securely across Germany, the European Union, and worldwide.`}
+					{_`We ship performance kites, wings, hydrofoils, and boards quickly and securely across Spain, the European Union, and worldwide.`}
 				</p>
 
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
 					<div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
-						<h3 class="font-bold text-slate-900 text-lg mb-2">{_`Free Shipping from 150 €`}</h3>
+						<h3 class="font-bold text-slate-900 text-lg mb-2">{_`Free Shipping from 499 €`}</h3>
 						<p class="text-sm text-slate-600 leading-relaxed">
-							{_`Standard shipping is free of charge within Germany and the European Union on orders exceeding 150 €.`}
+							{_`Standard shipping is free of charge within Spain and the European Union on orders exceeding 499 €.`}
 						</p>
 					</div>
 					<div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
@@ -74,27 +74,21 @@ export default component$(() => {
 							</thead>
 							<tbody class="divide-y divide-slate-100">
 								<tr class="hover:bg-slate-50/50">
-									<td class="py-4 px-6 font-semibold text-slate-900">{_`Germany`}</td>
-									<td class="py-4 px-6">{_`1 - 3 business days`}</td>
-									<td class="py-4 px-6">5.90 €</td>
-									<td class="py-4 px-6 text-emerald-600 font-medium">{_`From 150 €`}</td>
-								</tr>
-								<tr class="hover:bg-slate-50/50">
-									<td class="py-4 px-6 font-semibold text-slate-900">{_`European Union (Zone 1)`}</td>
+									<td class="py-4 px-6 font-semibold text-slate-900">{_`Spain & European Union`}</td>
 									<td class="py-4 px-6">{_`2 - 5 business days`}</td>
-									<td class="py-4 px-6">9.90 €</td>
-									<td class="py-4 px-6 text-emerald-600 font-medium">{_`From 200 €`}</td>
+									<td class="py-4 px-6 font-medium text-slate-800">{_`On request`}</td>
+									<td class="py-4 px-6 text-emerald-600 font-medium">{_`From 499 €`}</td>
 								</tr>
 								<tr class="hover:bg-slate-50/50">
 									<td class="py-4 px-6 font-semibold text-slate-900">{_`Switzerland & United Kingdom`}</td>
 									<td class="py-4 px-6">{_`3 - 6 business days`}</td>
-									<td class="py-4 px-6">19.90 €</td>
-									<td class="py-4 px-6 text-slate-500">{_`From 350 €`}</td>
+									<td class="py-4 px-6 font-medium text-slate-800">{_`On request`}</td>
+									<td class="py-4 px-6 text-emerald-600 font-medium">{_`From 499 €`}</td>
 								</tr>
 								<tr class="hover:bg-slate-50/50">
 									<td class="py-4 px-6 font-semibold text-slate-900">{_`International / Worldwide`}</td>
 									<td class="py-4 px-6">{_`5 - 10 business days`}</td>
-									<td class="py-4 px-6">{_`Calculated at checkout`}</td>
+									<td class="py-4 px-6 font-medium text-slate-800">{_`On request`}</td>
 									<td class="py-4 px-6 text-slate-400">—</td>
 								</tr>
 							</tbody>

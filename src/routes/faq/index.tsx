@@ -28,7 +28,7 @@ export default component$(() => {
 		},
 		{
 			q: _`What are the delivery times and shipping costs?`,
-			a: _`Deliveries within Germany take 1 to 3 business days; EU shipments take 2 to 5 business days. Shipping is free of charge within Germany and the EU for orders over 150 €.`,
+			a: _`Deliveries within Spain take 1 to 3 business days; EU shipments take 2 to 5 business days. Shipping is free of charge for orders over 499 €. For other orders, shipping costs are available on request.`,
 		},
 		{
 			q: _`What is your return policy?`,
