@@ -42,14 +42,22 @@ export default component$(() => {
 				<h1 class="text-3xl font-bold text-gray-900 mb-3">Partner-Schule nicht gefunden</h1>
 				<p class="text-gray-600 mb-8 max-w-md mx-auto">
 					Der aufgerufene Partner-Link ist ungültig oder nicht mehr aktiv. Du kannst dich im
-					regulären Shop umsehen oder deine Station kontaktieren.
+					regulären Shop umsehen oder selbst Partner von ALL FOR WIND werden.
 				</p>
-				<a
-					href="/"
-					class="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-medium transition-colors"
-				>
-					Zur Shop-Startseite
-				</a>
+				<div class="flex flex-col sm:flex-row gap-4 justify-center">
+					<a
+						href="/"
+						class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium transition-colors"
+					>
+						Zur Shop-Startseite
+					</a>
+					<a
+						href="/partner/apply"
+						class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-sky-700 hover:bg-sky-800 text-white font-medium transition-colors"
+					>
+						Jetzt Partner-Schule werden
+					</a>
+				</div>
 			</div>
 		);
 	}
@@ -238,7 +246,7 @@ export default component$(() => {
 			</section>
 
 			{/* Station Contact Box */}
-			<section class="max-w-3xl mx-auto px-4 text-center">
+			<section class="max-w-3xl mx-auto px-4 text-center mb-10">
 				<div class="bg-slate-100 rounded-2xl p-6 border border-slate-200">
 					<h3 class="text-base font-bold text-slate-900 mb-1">
 						Fragen zu Größe, Modell oder Verfügbarkeit?
@@ -262,6 +270,26 @@ export default component$(() => {
 							<polyline points="22,6 12,13 2,6" />
 						</svg>
 						Station kontaktieren ({partner.contactEmail})
+					</a>
+				</div>
+			</section>
+
+			{/* Become a Partner Callout */}
+			<section class="max-w-3xl mx-auto px-4 text-center">
+				<div class="bg-gradient-to-r from-sky-900 to-slate-900 rounded-2xl p-6 text-white text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+					<div>
+						<h4 class="font-bold text-base text-white">
+							Du betreibst selbst eine Station oder Schule?
+						</h4>
+						<p class="text-xs text-sky-200 mt-0.5">
+							Statte deine Schüler mit 10 % Schülervorteil aus und erhalte attraktive Provisionen.
+						</p>
+					</div>
+					<a
+						href="/partner/apply"
+						class="shrink-0 px-5 py-2.5 rounded-xl bg-white text-slate-900 hover:bg-sky-50 text-xs sm:text-sm font-bold shadow transition-colors"
+					>
+						Partner werden →
 					</a>
 				</div>
 			</section>

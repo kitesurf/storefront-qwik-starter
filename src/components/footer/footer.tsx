@@ -17,6 +17,7 @@ export default component$(() => {
 		company: [
 			{ name: _`About Us`, href: '/about' },
 			{ name: _`Eleveight Partnership`, href: '/about#eleveight' },
+			{ name: _`Partner Schools & Centers`, href: '/partner/apply' },
 			{ name: _`Blog & Stories`, href: '/blog' },
 		],
 		legal: [
