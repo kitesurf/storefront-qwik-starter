@@ -44,14 +44,6 @@ export const useProductLoader = routeLoader$(async ({ params, sharedMap, url, co
 			status(404);
 			return null;
 		}
-		if (product.assets && product.assets.length === 1) {
-			product.assets.push({
-				...product.assets[0],
-				id: 'placeholder_2',
-				name: 'placeholder',
-				preview: '/asset_placeholder.webp',
-			});
-		}
 		return product;
 	} catch (err) {
 		console.error('useProductLoader error:', err);
