@@ -455,10 +455,21 @@ export const head: DocumentHead = ({ resolveValue }) => {
 	const isApply = data?.isApply;
 
 	if (isApply) {
-		return generateDocumentHead(
+		const baseHead = generateDocumentHead(
+			'https://allforwind.com/partner/apply/',
 			'Become an Official Partner School | ALL FOR WIND',
 			'Equip your students with premium Eleveight kites, wings and boards with 10% student advantage. Join the ALL FOR WIND partner network for kite and watersports centers.'
 		);
+		return {
+			...baseHead,
+			meta: [
+				...(baseHead.meta || []),
+				{
+					name: 'robots',
+					content: 'noindex, nofollow',
+				},
+			],
+		};
 	}
 
 	if (!partner) {

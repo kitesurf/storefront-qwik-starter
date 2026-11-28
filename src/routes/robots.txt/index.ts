@@ -5,6 +5,14 @@ export const onGet: RequestHandler = ({ send }) => {
 Allow: /
 Disallow: /account/
 Disallow: /checkout/
+Disallow: /partner/apply
+Disallow: */partner/apply
+Disallow: /partner/join
+Disallow: */partner/join
+Disallow: /partner/anmelden
+Disallow: */partner/anmelden
+Disallow: /partner/anmeldung
+Disallow: */partner/anmeldung
 
 # LLMs.txt
 Allow: /llms.txt
