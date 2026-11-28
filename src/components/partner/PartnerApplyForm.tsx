@@ -1,187 +1,12 @@
 import { component$ } from '@qwik.dev/core';
-import { type DocumentHead, Form, routeAction$, zod$, type RequestHandler } from '@qwik.dev/router';
+import { Form, type ActionStore } from '@qwik.dev/router';
 import { _ } from 'compiled-i18n';
-import { generateDocumentHead } from '~/utils/head.utils';
 
-export const onGet: RequestHandler = async ({ cacheControl, headers }) => {
-	cacheControl({
-		noCache: true,
-		private: true,
-	});
-	headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-};
+interface PartnerApplyFormProps {
+	action: ActionStore<any, any, any>;
+}
 
-export const usePartnerApplyAction = routeAction$(
-	async (data, requestEvent) => {
-		// Bot protection honeypot
-		if (data.hp_field && data.hp_field.trim() !== '') {
-			return { success: true };
-		}
-
-		const escape = (text: string) =>
-			(text || '')
-				.replace(/&/g, '&amp;')
-				.replace(/</g, '&lt;')
-				.replace(/>/g, '&gt;')
-				.replace(/"/g, '&quot;')
-				.replace(/'/g, '&#039;');
-
-		const stationName = data.stationName.trim();
-		const contactName = data.contactName.trim();
-		const email = data.email.trim();
-		const phone = data.phone.trim();
-		const location = data.location.trim();
-		const website = (data.website || '').trim();
-		const preferredCode = (data.preferredCode || '').trim().toUpperCase();
-		const sports = Array.isArray(data.sports)
-			? data.sports.join(', ')
-			: data.sports || 'Kitesurf / Wing';
-		const studentVolume = data.studentVolume || 'Nicht angegeben';
-		const notes = (data.notes || '').trim();
-
-		// 1. Instant Telegram Bot notification to Daniel
-		const telegramToken =
-			requestEvent.env.get('TELEGRAM_BOT_TOKEN') ||
-			(requestEvent.platform as any)?.env?.TELEGRAM_BOT_TOKEN ||
-			(typeof process !== 'undefined' ? process.env?.TELEGRAM_BOT_TOKEN : '') ||
-			'8399601223:AAGfvATulwPpxvo7iLHTaz9oBs0vyrYOM4w';
-
-		const telegramChatId =
-			requestEvent.env.get('TELEGRAM_CHAT_ID') ||
-			(requestEvent.platform as any)?.env?.TELEGRAM_CHAT_ID ||
-			(typeof process !== 'undefined' ? process.env?.TELEGRAM_CHAT_ID : '') ||
-			'444372500';
-
-		const tgMessage =
-			`🎉 *NEUE PARTNER-SCHULEN ANMELDUNG!*\n\n` +
-			`🏫 *Station / Schule:* ${stationName}\n` +
-			`👤 *Ansprechpartner:* ${contactName}\n` +
-			`📧 *E-Mail:* ${email}\n` +
-			`📱 *Telefon / WhatsApp:* ${phone}\n` +
-			`📍 *Standort / Spot:* ${location}\n` +
-			(website ? `🌐 *Web / Social:* ${website}\n` : '') +
-			(preferredCode ? `🏷️ *Wunsch-Code:* \`${preferredCode}\`\n` : '') +
-			`🏄 *Sportarten:* ${sports}\n` +
-			`👥 *Schüler/Saison:* ${studentVolume}\n` +
-			(notes ? `\n💬 *Nachricht / Notiz:*\n${notes}` : '');
-
-		try {
-			await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					chat_id: telegramChatId,
-					text: tgMessage,
-					parse_mode: 'Markdown',
-				}),
-			});
-		} catch (tgError) {
-			console.error('Failed to dispatch partner Telegram notification:', tgError);
-		}
-
-		// 2. Email notification via Cloudflare Email API
-		const apiToken =
-			requestEvent.env.get('CLOUDFLARE_EMAIL_API_TOKEN') ||
-			(requestEvent.platform as any)?.env?.CLOUDFLARE_EMAIL_API_TOKEN ||
-			(typeof process !== 'undefined' ? process.env?.CLOUDFLARE_EMAIL_API_TOKEN : '') ||
-			'';
-
-		const accountId =
-			requestEvent.env.get('CLOUDFLARE_ACCOUNT_ID') ||
-			(requestEvent.platform as any)?.env?.CLOUDFLARE_ACCOUNT_ID ||
-			(typeof process !== 'undefined' ? process.env?.CLOUDFLARE_ACCOUNT_ID : '') ||
-			'8a245c8aab6033cccfc3829fb5537026';
-
-		if (apiToken) {
-			const textContent =
-				`Neue Partner-Anmeldung über allforwind.com:\n\n` +
-				`Station: ${stationName}\n` +
-				`Ansprechpartner: ${contactName}\n` +
-				`E-Mail: ${email}\n` +
-				`Telefon/WhatsApp: ${phone}\n` +
-				`Standort: ${location}\n` +
-				`Web/Social: ${website}\n` +
-				`Wunsch-Code: ${preferredCode}\n` +
-				`Sportarten: ${sports}\n` +
-				`Schüler/Jahr: ${studentVolume}\n` +
-				`Nachricht: ${notes}\n`;
-
-			const htmlContent = `
-				<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; color: #0f172a; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
-					<div style="border-bottom: 2px solid #0284c7; padding-bottom: 12px; margin-bottom: 20px;">
-						<h2 style="color: #0369a1; margin: 0; font-size: 20px;">ALL FOR WIND — Neue Partnerschulen-Anmeldung</h2>
-					</div>
-					<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-						<tr><td style="padding: 8px 0; color: #64748b; width: 160px;"><strong>Station:</strong></td><td><strong>${escape(stationName)}</strong></td></tr>
-						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Ansprechpartner:</strong></td><td>${escape(contactName)}</td></tr>
-						<tr><td style="padding: 8px 0; color: #64748b;"><strong>E-Mail:</strong></td><td><a href="mailto:${escape(email)}" style="color: #0284c7;">${escape(email)}</a></td></tr>
-						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Telefon / WhatsApp:</strong></td><td><a href="tel:${escape(phone)}" style="color: #0284c7;">${escape(phone)}</a></td></tr>
-						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Standort / Spot:</strong></td><td>${escape(location)}</td></tr>
-						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Website / Social:</strong></td><td>${escape(website)}</td></tr>
-						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Wunsch-Code:</strong></td><td><code style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px; color: #0369a1;">${escape(preferredCode || 'Auto-Generieren')}</code></td></tr>
-						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Sportarten:</strong></td><td>${escape(sports)}</td></tr>
-						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Schüler / Saison:</strong></td><td>${escape(studentVolume)}</td></tr>
-					</table>
-					${
-						notes
-							? `<div style="margin-top: 16px; padding: 14px; background-color: #f8fafc; border-radius: 8px; border-left: 4px solid #0284c7;">
-							<h3 style="margin: 0 0 6px 0; font-size: 13px; text-transform: uppercase; color: #64748b;">Nachricht:</h3>
-							<p style="white-space: pre-wrap; margin: 0; line-height: 1.5; color: #334155;">${escape(notes)}</p>
-						</div>`
-							: ''
-					}
-					<p style="margin-top: 24px; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 12px;">
-						Antworten per E-Mail geht direkt an ${escape(email)}.
-					</p>
-				</div>
-			`;
-
-			try {
-				await fetch(
-					`https://api.cloudflare.com/client/v4/accounts/${accountId}/email/sending/send`,
-					{
-						method: 'POST',
-						headers: {
-							Authorization: `Bearer ${apiToken}`,
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify({
-							from: 'noreply@allforwind.com',
-							to: 'info@allforwind.com',
-							reply_to: email,
-							subject: `[Partner Anmeldung] ${stationName} (${location})`,
-							text: textContent,
-							html: htmlContent,
-						}),
-					}
-				);
-			} catch (mailError) {
-				console.error('Failed to send partner registration email:', mailError);
-			}
-		}
-
-		return { success: true };
-	},
-	zod$((z) =>
-		z.object({
-			stationName: z.string().trim().min(2, 'Station name is required'),
-			contactName: z.string().trim().min(2, 'Contact person name is required'),
-			email: z.string().trim().email('Valid email is required'),
-			phone: z.string().trim().min(5, 'Phone or WhatsApp number is required'),
-			location: z.string().trim().min(2, 'Location is required'),
-			website: z.string().optional(),
-			preferredCode: z.string().optional(),
-			sports: z.union([z.string(), z.array(z.string())]).optional(),
-			studentVolume: z.string().optional(),
-			notes: z.string().optional(),
-			hp_field: z.string().optional(),
-		})
-	)
-);
-
-export default component$(() => {
-	const applyAction = usePartnerApplyAction();
-
+export const PartnerApplyForm = component$<PartnerApplyFormProps>(({ action }) => {
 	return (
 		<div class="bg-slate-50 text-slate-900 min-h-screen py-12 sm:py-16">
 			<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -243,7 +68,7 @@ export default component$(() => {
 
 				{/* Form Container */}
 				<div class="bg-white p-8 sm:p-12 rounded-3xl border border-slate-200 shadow-sm">
-					{applyAction.value?.success ? (
+					{action.value?.success ? (
 						<div class="py-8 text-center max-w-xl mx-auto">
 							<div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
 								<svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -287,7 +112,7 @@ export default component$(() => {
 								</p>
 							</div>
 
-							<Form action={applyAction} class="space-y-6">
+							<Form action={action} class="space-y-6">
 								{/* Honeypot field for bot suppression */}
 								<div class="hidden" aria-hidden="true">
 									<label for="partner-hp">Leave this empty</label>
@@ -435,7 +260,9 @@ export default component$(() => {
 											class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all text-sm"
 										>
 											<option value="under_50">{_`Under 50`}</option>
-											<option value="50_to_200" selected>{_`50 to 200`}</option>
+											<option value="50_to_200" selected>
+												{_`50 to 200`}
+											</option>
 											<option value="over_200">{_`Over 200`}</option>
 										</select>
 									</div>
@@ -506,10 +333,10 @@ export default component$(() => {
 								<div class="pt-4">
 									<button
 										type="submit"
-										disabled={applyAction.isRunning}
+										disabled={action.isRunning}
 										class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-sky-700 hover:bg-sky-800 disabled:opacity-50 text-white font-bold text-base shadow-md transition-all cursor-pointer"
 									>
-										{applyAction.isRunning ? (
+										{action.isRunning ? (
 											<span>{_`Submitting...`}</span>
 										) : (
 											<>
@@ -537,10 +364,3 @@ export default component$(() => {
 		</div>
 	);
 });
-
-export const head: DocumentHead = () => {
-	return generateDocumentHead(
-		'Become a Partner School | ALL FOR WIND',
-		'Equip your students with premium Eleveight kites, wings and boards with 10% student advantage. Join the ALL FOR WIND partner network for kite and watersports centers.'
-	);
-};

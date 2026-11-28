@@ -1,12 +1,20 @@
 import { component$ } from '@qwik.dev/core';
-import { DocumentHead, routeLoader$ } from '@qwik.dev/router';
+import { DocumentHead, routeAction$, routeLoader$, zod$ } from '@qwik.dev/router';
+import { PartnerApplyForm } from '~/components/partner/PartnerApplyForm';
 import { getPartner } from '~/config/partners';
+import { generateDocumentHead } from '~/utils/head.utils';
 
 export const usePartnerRouteLoader = routeLoader$(async ({ params, cookie }) => {
-	const cleanSlug = params.slug?.replace(/\/$/, '');
-	const partner = getPartner(cleanSlug);
+	const rawSlug = params.slug?.replace(/\/$/, '') || '';
+	const cleanSlug = rawSlug.toLowerCase();
+
+	if (!cleanSlug || ['apply', 'join', 'anmelden', 'anmeldung', 'register'].includes(cleanSlug)) {
+		return { partner: null, isApply: true };
+	}
+
+	const partner = getPartner(rawSlug);
 	if (!partner) {
-		return { partner: null };
+		return { partner: null, isApply: false };
 	}
 
 	// Persist 30-day partner referral cookie
@@ -16,12 +24,185 @@ export const usePartnerRouteLoader = routeLoader$(async ({ params, cookie }) => 
 		sameSite: 'lax',
 	});
 
-	return { partner };
+	return { partner, isApply: false };
 });
+
+export const usePartnerApplyAction = routeAction$(
+	async (data, requestEvent) => {
+		// Bot protection honeypot
+		if (data.hp_field && data.hp_field.trim() !== '') {
+			return { success: true };
+		}
+
+		const escape = (text: string) =>
+			(text || '')
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#039;');
+
+		const stationName = data.stationName.trim();
+		const contactName = data.contactName.trim();
+		const email = data.email.trim();
+		const phone = data.phone.trim();
+		const location = data.location.trim();
+		const website = (data.website || '').trim();
+		const preferredCode = (data.preferredCode || '').trim().toUpperCase();
+		const sports = Array.isArray(data.sports)
+			? data.sports.join(', ')
+			: data.sports || 'Kitesurf / Wing';
+		const studentVolume = data.studentVolume || 'Nicht angegeben';
+		const notes = (data.notes || '').trim();
+
+		// 1. Instant Telegram Bot notification to Daniel
+		const telegramToken =
+			requestEvent.env.get('TELEGRAM_BOT_TOKEN') ||
+			(requestEvent.platform as any)?.env?.TELEGRAM_BOT_TOKEN ||
+			(typeof process !== 'undefined' ? process.env?.TELEGRAM_BOT_TOKEN : '') ||
+			'8399601223:AAGfvATulwPpxvo7iLHTaz9oBs0vyrYOM4w';
+
+		const telegramChatId =
+			requestEvent.env.get('TELEGRAM_CHAT_ID') ||
+			(requestEvent.platform as any)?.env?.TELEGRAM_CHAT_ID ||
+			(typeof process !== 'undefined' ? process.env?.TELEGRAM_CHAT_ID : '') ||
+			'444372500';
+
+		const tgMessage =
+			`🎉 *NEUE PARTNER-SCHULEN ANMELDUNG!*\n\n` +
+			`🏫 *Station / Schule:* ${stationName}\n` +
+			`👤 *Ansprechpartner:* ${contactName}\n` +
+			`📧 *E-Mail:* ${email}\n` +
+			`📱 *Telefon / WhatsApp:* ${phone}\n` +
+			`📍 *Standort / Spot:* ${location}\n` +
+			(website ? `🌐 *Web / Social:* ${website}\n` : '') +
+			(preferredCode ? `🏷️ *Wunsch-Code:* \`${preferredCode}\`\n` : '') +
+			`🏄 *Sportarten:* ${sports}\n` +
+			`👥 *Schüler/Saison:* ${studentVolume}\n` +
+			(notes ? `\n💬 *Nachricht / Notiz:*\n${notes}` : '');
+
+		try {
+			await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					chat_id: telegramChatId,
+					text: tgMessage,
+					parse_mode: 'Markdown',
+				}),
+			});
+		} catch (tgError) {
+			console.error('Failed to dispatch partner Telegram notification:', tgError);
+		}
+
+		// 2. Email notification via Cloudflare Email API
+		const apiToken =
+			requestEvent.env.get('CLOUDFLARE_EMAIL_API_TOKEN') ||
+			(requestEvent.platform as any)?.env?.CLOUDFLARE_EMAIL_API_TOKEN ||
+			(typeof process !== 'undefined' ? process.env?.CLOUDFLARE_EMAIL_API_TOKEN : '') ||
+			'';
+
+		const accountId =
+			requestEvent.env.get('CLOUDFLARE_ACCOUNT_ID') ||
+			(requestEvent.platform as any)?.env?.CLOUDFLARE_ACCOUNT_ID ||
+			(typeof process !== 'undefined' ? process.env?.CLOUDFLARE_ACCOUNT_ID : '') ||
+			'8a245c8aab6033cccfc3829fb5537026';
+
+		if (apiToken) {
+			const textContent =
+				`Neue Partner-Anmeldung über allforwind.com:\n\n` +
+				`Station: ${stationName}\n` +
+				`Ansprechpartner: ${contactName}\n` +
+				`E-Mail: ${email}\n` +
+				`Telefon/WhatsApp: ${phone}\n` +
+				`Standort: ${location}\n` +
+				`Web/Social: ${website}\n` +
+				`Wunsch-Code: ${preferredCode}\n` +
+				`Sportarten: ${sports}\n` +
+				`Schüler/Jahr: ${studentVolume}\n` +
+				`Nachricht: ${notes}\n`;
+
+			const htmlContent = `
+				<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; color: #0f172a; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
+					<div style="border-bottom: 2px solid #0284c7; padding-bottom: 12px; margin-bottom: 20px;">
+						<h2 style="color: #0369a1; margin: 0; font-size: 20px;">ALL FOR WIND — Neue Partnerschulen-Anmeldung</h2>
+					</div>
+					<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+						<tr><td style="padding: 8px 0; color: #64748b; width: 160px;"><strong>Station:</strong></td><td><strong>${escape(stationName)}</strong></td></tr>
+						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Ansprechpartner:</strong></td><td>${escape(contactName)}</td></tr>
+						<tr><td style="padding: 8px 0; color: #64748b;"><strong>E-Mail:</strong></td><td><a href="mailto:${escape(email)}" style="color: #0284c7;">${escape(email)}</a></td></tr>
+						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Telefon / WhatsApp:</strong></td><td><a href="tel:${escape(phone)}" style="color: #0284c7;">${escape(phone)}</a></td></tr>
+						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Standort / Spot:</strong></td><td>${escape(location)}</td></tr>
+						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Website / Social:</strong></td><td>${escape(website)}</td></tr>
+						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Wunsch-Code:</strong></td><td><code style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px; color: #0369a1;">${escape(preferredCode || 'Auto-Generieren')}</code></td></tr>
+						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Sportarten:</strong></td><td>${escape(sports)}</td></tr>
+						<tr><td style="padding: 8px 0; color: #64748b;"><strong>Schüler / Saison:</strong></td><td>${escape(studentVolume)}</td></tr>
+					</table>
+					${
+						notes
+							? `<div style="margin-top: 16px; padding: 14px; background-color: #f8fafc; border-radius: 8px; border-left: 4px solid #0284c7;">
+							<h3 style="margin: 0 0 6px 0; font-size: 13px; text-transform: uppercase; color: #64748b;">Nachricht:</h3>
+							<p style="white-space: pre-wrap; margin: 0; line-height: 1.5; color: #334155;">${escape(notes)}</p>
+						</div>`
+							: ''
+					}
+					<p style="margin-top: 24px; font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 12px;">
+						Antworten per E-Mail geht direkt an ${escape(email)}.
+					</p>
+				</div>
+			`;
+
+			try {
+				await fetch(
+					`https://api.cloudflare.com/client/v4/accounts/${accountId}/email/sending/send`,
+					{
+						method: 'POST',
+						headers: {
+							Authorization: `Bearer ${apiToken}`,
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({
+							from: 'noreply@allforwind.com',
+							to: 'info@allforwind.com',
+							reply_to: email,
+							subject: `[Partner Anmeldung] ${stationName} (${location})`,
+							text: textContent,
+							html: htmlContent,
+						}),
+					}
+				);
+			} catch (mailError) {
+				console.error('Failed to send partner registration email:', mailError);
+			}
+		}
+
+		return { success: true };
+	},
+	zod$((z) =>
+		z.object({
+			stationName: z.string().trim().min(2, 'Station name is required'),
+			contactName: z.string().trim().min(2, 'Contact person name is required'),
+			email: z.string().trim().email('Valid email is required'),
+			phone: z.string().trim().min(5, 'Phone or WhatsApp number is required'),
+			location: z.string().trim().min(2, 'Location is required'),
+			website: z.string().optional(),
+			preferredCode: z.string().optional(),
+			sports: z.union([z.string(), z.array(z.string())]).optional(),
+			studentVolume: z.string().optional(),
+			notes: z.string().optional(),
+			hp_field: z.string().optional(),
+		})
+	)
+);
 
 export default component$(() => {
 	const partnerSignal = usePartnerRouteLoader();
-	const partner = partnerSignal.value.partner;
+	const applyAction = usePartnerApplyAction();
+	const { partner, isApply } = partnerSignal.value;
+
+	if (isApply) {
+		return <PartnerApplyForm action={applyAction} />;
+	}
 
 	if (!partner) {
 		return (
@@ -98,29 +279,76 @@ export default component$(() => {
 								<h2 class="text-xl sm:text-2xl font-bold text-white mt-0.5">
 									10 % Rabatt auf das Sortiment
 								</h2>
-								<p class="text-xs sm:text-sm text-slate-300 mt-1">
-									Auslieferung & Betreuung direkt durch deine Station.
+								<p class="text-xs text-sky-100/80 mt-1">
+									Gilt für alle Eleveight Kites, Wings, Boards, Bars & Foils.
 								</p>
 							</div>
-							<div class="flex-shrink-0 text-center sm:text-right bg-sky-500/20 border border-sky-400/40 px-4 py-2.5 rounded-xl">
-								<span class="text-[10px] text-sky-200 uppercase font-bold block">
-									Gutscheincode
-								</span>
-								<span class="text-xl font-black text-white tracking-widest">
+							<div class="w-full sm:w-auto text-center sm:text-right bg-white/20 px-4 py-2.5 rounded-xl border border-white/30">
+								<div class="text-[10px] uppercase font-semibold text-sky-200">Dein Code</div>
+								<div class="text-xl font-extrabold text-white tracking-wider font-mono">
 									{partner.couponCode}
-								</span>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</section>
 
+			{/* How it Works / 3 Steps */}
+			<section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+				<div class="text-center mb-10">
+					<h2 class="text-2xl sm:text-3xl font-bold text-slate-900">
+						So funktioniert deine Schüler-Bestellung
+					</h2>
+					<p class="text-sm sm:text-base text-slate-600 mt-2">
+						Direkt abgestimmt mit {partner.name} für eine reibungslose Übergabe.
+					</p>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+					<div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center">
+						<div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-700 flex items-center justify-center font-bold text-lg mb-4">
+							1
+						</div>
+						<h3 class="font-bold text-slate-900 text-base mb-2">Ausrüstung auswählen</h3>
+						<p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+							Stöbere durch die aktuellen Eleveight Kollektionen – vom Allround-Kite RS bis zu
+							modernen Wingfoil-Sets.
+						</p>
+					</div>
+
+					<div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center">
+						<div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-700 flex items-center justify-center font-bold text-lg mb-4">
+							2
+						</div>
+						<h3 class="font-bold text-slate-900 text-base mb-2">
+							10 % mit „{partner.couponCode}“ sparen
+						</h3>
+						<p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+							Gib deinen persönlichen Schülercode im Warenkorb ein – der Rabatt wird sofort
+							abgezogen.
+						</p>
+					</div>
+
+					<div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center">
+						<div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-700 flex items-center justify-center font-bold text-lg mb-4">
+							3
+						</div>
+						<h3 class="font-bold text-slate-900 text-base mb-2">Auslieferung & Betreuung</h3>
+						<p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+							Deine Bestellung wird vorrangig versendet oder liegt nach Wunsch direkt an deiner
+							Station für dich bereit.
+						</p>
+					</div>
+				</div>
+			</section>
+
 			{/* Seasonal Preorder Notice */}
-			<section class="max-w-4xl mx-auto px-4 -mt-6 relative z-10">
-				<div class="bg-amber-50 border border-amber-200/80 rounded-2xl p-5 shadow-sm flex items-start gap-3.5">
-					<div class="p-2 rounded-xl bg-amber-100 text-amber-800 flex-shrink-0 mt-0.5">
+			<section class="max-w-4xl mx-auto px-4 mb-14">
+				<div class="p-6 sm:p-8 rounded-2xl bg-amber-50/80 border border-amber-200/80 flex flex-col sm:flex-row items-start sm:items-center gap-5">
+					<div class="p-3 bg-amber-100 rounded-xl text-amber-800 shrink-0">
 						<svg
-							class="w-5 h-5"
+							class="w-8 h-8"
 							viewBox="0 0 24 24"
 							fill="none"
 							stroke="currentColor"
@@ -132,115 +360,39 @@ export default component$(() => {
 						</svg>
 					</div>
 					<div>
-						<h3 class="text-sm font-bold text-amber-900">
-							Saisonwechsel & Vorbestell-Phase 2026/27
+						<h3 class="text-lg font-bold text-amber-950 mb-1">
+							Saison-Vorbestellungen für Partnerschüler
 						</h3>
-						<p class="text-xs sm:text-sm text-amber-800/90 mt-1 leading-relaxed">
-							Die aktuelle Eleveight Kollektion trifft in Kürze frisch an den Partnerstationen ein.
-							Viele Produkte stehen derzeit auf Vorbestellung. Wenn du deine Ausrüstung jetzt über
-							deinen Schüler-Vorteil vorbestellst, reserviert dein Center deine Wunschgröße
-							priorisiert und stimmt die Abholung oder Lieferung persönlich mit dir ab.
+						<p class="text-xs sm:text-sm text-amber-900/90 leading-relaxed">
+							Besonders gefragte Größen und Farben für die kommende Saison werden für Partnerschüler
+							bevorzugt reserviert. Bei Fragen zu Lieferzeiten steht dir das Stations-Team direkt
+							zur Verfügung.
 						</p>
 					</div>
 				</div>
 			</section>
 
-			{/* How it Works Section */}
-			<section class="max-w-5xl mx-auto px-4 py-16">
-				<div class="text-center mb-12">
-					<h2 class="text-2xl sm:text-3xl font-bold text-slate-900">
-						Wie funktioniert der Schüler-Partner-Kauf?
-					</h2>
-					<p class="text-slate-600 mt-2 max-w-xl mx-auto text-sm sm:text-base">
-						Transparenz, faire Center-Vergütung und persönliche Betreuung vor Ort.
-					</p>
-				</div>
-
-				<div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-					<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-						<div>
-							<div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-700 font-black text-lg flex items-center justify-center mb-4">
-								1
-							</div>
-							<h3 class="text-lg font-bold text-slate-900 mb-2">Ausrüstung auswählen</h3>
-							<p class="text-sm text-slate-600 leading-relaxed">
-								Wähle Kites, Wings, Boards oder Foils im ALL FOR WIND Store. Der 10 % Rabattcode{' '}
-								<strong>{partner.couponCode}</strong> ist in deiner Session aktiv.
-							</p>
-						</div>
-					</div>
-
-					<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-						<div>
-							<div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-700 font-black text-lg flex items-center justify-center mb-4">
-								2
-							</div>
-							<h3 class="text-lg font-bold text-slate-900 mb-2">Auftrag geht an dein Center</h3>
-							<p class="text-sm text-slate-600 leading-relaxed">
-								Deine Bestellung wird direkt an <strong>{partner.name}</strong> übergeben. Die
-								Station erhält 96 % des Wertes (wir behalten lediglich 4 % Transaktionsgebühr) und
-								bereitet dein Material vor.
-							</p>
-						</div>
-					</div>
-
-					<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-						<div>
-							<div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-700 font-black text-lg flex items-center justify-center mb-4">
-								3
-							</div>
-							<h3 class="text-lg font-bold text-slate-900 mb-2">Lieferung oder Station-Pickup</h3>
-							<p class="text-sm text-slate-600 leading-relaxed">
-								Du erhältst deine Ausrüstung bequem nach Hause geliefert oder holst sie direkt an
-								der Station ab – inklusive individuellem Trimm- und Setup-Tipp deiner Lehrer.
-							</p>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			{/* Category Jump Cards */}
-			<section class="max-w-5xl mx-auto px-4 pb-12">
-				<h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-6 text-center">
-					Jetzt Sortiment mit 10 % Schülervorteil entdecken
-				</h2>
-				<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+			{/* Direct CTA Categories */}
+			<section class="max-w-4xl mx-auto px-4 mb-14 text-center">
+				<h3 class="text-xl font-bold text-slate-900 mb-6">Jetzt Equipment entdecken</h3>
+				<div class="flex flex-wrap items-center justify-center gap-3">
 					<a
 						href="/collections/kites"
-						class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-sky-500 hover:shadow-md transition-all text-center block"
+						class="px-5 py-2.5 rounded-xl bg-sky-700 hover:bg-sky-800 text-white text-xs sm:text-sm font-semibold shadow-sm transition-colors"
 					>
-						<span class="text-3xl block mb-2 group-hover:scale-110 transition-transform">🪁</span>
-						<span class="font-bold text-slate-900 block text-sm sm:text-base">Kites & Bars</span>
-						<span class="text-xs text-sky-600 font-medium mt-1 block">RS, WS, OS, CS Bars</span>
+						Eleveight Kites ansehen →
 					</a>
-
 					<a
 						href="/collections/wings"
-						class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-sky-500 hover:shadow-md transition-all text-center block"
+						class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold shadow-sm transition-colors"
 					>
-						<span class="text-3xl block mb-2 group-hover:scale-110 transition-transform">🪂</span>
-						<span class="font-bold text-slate-900 block text-sm sm:text-base">
-							Wings & Parawings
-						</span>
-						<span class="text-xs text-sky-600 font-medium mt-1 block">WFS V7, GT4, Chute</span>
+						Eleveight Wings ansehen →
 					</a>
-
 					<a
-						href="/collections/boards"
-						class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-sky-500 hover:shadow-md transition-all text-center block"
+						href="/collections/twintips"
+						class="px-5 py-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 text-xs sm:text-sm font-semibold shadow-sm transition-colors"
 					>
-						<span class="text-3xl block mb-2 group-hover:scale-110 transition-transform">🏄‍♂️</span>
-						<span class="font-bold text-slate-900 block text-sm sm:text-base">Twintips & Surf</span>
-						<span class="text-xs text-sky-600 font-medium mt-1 block">Process, Master, Escape</span>
-					</a>
-
-					<a
-						href="/collections/foils"
-						class="group p-5 bg-white rounded-2xl border border-slate-200 hover:border-sky-500 hover:shadow-md transition-all text-center block"
-					>
-						<span class="text-3xl block mb-2 group-hover:scale-110 transition-transform">⚡</span>
-						<span class="font-bold text-slate-900 block text-sm sm:text-base">Hydrofoils</span>
-						<span class="text-xs text-sky-600 font-medium mt-1 block">GSF, CSF, RSF Sets</span>
+						Twintip & Foilboards →
 					</a>
 				</div>
 			</section>
@@ -300,6 +452,14 @@ export default component$(() => {
 export const head: DocumentHead = ({ resolveValue }) => {
 	const data = resolveValue(usePartnerRouteLoader);
 	const partner = data?.partner;
+	const isApply = data?.isApply;
+
+	if (isApply) {
+		return generateDocumentHead(
+			'Become an Official Partner School | ALL FOR WIND',
+			'Equip your students with premium Eleveight kites, wings and boards with 10% student advantage. Join the ALL FOR WIND partner network for kite and watersports centers.'
+		);
+	}
 
 	if (!partner) {
 		return {
