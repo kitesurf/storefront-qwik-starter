@@ -27,9 +27,38 @@ export default component$(() => {
 	const esHref = `/es${normalizedPath}${cleanSearch}`;
 	const itHref = `/it${normalizedPath}${cleanSearch}`;
 	const frHref = `/fr${normalizedPath}${cleanSearch}`;
-	const collections = useContext(APP_STATE).collections.filter(
+	const CATEGORY_ORDER = ['kitesurfing', 'wing-foiling', 'foils', 'accessories-bags'];
+
+	const CATEGORY_NAMES: Record<string, Record<string, string>> = {
+		kitesurfing: { de: 'Kite', en: 'Kite', es: 'Kite', it: 'Kite', fr: 'Kite' },
+		'wing-foiling': {
+			de: 'Wing / Parawing',
+			en: 'Wing / Parawing',
+			es: 'Wing / Parawing',
+			it: 'Wing / Parawing',
+			fr: 'Wing / Parawing',
+		},
+		foils: { de: 'Foils', en: 'Foils', es: 'Foils', it: 'Foils', fr: 'Foils' },
+		'accessories-bags': { de: 'Extras', en: 'Extras', es: 'Extras', it: 'Extras', fr: 'Extras' },
+	};
+
+	const SPARE_PARTS_NAME: Record<string, string> = {
+		de: 'Ersatzteile',
+		en: 'Spare Parts',
+		es: 'Repuestos',
+		it: 'Ricambi',
+		fr: 'Pièces détachées',
+	};
+
+	const rawCollections = useContext(APP_STATE).collections.filter(
 		(item) => item.parent?.name === '__root_collection__' && !!item.featuredAsset
 	);
+
+	const collections = [...rawCollections].sort((a, b) => {
+		const indexA = CATEGORY_ORDER.indexOf(a.slug);
+		const indexB = CATEGORY_ORDER.indexOf(b.slug);
+		return (indexA === -1 ? 99 : indexA) - (indexB === -1 ? 99 : indexB);
+	});
 
 	const isStandalone = useSignal(false);
 	useVisibleTask$(() => {
@@ -169,32 +198,44 @@ export default component$(() => {
 										</div>
 
 										<div class="flex flex-col pt-6 space-y-4">
-											{collections.map((collection) => (
-												<div key={collection.id} class="border-b border-gray-100 pb-3">
-													<a
-														class="text-lg font-bold text-gray-900 hover:text-sky-600 block"
-														href={`/collections/${collection.slug}`}
-														onClick$={() => (appState.showMenu = false)}
-													>
-														{collection.name}
-													</a>
-													{collection.children && collection.children.length > 0 && (
-														<div class="pl-3 mt-2 flex flex-col space-y-2 border-l-2 border-cyan-400">
-															{collection.children.map((sub: any) => (
-																<a
-																	key={sub.id}
-																	href={`/collections/${sub.slug}`}
-																	class="text-sm font-medium text-gray-600 hover:text-cyan-600 py-0.5 flex items-center justify-between"
-																	onClick$={() => (appState.showMenu = false)}
-																>
-																	<span>{sub.name}</span>
-																	<span class="text-xs text-gray-400">→</span>
-																</a>
-															))}
-														</div>
-													)}
-												</div>
-											))}
+											{collections.map((collection) => {
+												const displayName =
+													CATEGORY_NAMES[collection.slug]?.[activeLocale] || collection.name;
+												const children = [...(collection.children || [])] as any[];
+												if (collection.slug === 'accessories-bags') {
+													children.push({
+														id: 'spare-parts-nav',
+														name: SPARE_PARTS_NAME[activeLocale] || 'Spare Parts',
+														slug: 'accessories-bags',
+													});
+												}
+												return (
+													<div key={collection.id} class="border-b border-gray-100 pb-3">
+														<a
+															class="text-lg font-bold text-gray-900 hover:text-sky-600 block"
+															href={`/collections/${collection.slug}`}
+															onClick$={() => (appState.showMenu = false)}
+														>
+															{displayName}
+														</a>
+														{children.length > 0 && (
+															<div class="pl-3 mt-2 flex flex-col space-y-2 border-l-2 border-cyan-400">
+																{children.map((sub: any) => (
+																	<a
+																		key={sub.id}
+																		href={`/collections/${sub.slug}`}
+																		class="text-sm font-medium text-gray-600 hover:text-cyan-600 py-0.5 flex items-center justify-between"
+																		onClick$={() => (appState.showMenu = false)}
+																	>
+																		<span>{sub.name}</span>
+																		<span class="text-xs text-gray-400">→</span>
+																	</a>
+																))}
+															</div>
+														)}
+													</div>
+												);
+											})}
 										</div>
 
 										{!isStandalone.value && (
