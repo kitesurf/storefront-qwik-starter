@@ -67,10 +67,10 @@ export default component$(() => {
 	return (
 		<div class="bg-sky-950/95 backdrop-blur-md border-b border-white/15 shadow-lg sticky top-0 z-40">
 			<header>
-				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
-					<div class="flex items-center gap-4 lg:gap-8">
+				<div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 md:gap-4 w-full min-w-0">
+					<div class="flex items-center gap-3 lg:gap-8 shrink-0 min-w-0">
 						<button
-							class="block sm:hidden text-white p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-white/10 active:bg-white/20"
+							class="block xl:hidden text-white p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-white/10 active:bg-white/20 shrink-0"
 							onClick$={() => (appState.showMenu = !appState.showMenu)}
 							aria-label={_`Open Menu`}
 						>
@@ -78,7 +78,10 @@ export default component$(() => {
 							<MenuIcon />
 						</button>
 
-						<a href={`/?lang=${activeLocale}`} class="flex items-center gap-2.5 group">
+						<a
+							href={`/?lang=${activeLocale}`}
+							class="flex items-center gap-2 sm:gap-2.5 group shrink-0"
+						>
 							<svg
 								viewBox="0 0 64 64"
 								fill="none"
@@ -124,7 +127,7 @@ export default component$(() => {
 							</div>
 						</a>
 
-						<nav class="hidden sm:flex items-center space-x-6">
+						<nav class="hidden xl:flex items-center space-x-4 2xl:space-x-6 shrink-0">
 							{collections.map((collection) => (
 								<div class="relative group/nav py-2" key={collection.id}>
 									<a
@@ -175,14 +178,14 @@ export default component$(() => {
 						</nav>
 					</div>
 
-					<div class="flex-1 max-w-md hidden md:block">
+					<div class="flex-1 max-w-xs md:max-w-sm lg:max-w-md hidden md:block min-w-0 mx-2 lg:mx-4">
 						<SearchBar />
 					</div>
 
-					<div class="flex items-center space-x-3 sm:space-x-4">
+					<div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
 						{/* Language Switcher — native buttons: the Qwik City router
 						    intercepts clicks on a[href] (2-click problem), never buttons. */}
-						<div class="hidden sm:flex items-center space-x-1 bg-white/10 rounded-full p-1 border border-white/15 text-xs font-semibold text-white">
+						<div class="hidden sm:flex items-center space-x-0.5 sm:space-x-1 bg-white/10 rounded-full p-0.5 sm:p-1 border border-white/15 text-xs font-semibold text-white shrink-0">
 							<button
 								type="button"
 								onClick$={() => {
@@ -190,7 +193,7 @@ export default component$(() => {
 									window.location.assign(deHref);
 								}}
 								class={[
-									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all cursor-pointer',
+									'min-w-[34px] sm:min-w-[38px] xl:min-w-[42px] min-h-[38px] sm:min-h-[40px] flex items-center justify-center px-2 sm:px-2.5 xl:px-3 py-1.5 rounded-full transition-all cursor-pointer text-xs',
 									activeLocale === 'de'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
@@ -206,7 +209,7 @@ export default component$(() => {
 									window.location.assign(enHref);
 								}}
 								class={[
-									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all cursor-pointer',
+									'min-w-[34px] sm:min-w-[38px] xl:min-w-[42px] min-h-[38px] sm:min-h-[40px] flex items-center justify-center px-2 sm:px-2.5 xl:px-3 py-1.5 rounded-full transition-all cursor-pointer text-xs',
 									activeLocale === 'en'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
@@ -222,7 +225,7 @@ export default component$(() => {
 									window.location.assign(esHref);
 								}}
 								class={[
-									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all cursor-pointer',
+									'min-w-[34px] sm:min-w-[38px] xl:min-w-[42px] min-h-[38px] sm:min-h-[40px] flex items-center justify-center px-2 sm:px-2.5 xl:px-3 py-1.5 rounded-full transition-all cursor-pointer text-xs',
 									activeLocale === 'es'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
@@ -238,7 +241,7 @@ export default component$(() => {
 									window.location.assign(itHref);
 								}}
 								class={[
-									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all cursor-pointer',
+									'min-w-[34px] sm:min-w-[38px] xl:min-w-[42px] min-h-[38px] sm:min-h-[40px] flex items-center justify-center px-2 sm:px-2.5 xl:px-3 py-1.5 rounded-full transition-all cursor-pointer text-xs',
 									activeLocale === 'it'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
@@ -254,7 +257,7 @@ export default component$(() => {
 									window.location.assign(frHref);
 								}}
 								class={[
-									'min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 rounded-full transition-all cursor-pointer',
+									'min-w-[34px] sm:min-w-[38px] xl:min-w-[42px] min-h-[38px] sm:min-h-[40px] flex items-center justify-center px-2 sm:px-2.5 xl:px-3 py-1.5 rounded-full transition-all cursor-pointer text-xs',
 									activeLocale === 'fr'
 										? 'bg-cyan-400 text-slate-950 font-bold shadow-sm'
 										: 'hover:bg-white/20 text-white/80',
@@ -269,10 +272,10 @@ export default component$(() => {
 							aria-label={
 								appState.customer.id !== CUSTOMER_NOT_DEFINED_ID ? _`My Account` : _`Sign In`
 							}
-							class="min-h-[44px] min-w-[44px] flex items-center justify-center space-x-1.5 text-sm font-medium text-white/90 hover:text-cyan-300 transition-colors"
+							class="min-h-[44px] min-w-[44px] flex items-center justify-center space-x-1.5 text-sm font-medium text-white/90 hover:text-cyan-300 transition-colors shrink-0"
 						>
 							<UserIcon />
-							<span class="hidden lg:inline">
+							<span class="hidden xl:inline">
 								{appState.customer.id !== CUSTOMER_NOT_DEFINED_ID ? _`My Account` : _`Sign In`}
 							</span>
 						</a>
@@ -280,10 +283,10 @@ export default component$(() => {
 						{appState.customer.id !== CUSTOMER_NOT_DEFINED_ID && (
 							<button
 								onClick$={logout}
-								class="min-h-[44px] min-w-[44px] flex items-center justify-center text-white/80 hover:text-white text-sm"
+								class="min-h-[44px] min-w-[44px] flex items-center justify-center text-white/80 hover:text-white text-sm shrink-0"
 							>
 								<div class="flex items-center cursor-pointer">
-									<span class="mr-1 hidden lg:inline">{_`Logout`}</span>
+									<span class="mr-1 hidden xl:inline">{_`Logout`}</span>
 									<LogoutIcon />
 								</div>
 							</button>
@@ -292,7 +295,7 @@ export default component$(() => {
 						<button
 							name="Cart"
 							aria-label={`${totalQuantity} items in cart`}
-							class="relative w-11 h-11 min-h-[44px] min-w-[44px] bg-white/15 hover:bg-white/25 border border-white/25 rounded-full text-white p-2 flex items-center justify-center transition-all"
+							class="relative w-11 h-11 min-h-[44px] min-w-[44px] bg-white/15 hover:bg-white/25 border border-white/25 rounded-full text-white p-2 flex items-center justify-center transition-all shrink-0"
 							onClick$={() => (appState.showCart = !appState.showCart)}
 						>
 							<ShoppingBagIcon />
