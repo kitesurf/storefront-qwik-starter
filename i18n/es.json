@@ -330,6 +330,8 @@
 		"Install App": "Instalar app",
 		"Close": "Cerrar",
 		"Color Code": "Código de color",
-		"Change language": "Cambiar idioma"
+		"Change language": "Cambiar idioma",
+		"Please enter your email address here to sign up for our newsletter.": "Introduce aquí tu correo electrónico para suscribirte a la newsletter.",
+		"Email": "Email"
 	}
 }

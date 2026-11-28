@@ -131,7 +131,7 @@ export default component$(() => {
 							{_`Subscribe to our newsletter`}
 						</h3>
 						<p class="mt-3 text-sm text-slate-400">
-							{_`Be the first to know about exclusive offers & deals.`}
+							{_`Please enter your email address here to sign up for our newsletter.`}
 						</p>
 						<form
 							class="mt-4 flex flex-col sm:flex-row gap-2"
@@ -139,7 +139,7 @@ export default component$(() => {
 							onSubmit$={() => {}}
 						>
 							<label for="footer-email" class="sr-only">
-								{_`Email address`}
+								{_`Email`}
 							</label>
 							<input
 								id="footer-email"
@@ -147,7 +147,7 @@ export default component$(() => {
 								autoComplete="email"
 								required
 								class="w-full bg-slate-800/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
-								placeholder={_`Enter your email`}
+								placeholder={_`Email`}
 							/>
 							<button
 								type="submit"
