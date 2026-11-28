@@ -3,7 +3,8 @@ import { DocumentHead, routeLoader$ } from '@qwik.dev/router';
 import { getPartner } from '~/config/partners';
 
 export const usePartnerRouteLoader = routeLoader$(async ({ params, cookie }) => {
-	const partner = getPartner(params.slug);
+	const cleanSlug = params.slug?.replace(/\/$/, '');
+	const partner = getPartner(cleanSlug);
 	if (!partner) {
 		return { partner: null };
 	}
